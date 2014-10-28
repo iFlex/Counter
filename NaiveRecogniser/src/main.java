@@ -1,9 +1,6 @@
-import com.musicg.wave.Wave;
-import com.musicg.graphic.GraphicRender;
-import com.musicg.wave.extension.Spectrogram;
-
 import java.io.File;
-public class mainAudio {
+
+public class main {
 
 	public static void main(String[] args) {
 		Recogniser a = new Recogniser();
