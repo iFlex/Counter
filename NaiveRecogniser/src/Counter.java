@@ -20,7 +20,7 @@ public class Counter {
 	}
 	
 	public double getUncertainty(){
-		return error;
+		return error; //remember you need to return an integer representing the uncertainty not the precentage
 	}
 	
 	public int getCount(){
