@@ -16,7 +16,7 @@ public class Counter {
 	if(uncertainty > 0.5){
 		count+=1;
 	}
-		error += (1 - uncertainty)/2;
+		error += (1 - uncertainty)/2;  //Updates error value 
 	}
 	
 	public double getUncertainty(){
