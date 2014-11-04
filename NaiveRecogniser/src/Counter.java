@@ -1,7 +1,7 @@
 
 public class Counter {
 	private int count;
-	private double error;
+	private double uncertainty;
 	
 	public Counter(){
 		reset();
@@ -16,11 +16,11 @@ public class Counter {
 	if(uncertainty > 0.5){
 		count+=1;
 	}
-		error += (1 - uncertainty)/2;  //Updates error value 
+		this.uncertainty += (1 - uncertainty)/2; //Updates uncertainty value 
 	}
 	
-	public double getUncertainty(){
-		return error; //remember you need to return an integer representing the uncertainty not the precentage
+	public int getUncertainty(){
+		return uncertainty; //remember you need to return an integer representing the uncertainty not the precentage
 	}
 	
 	public int getCount(){
