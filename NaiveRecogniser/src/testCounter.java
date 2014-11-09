@@ -32,9 +32,9 @@ public class counterTest {
 
 		Double epsilon = 0.01;  //Accuracy
 		
-		double [] i = {1.0, 100.0, 1001.0, 2345.7, 56789.4};  //Args
+		double [] i = {0.1, 0.123, 0.123456789, 0.9, 0.99999999999};  //Args
 		int [] countResults = {1, 2, 3, 4, 5};  // Expected results for count
-		double [] errorResults = {0.0, 0.0, 0.0, 0.0, 0.0};  // (dummy) Expected results for error
+		double [] errorResults = {0.00, 0.00, 0.00, 0.00, 0.00};  // (dummy) Expected results for error
 		
 		for (int n = 0; n < i.length; n++) {
 		
@@ -57,14 +57,21 @@ public class counterTest {
 
 		Double epsilon = 0.01;  //Accuracy
 		
-		c.increment(Double.MAX_VALUE);  
+		double [] i = {0.0, 1.0};  //Args
+		int [] countResults = {1, 2};  // Expected results for count
+		double [] errorResults = {0.00, 0.00};  // (dummy) Expected results for error
+		
+		for (int n = 0; n < i.length; n++) {
+			
+		c.increment(i[n]);
 			
 		Integer cResult = c.getCount();
 		Double eResult = c.getUncertainty();
 			
-		assertEquals(1, cResult, epsilon);  //Check count
-		assertEquals(0.0, eResult, epsilon);  //(dummy) Check error
+		assertEquals(countResults[n], cResult, epsilon);  //Check count
+		assertEquals(errorResults[n], eResult, epsilon);  //(dummy) Check error
 		}
+	}
 
 
 
@@ -76,9 +83,9 @@ public class counterTest {
 
 		Double epsilon = 0.01;  //Accuracy
 	
-		double [] i = {-1.0, -56789.4, Double.MIN_VALUE};  //Args
-		int [] countResults = {1, 2, 3};  // Expected results for count
-		double [] errorResults = {0.0, 0.0, 0.0};  // (dummy) Expected results for error
+		double [] i = {-1.0, -56789.4, Double.MIN_VALUE, 1.01, 56789.4, Double.MAX_VALUE};  //Args
+		int [] countResults = {0, 0, 0, 0, 0, 0};  // Expected results for count
+		double [] errorResults = {0.00, 0.00, 0.00, 0.00, 0.00, 0.00};  // (dummy) Expected results for error
 	
 		for (int n = 0; n < i.length; n++) {
 	
@@ -102,5 +109,8 @@ public class counterTest {
 	}
 
 }
+
+
+
 
 
