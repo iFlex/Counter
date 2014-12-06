@@ -19,7 +19,7 @@ public class Processor implements Runnable
 		t = new Thread(this);
 		running = new AtomicBoolean(false);
 		
-		n = new NaiveRecogniser(0.0001);
+		n = new NaiveRecogniser(0);
 	}	
 
 	public void run(){
@@ -27,11 +27,12 @@ public class Processor implements Runnable
 		while(true)
 		{
 			Data d = audioIn.getNext();
+			//System.out.println("Got data from audio:"+d);
 			if( d != null )
-			{	
-				System.out.println("Data:"+d.toString());
+			{
 				n.process(d);
 			}
+			//System.out.println("Done processing");
 			//else
 				//break;
 		}

@@ -33,14 +33,14 @@ public class FileIn extends AudioIn{
 		System.out.println("Testing!");
 		int numChannels = wavFile.getNumChannels();                   
 		// Create a buffer of 100 frames                              
-		double[] buffer = new double[100 * numChannels];
+		double[] buffer = new double[128 * numChannels];
 		int framesRead = 0;
 		do                                                            
 			{                                                             
 				// Read frames into buffer                                
 				try {
-					framesRead = wavFile.readFrames(buffer, 100);
-					this.push(new Data(buffer));
+					framesRead = wavFile.readFrames(buffer, 128);
+					push(new Data(buffer));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

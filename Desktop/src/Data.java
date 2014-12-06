@@ -42,8 +42,9 @@ public class Data
 	
 	public String toString(){
 		String s = "";
-		for( int i=0; i < d.length; ++i )
-			s += " "+d[i];
+		if(d != null)
+			for( int i=0; i < d.length; ++i )
+				s += " "+d[i];
 		return s;
 	}
 }

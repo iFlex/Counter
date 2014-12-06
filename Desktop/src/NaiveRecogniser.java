@@ -32,11 +32,13 @@ public class NaiveRecogniser implements Recogniser
 
 	public void process(Data data)
 	{
+		//System.out.println("I am processing something");
 		double[] allData = data.get();
 		int allDataIndex = 0;
 		// If the length of the input fills the rest of the data array
-		while( allData.length >= (this.dataToProcess.length - (this.atIndex + 1)) )
+		if( allData.length >= (this.dataToProcess.length - (this.atIndex + 1)) )
 		{
+			//System.out.println("Entered Condition");
 			// While it has not read all the data it got
 			while(allDataIndex < allData.length)
 			{
@@ -72,6 +74,7 @@ public class NaiveRecogniser implements Recogniser
 				// If it has counted more than the allowance window
 				if(this.downhillCount >= this.window)
 				{
+					System.out.println("I have counted");
 					c++;
 					// TODO FIXME
 					try
