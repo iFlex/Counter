@@ -30,7 +30,7 @@ public class AudioCapturer extends AudioIn{
     //specific
     int treshold = 1000;
     private static int[] mSampleRates = new int[] { 44100, 22050,11025,8000 };
-    public AudioRecord findAudioRecord() {
+    public AudioRecord findAudioConfiguration() {
         for (int rate : mSampleRates) {
             for (short audioFormat : new short[] { AudioFormat.ENCODING_PCM_8BIT, AudioFormat.ENCODING_PCM_16BIT }) {
                 for (short channelConfig : new short[] { AudioFormat.CHANNEL_IN_MONO, AudioFormat.CHANNEL_IN_STEREO }) {
@@ -60,7 +60,7 @@ public class AudioCapturer extends AudioIn{
         handler = h;
         Log.i("AudioCapturer:","Initialising recorder...");
         //(int audioSource, int sampleRateInHz, int channelConfig, int audioFormat, int bufferSizeInBytes)
-        recorder = findAudioRecord();
+        recorder = findAudioConfiguration();
         if(recorder.getState() != AudioRecord.STATE_INITIALIZED) {
             Log.i("DATA:","Error, could not initialize audio");
         }
@@ -79,13 +79,8 @@ public class AudioCapturer extends AudioIn{
         recordingThread = new Thread(new Runnable() {
             public void run() {
                 while(true) {
-                    int count = 0;
-                    int len = recorder.read(audioData, 0, BufferElements2Rec);
-
-                    if(audioData == null)
-                        return;
-
-                    new Data(audioData);
+                    int len = recorder.read(audioData, 0, BufferElements2Rec); 
+                    this.push(new Data(audioData,audioForm));
                 }
             }
         }, "AudioRecorder Thread");
@@ -94,8 +89,7 @@ public class AudioCapturer extends AudioIn{
     public void stop(){
         // stops the recording activity
         if (null != recorder) {
-            Log.i("DATA:","Stopping recording");
-
+            
             isRecording = false;
             recorder.stop();
             recorder.release();
@@ -103,13 +97,5 @@ public class AudioCapturer extends AudioIn{
             recordingThread = null;
         }
     }
-
-   //THREADING
-   private void updateUI(int val){
-        Message m = new Message();
-        m.arg1 = val;
-        handler.sendMessage(m);
-   }
-
 }
 

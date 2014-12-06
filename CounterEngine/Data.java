@@ -13,10 +13,10 @@ public class Data
 		d = b;
 	}
 
-	public Data(byte[] b){	
+	public Data(byte[] b,int form){	
 		long long val; 
 		int index = 0;
-	    byte bytesPerRecord = 1;
+	    byte bytesPerRecord = form;
 	    byte crntByte = 0;
         
 		d = double[(int)( b.length / bytesPerRecord )];
