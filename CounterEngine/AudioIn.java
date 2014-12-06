@@ -1,12 +1,17 @@
-import java.util.concurrent.*;
+/*
+* Author: Milorad Liviu Felix & Pedro Avelar
+* Sat 6 December 2014 18:30GMT
+* 
+*/
 
+import java.util.concurrent.*;
+import java.lang.Thread;
 // Gets data from any audio input possible, the Microphone, for example
 public abstract class AudioIn implements Runnable
 {
-	ConcurrentLinkedQueue<Data> inQueue;
-	Thread thread;
+	private ConcurrentLinkedQueue<Data> inQueue;
+	private Thread thread;
 	
-
 	public AudioIn()
 	{
 		inQueue = new ConcurrentLinkedQueue<Data>();

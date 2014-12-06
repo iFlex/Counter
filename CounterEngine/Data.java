@@ -32,12 +32,19 @@ public class Data
             }
         }
 	}
+	
 	public void set(double d){
 
 	}
-	// not void
+	
 	public double[] get(){
 		return d;
 	}
-	// multiple constructors
+	
+	public String toString(){
+		String s = "";
+		for( int i=0; i < d.length; ++i )
+			s += " "+d[i];
+		return s;
+	}
 }
