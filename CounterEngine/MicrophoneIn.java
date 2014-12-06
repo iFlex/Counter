@@ -1,3 +1,9 @@
+/*
+* Author: Milorad Liviu Felix
+* Sat 6 December 2014 18:00GMT
+* A class that provides audio data from the microphone
+* Android Specific code
+*/
 package com.example.mlf.amplitudecounter;
 import android.media.*;
 import android.media.MediaRecorder.AudioSource;
