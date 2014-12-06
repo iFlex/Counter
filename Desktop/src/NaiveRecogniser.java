@@ -7,7 +7,6 @@ public class NaiveRecogniser implements Recogniser
 	private int atIndex; // Index where the next double is going to be inserted in
 	private int downhillCount; // How many downhill doubles it has counted
 	private int window; // The window to ignore hills after a downhill to see if it is another count
-	
 	// Starndart initalization
 	private void standardSettings()
 	{
@@ -32,7 +31,8 @@ public class NaiveRecogniser implements Recogniser
 
 	public void process(Data data)
 	{
-		//System.out.println("I am processing something");
+		
+		//System.out.println(":"+data.toString());
 		double[] allData = data.get();
 		int allDataIndex = 0;
 		// If the length of the input fills the rest of the data array
@@ -74,12 +74,12 @@ public class NaiveRecogniser implements Recogniser
 				// If it has counted more than the allowance window
 				if(this.downhillCount >= this.window)
 				{
-					System.out.println("I have counted");
 					c++;
 					// TODO FIXME
 					try
 					{
 						main.counter.increment(1.0);
+						System.out.println("Count:"+main.counter.getCount());
 					}
 					catch(Exception e)
 					{

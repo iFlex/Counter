@@ -49,7 +49,7 @@ public class FileIn extends AudioIn{
 					e.printStackTrace();
 				}             
 					                          
-			} while (framesRead != 0);    
+			} while (framesRead != 0 && canRun);    
 		
 		
 	}

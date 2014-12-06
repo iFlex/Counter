@@ -4,40 +4,39 @@
 * 
 */
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.lang.Thread;
 // Gets data from any audio input possible, the Microphone, for example
 public abstract class AudioIn implements Runnable
 {
 	private ConcurrentLinkedQueue<Data> inQueue;
-	private Thread thread;
+	protected Thread thread;
+	protected boolean canRun;
 	
 	public AudioIn()
 	{
 		inQueue = new ConcurrentLinkedQueue<Data>();
 		thread = new Thread(this);
+		canRun = false;
 	}
 
 	public void start()
 	{
+		canRun = true;
 		thread.start();
 	}
 	
 	public void stop()
 	{
-		thread.stop();
+		canRun = false;
+		System.out.println("Stopping AudioIn");
 	}
 	
 	public Data getNext()
 	{
 		return inQueue.poll();
 	}
-	
-	//Stub!
-	public void run()
-	{
-		//To be overwritten in MicIn
-	}
-	
+
 	public void push(Data s) 
 	{
 		inQueue.add(s);

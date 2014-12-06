@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 
 public class main {
 
@@ -6,19 +8,23 @@ public class main {
 
 	public static void main(String[] args)
 	{
-		System.out.println("Testing the reading ");
+		System.out.println("Toggle the recorder");
 		counter = new Counter();
 		processor = new Processor();
+		Scanner sc = new Scanner(System.in);
 		
-		processor.start();
-
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		while(true){
+			String s = sc.nextLine();
+			if(s.equals("start"))
+				processor.start();
+			if(s.equals("stop"))
+			{
+				processor.stop();
+				System.out.println("Count:"+counter.getCount());
+			}
+			if(s.equals("exit"))
+				break;
 		}
-		processor.stop();
-		System.out.println("Count:"+counter.getCount());
+		System.out.println("Bye!");
 	}
 }

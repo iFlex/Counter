@@ -12,19 +12,20 @@ public class Processor implements Runnable
 	private Recogniser n;
 	private Thread t;
 	private AtomicBoolean running;
-
+	private boolean canRun;
+	
 	public Processor()
 	{
-		audioIn = new FileIn("./res/BOOK_25.wav");
+		audioIn = new PcMicrophoneIn();//FileIn("./res/GUITAR_MUTED_10.wav");
 		t = new Thread(this);
 		running = new AtomicBoolean(false);
-		
-		n = new NaiveRecogniser(0);
+		canRun = false;
+		n = new NaiveRecogniser((double)100);//new TresholdDetector(100);
 	}	
 
 	public void run(){
 		running.set(true);
-		while(true)
+		while(canRun)
 		{
 			Data d = audioIn.getNext();
 			//System.out.println("Got data from audio:"+d);
@@ -40,13 +41,14 @@ public class Processor implements Runnable
 	}
 
 	public void start(){
+		canRun = true;
 		running.set(true);
 		t.start();
 		audioIn.start();
 	}
 
 	public void stop(){
-		t.stop();
+		canRun = false;
 		audioIn.stop();
 	}
 	public boolean isRunning(){

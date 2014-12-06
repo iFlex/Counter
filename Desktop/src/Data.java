@@ -11,12 +11,20 @@ public class Data
 	public Data(double[] b){
 		d = b;
 	}
-
+	
+	public Data( byte[] b)
+	{
+		d = new double[b.length];
+		for( int i = 0 ; i < b.length ; ++i )
+			d[i] = b[i];
+	}
+	
 	public Data(byte[] b,int form){	
+		//broken, needs inspecting
 		long val = 0; 
 		int index = 0;
-	    byte bytesPerRecord = (byte) form;
-	    byte crntByte = 0;
+	    int bytesPerRecord = form;
+	    int crntByte = 0;
         
 		d = new double[(int)( b.length / bytesPerRecord )];
 	    for (int i = 0; i < b.length ; ++i) {
