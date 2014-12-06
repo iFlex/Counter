@@ -1,36 +1,45 @@
+/*
+* Author: Milorad Liviu Felix & Pedro Avelar
+* Sat 6 December 2014 17:49GMT
+* Interface for the sound recognition algorithm
+*/
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Processor implements Runnable
 {
-	private Data data;
 	private AudioIn audioIn;
+	private Recogniser n;
 	private Thread t;
-
 	private AtomicBoolean running;
 
 	public Processor()
 	{
-		//this.rec = new ();
-		this.data = new Data();
-		this.audioIn = new FileIn("./caca.txt");
-		
+		audioIn = new FileIn("./res/BOOK_25.wav");
 		t = new Thread(this);
 		running = new AtomicBoolean(false);
+		
+		n = new NaiveRecogniser(0.0001);
 	}	
 
 	public void run(){
 		running.set(true);
 		while(true)
 		{
-			Data d = audioIn.get();
-			if(d)
+			Data d = audioIn.getNext();
+			if( d != null )
+			{	
 				System.out.println("Data:"+d.toString());
-			else
-				return;
+				n.process(d);
+			}
+			//else
+				//break;
 		}
-		running.set(false);
+		//running.set(false);
 	}
 
 	public void start(){
+		running.set(true);
 		t.start();
 		audioIn.start();
 	}
@@ -39,7 +48,7 @@ public class Processor implements Runnable
 		t.stop();
 		audioIn.stop();
 	}
-	public void isRunning(){
+	public boolean isRunning(){
 		return running.get() == true;
 	}
 }

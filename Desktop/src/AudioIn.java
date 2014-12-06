@@ -1,6 +1,6 @@
 /*
-* Author: Milorad Liviu Felix & Pedro Avelar
-* Sat 6 December 2014 18:30GMT
+* Author: JamesBrown
+* Sat 6 December 2014 16:30GMT
 * 
 */
 import java.util.concurrent.*;

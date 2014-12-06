@@ -1,5 +1,6 @@
-public class Cpp
-{
+
+public class main {
+
 	public static Counter counter;
 	public static Processor processor;
 
@@ -10,10 +11,14 @@ public class Cpp
 		processor = new Processor();
 		
 		processor.start();
-		while(processor.isRunning())
-		{
 
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		System.out.println("DONE!");
+		processor.stop();
+		System.out.println("Count:"+counter.getCount());
 	}
 }

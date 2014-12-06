@@ -4,7 +4,7 @@
 * A class that provides audio data from the microphone
 * Android Specific code
 */
-package com.example.mlf.amplitudecounter;
+
 import android.media.*;
 import android.media.MediaRecorder.AudioSource;
 import android.util.Log;

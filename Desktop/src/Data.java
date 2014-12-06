@@ -13,9 +13,9 @@ public class Data
 	}
 
 	public Data(byte[] b,int form){	
-		long val; 
+		long val = 0; 
 		int index = 0;
-	    byte bytesPerRecord = form;
+	    byte bytesPerRecord = (byte) form;
 	    byte crntByte = 0;
         
 		d = new double[(int)( b.length / bytesPerRecord )];
