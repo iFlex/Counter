@@ -2,7 +2,12 @@
 public class Data
 {
 	private double[] d;
-	public Data(byte b){	
+	
+	public Data(double[] b){
+		d = b;
+	}
+
+	public Data(byte[] b){	
 		long long val; 
 		int index = 0;
 	    byte bytesPerRecord = 1;
