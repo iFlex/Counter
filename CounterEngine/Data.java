@@ -1,12 +1,32 @@
 // Gets data from any format and converts it to a common format, AKA double
 public class Data
 {
-	public void set()
-	{
+	private double[] d;
+	public Data(byte b){	
+		long long val; 
+		int index = 0;
+	    byte bytesPerRecord = 1;
+	    byte crntByte = 0;
+        
+		d = double[(int)( b.length / bytesPerRecord )];
+	    for (int i = 0; i < b.length ; ++i) {
+            val <<= 8;
+            val |= (byte) b[i];
+            if(crntByte < bytesPerRecord)
+            	crntByte++; 
+            else {
+                crntByte = 0;
+                b.[index++] = val;
+                val = 0;
+            }
+        }
+	}
+	public void set(double d){
+
 	}
 	// not void
-	public void get()
-	{
+	public double[] get(){
+		return d;
 	}
 	// multiple constructors
 }
