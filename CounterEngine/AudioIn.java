@@ -1,28 +1,42 @@
 import java.util.concurrent.*;
 
 // Gets data from any audio input possible, the Microphone, for example
-public class AudioIn implements Runnable
+public abstract class AudioIn implements Runnable
 {
-	ConcurrentLinkedQueue inQueue;
+	ConcurrentLinkedQueue<Data> inQueue;
 	Thread thread;
+	
 
 	public AudioIn()
 	{
+		inQueue = new ConcurrentLinkedQueue<Data>();
+		thread = new Thread(this);
 	}
 
 	public void start()
 	{
-		
+		thread.start();
 	}
+	
 	public void stop()
 	{
-		
+		thread.stop();
 	}
-	public double getNext()
+	
+	public Data getNext()
 	{
-		return 0.0;
+		return inQueue.poll();
 	}
+	
+	//Stub!
 	public void run()
 	{
+		//To be overwritten in MicIn
+	}
+	
+	public void push(Data s) 
+	{
+		inQueue.add(s);
 	}
 }
+
