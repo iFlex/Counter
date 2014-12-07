@@ -3,6 +3,7 @@
 * Sat 6 December 2014 17:15GMT
 * Data class is used to convert the data from multiple input representation methods to double array of amplitudes 
 */
+package engine.util;
 // Gets data from any format and converts it to a common format, AKA double
 public class Data
 {

@@ -1,3 +1,8 @@
+package engine.Processing.algorithms;
+import engine.Processing.Processor;
+import engine.Processing.Recogniser;
+import engine.util.*;
+
 public class NaiveRecogniser implements Recogniser
 {
 	private double threshold; // The threshold that the data needs to pass to be considered a uphill count
@@ -7,6 +12,7 @@ public class NaiveRecogniser implements Recogniser
 	private int atIndex; // Index where the next double is going to be inserted in
 	private int downhillCount; // How many downhill doubles it has counted
 	private int window; // The window to ignore hills after a downhill to see if it is another count
+	private Counter count;
 	// Starndart initalization
 	private void standardSettings()
 	{
@@ -18,13 +24,15 @@ public class NaiveRecogniser implements Recogniser
 		this.atIndex = 0;
 	}
 
-	public NaiveRecogniser()
+	public NaiveRecogniser(Counter c)
 	{
+		count = c;
 		this.standardSettings();
 	}
 
-	public NaiveRecogniser(double Threshold)
+	public NaiveRecogniser(double Threshold,Counter c)
 	{
+		count = c;
 		this.standardSettings();
 		this.threshold = Threshold;
 	}
@@ -78,8 +86,8 @@ public class NaiveRecogniser implements Recogniser
 					// TODO FIXME
 					try
 					{
-						main.counter.increment(1.0);
-						System.out.println("Count:"+main.counter.getCount());
+						count.increment(1.0);
+						System.out.println("Count:"+count.getCount());
 					}
 					catch(Exception e)
 					{

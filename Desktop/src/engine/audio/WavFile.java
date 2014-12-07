@@ -7,7 +7,7 @@
 // http://www.blitter.com/~russtopia/MIDI/~jglatt/tech/wave.htm
 
 // Version 1.0
-
+package engine.audio;
 import java.io.*;
 
 public class WavFile

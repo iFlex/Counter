@@ -1,3 +1,4 @@
+package engine.audio;
 public class WavFileException extends Exception
 {
 	public WavFileException()

@@ -1,16 +1,17 @@
 import java.util.Scanner;
+import engine.Processing.*;
+import engine.Processing.algorithms.*;
+import engine.util.Counter;
 
+public class MainActivity {
 
-public class main {
-
-	public static Counter counter;
 	public static Processor processor;
-
+	private static Counter count;
 	public static void main(String[] args)
 	{
 		System.out.println("Toggle the recorder");
-		counter = new Counter();
-		processor = new Processor();
+		count = new Counter();
+		processor = new Processor(count);
 		Scanner sc = new Scanner(System.in);
 		
 		while(true){
@@ -20,7 +21,7 @@ public class main {
 			if(s.equals("stop"))
 			{
 				processor.stop();
-				System.out.println("Count:"+counter.getCount());
+				System.out.println("Count:"+count.getCount());
 			}
 			if(s.equals("exit"))
 				break;

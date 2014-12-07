@@ -3,8 +3,12 @@
 * Sat 6 December 2014 17:49GMT
 * Interface for the sound recognition algorithm
 */
+package engine.Processing;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import engine.audio.*;
+import engine.util.*;
+import engine.Processing.algorithms.*;
 
 public class Processor implements Runnable
 {
@@ -13,14 +17,16 @@ public class Processor implements Runnable
 	private Thread t;
 	private AtomicBoolean running;
 	private boolean canRun;
+	private Counter count;
 	
-	public Processor()
+	public Processor(Counter c)
 	{
-		audioIn = new PcMicrophoneIn();//FileIn("./res/GUITAR_MUTED_10.wav");
+		count = c;
+		audioIn = new PcMicrophoneIn();
 		t = new Thread(this);
 		running = new AtomicBoolean(false);
 		canRun = false;
-		n = new NaiveRecogniser((double)100);//new TresholdDetector(100);
+		n = new NaiveRecogniser((double)4,count);//new TresholdDetector(100);
 	}	
 
 	public void run(){

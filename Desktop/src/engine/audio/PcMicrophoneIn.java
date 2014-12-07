@@ -1,3 +1,7 @@
+package engine.audio;
+import engine.audio.AudioIn;
+import engine.util.Data;
+
 import java.io.ByteArrayOutputStream;
 
 import javax.sound.sampled.*;
@@ -6,7 +10,6 @@ public class PcMicrophoneIn extends AudioIn{
 	TargetDataLine line;
 	DataLine.Info info;
 	AudioFormat format;//need to initialise this
-	
 	public PcMicrophoneIn(){
 		
 		format = new AudioFormat(44100, 8, 1, true, true);
