@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.os.*;
+
 @SuppressLint("NewApi")
 public class home_Fragment extends Fragment {
     int count;
@@ -17,24 +19,32 @@ public class home_Fragment extends Fragment {
     {
         View rootView = inflater .inflate(R.layout.home_fragment, container, false);
         final TextView resultText = (TextView) rootView.findViewById(R.id.countText);
-        count = 0;
 
         Button startButton = (Button) rootView.findViewById(R.id.startButton);
         Button resButton = (Button) rootView.findViewById(R.id.resetButton);
 
+        MainActivity.handler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message inputMessage) {
+                resultText.setText(String.valueOf(MainActivity.counter.getCount()));
+            }
+        };
+
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                count ++;
-                resultText.setText(String.valueOf(count));
+                if(!MainActivity.processor.isRunning())
+                    MainActivity.processor.start();
+                else
+                    MainActivity.processor.stop();
             }
         });
 
         resButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                count = 0;
-                resultText.setText(String.valueOf(count));
+                MainActivity.counter.reset();
+                resultText.setText(String.valueOf(MainActivity.counter.getCount()));
             }
         });
 

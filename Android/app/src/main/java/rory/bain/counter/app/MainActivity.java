@@ -7,7 +7,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.os.Bundle;
+import android.os.*;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -37,14 +37,15 @@ public class MainActivity extends Activity {
 
     //engine
     public static Counter counter;
-    private Processor processor;
+    public static Handler handler;
+    static Processor processor;
 
     @SuppressLint("NewApi")
     @Override  protected void onCreate(Bundle savedInstanceState) {
 
 //        ADDED HERE
-        counter = new Counter();
-        processor = new Processor();
+        MainActivity.counter = new Counter();
+        MainActivity.processor = new Processor(counter);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
