@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-21383164a7c5aa1e0c28e7bd3ed48277d2f63f42.jar"
+        jar="/Users/MLF/Downloads/adt-bundle-mac-x86_64-20140702/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+    <item
+        dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/debug/support-v13-19.1.0-51012627f4c23bcdaf2a5c2aeae12f7a6dd69925.jar"
+        jar="/Users/MLF/Downloads/adt-bundle-mac-x86_64-20140702/sdk/extras/android/m2repository/com/android/support/support-v13/19.1.0/support-v13-19.1.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="6b852a232f642c75a7fdfc7212b841b8c8f8959c"/>
+
+</pre-dex-items>
