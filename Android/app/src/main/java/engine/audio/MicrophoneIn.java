@@ -27,10 +27,12 @@ public class MicrophoneIn extends AudioIn {
 
     private static int[] mSampleRates = new int[] { 44100, 22050,11025,8000 };
     public AudioRecord findAudioRecord() {
+        //Log.d("encodings:","Encodings:"+AudioFormat.ENCODING_PCM_8BIT+";"+AudioFormat.ENCODING_PCM_16BIT);
+        //Log.d("Channel:","Channel:"+AudioFormat.CHANNEL_IN_MONO);
         for (int rate : mSampleRates) {
             for (short audioFormat : new short[] { AudioFormat.ENCODING_PCM_8BIT , AudioFormat.ENCODING_PCM_16BIT }) {
                     try {
-                        Log.d("Data:", "Attempting rate " + rate + "Hz, bits: " + audioFormat + ", channel: " + AudioFormat.CHANNEL_IN_MONO);
+                        //Log.d("Data:", "Attempting rate " + rate + "Hz, bits: " + audioFormat + ", channel: " + AudioFormat.CHANNEL_IN_MONO);
                         audioForm = audioFormat;
                         int bufferSize = AudioRecord.getMinBufferSize(rate, AudioFormat.CHANNEL_IN_MONO, audioFormat);
 
@@ -42,7 +44,7 @@ public class MicrophoneIn extends AudioIn {
                                 return recorder;
                         }
                     } catch (Exception e) {
-                        Log.e("Error:", rate + "Exception, keep trying.",e);
+                        //Log.e("Error:", rate + "Exception, keep trying.",e);
                     }
             }
         }
@@ -82,10 +84,20 @@ public class MicrophoneIn extends AudioIn {
             while(canRun) {
                 int count = 0;
                 int len = recorder.read(audioData, 0, BufferElements2Rec);
+                //Log.d("a","WORKING");
                 if(audioData != null) {
-                    Data d = new Data(audioData,1);
+                    //Data d = new Data(audioData,"PCM16",false);
+                    int actlen = BufferElements2Rec;
+                    int[] fynn = new int[actlen];
+                    for(int i = 0; i<actlen; i++)
+                    {
+                        fynn[i] = 0;
+                        for(int j = 0; j<BytesPerElement; j++)
+                            fynn[i] |= audioData[(i*BytesPerElement)+j]<<(8*j)&(0x000000ff * (int)(Math.pow(2,j)));
+                    }
+                    Data d = new Data(fynn);
                     push(d);
-                    Log.d("D:",":"+d.toString());
+                    //Log.d("D:",":"+d.toString());
                 }
             }
             recorder.stop();
@@ -99,7 +111,7 @@ public class MicrophoneIn extends AudioIn {
             */
         }
         else
-            Log.d("Info:","Runnign thread but recorder is not valid");
+            Log.d("Info:","Running thread but recorder is not valid");
     }
 }
 

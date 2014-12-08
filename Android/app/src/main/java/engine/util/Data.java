@@ -19,15 +19,26 @@ public class Data
 		for( int i = 0 ; i < b.length ; ++i )
 			d[i] = b[i];
 	}
+
+    public Data(int[] b)
+    {
+        d = new double[b.length];
+        for(int i = 0; i<b.length; i++)
+        {
+            d[i] = b[i];
+        }
+    }
 	
-	public Data(byte[] b,int form){	
-		//broken, needs inspecting
-		long val = 0; 
+	public Data(byte[] b,String enc,boolean isBigEndian){
+		byte val = 0;
 		int index = 0;
-	    int bytesPerRecord = form;
+	    int bytesPerRecord = 1;
+        if(enc.equals("PCM16"))
+            bytesPerRecord = 2;
+
 	    int crntByte = 0;
-        
 		d = new double[(int)( b.length / bytesPerRecord )];
+
 	    for (int i = 0; i < b.length ; ++i) {
             val <<= 8;
             val |= (byte) b[i];
@@ -35,10 +46,21 @@ public class Data
             	crntByte++; 
             else {
                 crntByte = 0;
-                d[index++] = val;
+                if(isBigEndian)
+                    d[index] = val;
+                else {
+                    int v = 0;
+                    d[index] = this.swapEndianFormat((byte) val);
+                    //d[index] =  val;//v;
+                }
+                index++;
                 val = 0;
             }
+
         }
+        d = new double[b.length];
+        for(int i =0 ; i < b.length; ++i )
+            d[i] = (double) b[i];
 	}
 	
 	public void set(double d){
@@ -56,4 +78,19 @@ public class Data
 				s += " "+d[i];
 		return s;
 	}
+
+    // Credit due
+    // http://stackoverflow.com/questions/3842828/converting-little-endian-to-big-endian
+    private byte swapEndianFormat(byte b) {
+        int converted = 0x00;
+        converted ^= (b & 0x80) >> 7;
+        converted ^= (b & 0x40) >> 5;
+        converted ^= (b & 0x20) >> 3;
+        converted ^= (b & 0x10) >> 1;
+        converted ^= (b & 0x08) << 1;
+        converted ^= (b & 0x04) << 3;
+        converted ^= (b & 0x02) << 5;
+        converted ^= (b & 0x01) << 7;
+        return (byte) (converted & 0xFF);
+    }
 }

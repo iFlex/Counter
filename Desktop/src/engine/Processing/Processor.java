@@ -26,7 +26,8 @@ public class Processor implements Runnable
 		t = new Thread(this);
 		running = new AtomicBoolean(false);
 		canRun = false;
-		n = new NaiveRecogniser((double)4,count);//new TresholdDetector(100);
+		//n = new NaiveRecogniser((double)4,count);
+		n = new NaiveRecogniserMk2(80.0, 512, count);
 	}	
 
 	public void run(){

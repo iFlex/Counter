@@ -12,8 +12,7 @@ public class PcMicrophoneIn extends AudioIn{
 	AudioFormat format;//need to initialise this
 	public PcMicrophoneIn(){
 		
-		format = new AudioFormat(44100, 8, 1, true, true);
-		
+		format = new AudioFormat(44100, 8, 1, true, false);
 		info = new DataLine.Info(TargetDataLine.class, format); // format is an AudioFormat object
 		if (!AudioSystem.isLineSupported(info)) {
 		    // Handle the error ... 

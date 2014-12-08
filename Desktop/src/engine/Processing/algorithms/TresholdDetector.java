@@ -25,6 +25,6 @@ public class TresholdDetector implements Recogniser {
 			if(max < D[i])
 				max = D[i];
 		}
-		//System.out.println(max+" , "+min);
+		System.out.println(max+" , "+min);
 	}
 }
