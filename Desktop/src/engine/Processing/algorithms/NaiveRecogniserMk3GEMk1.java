@@ -6,6 +6,7 @@ import engine.Processing.Processor;
 import engine.Processing.Recogniser;
 import engine.util.*;
 import java.util.ArrayList;
+import org.jtransforms.fft.DoubleFFT_1D;
 
 // Naive Recognizer Mk 3 - Gold Edition Mk 1
 public class NaiveRecogniserMk3GEMk1 implements Recogniser
@@ -220,8 +221,9 @@ public class NaiveRecogniserMk3GEMk1 implements Recogniser
 			fftResults[i*2] = (double) listAsArray[i];
 			fftResults[i*2+1] = 0;
 		}
-		// TODO Fast Fourier the shit out of the data and see if any of the things
-
+		// Fast Fourier the shit out of the data and see if any of the things
+		DoubleFFT_1D fft = new DoubleFFT_1D(listAsArray.length);
+		fft.complexForward(fftResults);
 		// TODO Check if the amplitude results of the FFT surpasses the limit values passed on the constructor
 		// And make random calculations to define what is the 
 
