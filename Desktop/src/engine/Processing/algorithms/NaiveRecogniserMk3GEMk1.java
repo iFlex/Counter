@@ -215,6 +215,7 @@ public class NaiveRecogniserMk3GEMk1 implements Recogniser
 		// Get the list as an array and pass it to a double array double its size so that it
 		// can be FFT'ed
 		Double[] listAsArray = (Double[]) this.uphillData.toArray();
+		this.uphillData.clear();
 		double[] fftResults = new double[listAsArray.length];
 		for(int i = 0; i<listAsArray.length; i++)
 		{
@@ -225,10 +226,30 @@ public class NaiveRecogniserMk3GEMk1 implements Recogniser
 		DoubleFFT_1D fft = new DoubleFFT_1D(listAsArray.length);
 		fft.complexForward(fftResults);
 		// TODO Check if the amplitude results of the FFT surpasses the limit values passed on the constructor
-		// And make random calculations to define what is the 
-
+		int[] meanCount = new int[this.maxFreqAmp.length];
+		for(int j = 0; j<meanCount.length; j++)
+		{
+			meanCount[j] = 0;
+		}
+		double[] freqSpecResult = new double[this.maxFreqAmp.length];
+		for(int i = 0, j = 0; i<listAsArray.length && j<meanCount.length; i++)
+		{
+			if(i>((listAsArray.length)/(j+1)))
+			{
+				j++;
+			}
+			freqSpecResult[j] = (fftResults[i*2]*fftResults[i*2])+(fftResults[(i*2)+1]*fftResults[(i*2)+1]);
+			meanCount[j]++;
+		}
+		double difference = 0;
+		for(int j = 0; j<meanCount.length; j++)
+		{
+			freqSpecResult[j] = freqSpecResult[j]/meanCount[j];
+			difference += Math.sqrt(freqSpecResult[j]); //Make random calculations to define what is the 
+		}
+		 difference = difference<0 ? 0 : (difference > 1 ? 1 : difference);
 		// FIXME Dummy dummy dummy
-		return 1.0;
+		return difference;
 	}
 
 }
