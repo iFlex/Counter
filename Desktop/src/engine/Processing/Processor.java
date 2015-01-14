@@ -6,6 +6,7 @@
 package engine.Processing;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import engine.audio.*;
 import engine.util.*;
 import engine.Processing.algorithms.*;
@@ -27,7 +28,8 @@ public class Processor implements Runnable
 		running = new AtomicBoolean(false);
 		canRun = false;
 		//n = new NaiveRecogniser((double)4,count);
-		n = new NaiveRecogniserMk2(80.0, 512, count);
+		//n = new NaiveRecogniserMk2(80.0, 512, count);
+		n = new NaiveRecogniserMk3GEMk1(80.0, new double[] {40, 60, 80, 128}, 512, count);
 	}	
 
 	public void run(){
