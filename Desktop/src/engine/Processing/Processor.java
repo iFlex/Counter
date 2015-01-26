@@ -10,11 +10,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import engine.audio.*;
 import engine.util.*;
 import engine.Processing.algorithms.*;
+import engine.Processing.debug.*;
 
 public class Processor implements Runnable
 {
 	private AudioIn audioIn;
 	private Recogniser n;
+	private Recogniser debug;
 	private Thread t;
 	private AtomicBoolean running;
 	private boolean canRun;
@@ -23,14 +25,16 @@ public class Processor implements Runnable
 	public Processor(Counter c)
 	{
 		count = c;
-		audioIn = new PcMicrophoneIn();
-		t = new Thread(this);
+		audioIn = new FileIn("res/noisySnap.wav");
+		//audioIn= new PcMicrophoneIn();
+		n = new FftRidgeRecogniser(count);
+		//debug = new micFFTout();
+		
 		running = new AtomicBoolean(false);
 		canRun = false;
-		//n = new NaiveRecogniser((double)4,count);
-		//n = new NaiveRecogniserMk2(80.0, 512, count);
-		n = new NaiveRecogniserMk3GEMk1(80.0, new double[] {40, 60, 80, 128}, 512, count);
-	}	
+		t = new Thread(this);
+	
+	}
 
 	public void run(){
 		running.set(true);
@@ -41,6 +45,7 @@ public class Processor implements Runnable
 			if( d != null )
 			{
 				n.process(d);
+				//debug.process(d);
 			}
 			//System.out.println("Done processing");
 			//else
@@ -61,6 +66,6 @@ public class Processor implements Runnable
 		audioIn.stop();
 	}
 	public boolean isRunning(){
-		return running.get() == true;
+		return running.get();
 	}
 }

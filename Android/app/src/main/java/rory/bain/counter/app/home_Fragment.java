@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.os.*;
 
+import rory.bain.counter.app.MainActivity;
+import felix.views.*;
+
 @SuppressLint("NewApi")
 public class home_Fragment extends Fragment {
     int count;
@@ -22,6 +25,7 @@ public class home_Fragment extends Fragment {
 
         Button startButton = (Button) rootView.findViewById(R.id.startButton);
         Button resButton = (Button) rootView.findViewById(R.id.resetButton);
+        MainActivity.waveVisuals = (WaveformView) rootView.findViewById(R.id.waveform_view);
 
         MainActivity.handler = new Handler(Looper.getMainLooper()) {
             @Override

@@ -1,9 +1,5 @@
 package engine.util;
 
-import android.os.Message;
-
-import rory.bain.counter.app.MainActivity;
-
 public class Counter {
 	private int count;
 	private double uncertainty;
@@ -21,11 +17,7 @@ public class Counter {
 		if(certainty > 0.5)
 			count++;
 		
-		this.uncertainty += (1 - certainty)/2; //Updates uncertainty value
-
-        Message m = new Message();
-        m.arg1 = 0;
-        MainActivity.handler.sendMessage(m);
+		this.uncertainty += (1 - certainty)/2; //Updates uncertainty value 
 	}
 	
 	

@@ -6,6 +6,9 @@ import android.util.Log;
 import android.os.*;
 
 import engine.util.Data;
+import rory.bain.counter.app.MainActivity;
+import java.nio.ByteBuffer;
+import org.jtransforms.fft.DoubleFFT_1D;
 /**
  * Created by MLF on 07/12/14.
  */
@@ -25,14 +28,14 @@ public class MicrophoneIn extends AudioIn {
     int minBuffSize;
     byte[] audioData;
 
-    private static int[] mSampleRates = new int[] { 44100, 22050,11025,8000 };
+    private static int[] mSampleRates = new int[] { 44100 };
     public AudioRecord findAudioRecord() {
-        //Log.d("encodings:","Encodings:"+AudioFormat.ENCODING_PCM_8BIT+";"+AudioFormat.ENCODING_PCM_16BIT);
-        //Log.d("Channel:","Channel:"+AudioFormat.CHANNEL_IN_MONO);
+        Log.i("AudioCapturer:","Encodings:"+AudioFormat.ENCODING_PCM_8BIT+";"+AudioFormat.ENCODING_PCM_16BIT);
+        Log.i("AudioCapturer:","Channel:"+AudioFormat.CHANNEL_IN_MONO);
         for (int rate : mSampleRates) {
             for (short audioFormat : new short[] { AudioFormat.ENCODING_PCM_8BIT , AudioFormat.ENCODING_PCM_16BIT }) {
                     try {
-                        //Log.d("Data:", "Attempting rate " + rate + "Hz, bits: " + audioFormat + ", channel: " + AudioFormat.CHANNEL_IN_MONO);
+                        Log.i("AudioCapturer:", "Attempting rate " + rate + "Hz, bytes: " + audioFormat + ", channel: " + AudioFormat.CHANNEL_IN_MONO);
                         audioForm = audioFormat;
                         int bufferSize = AudioRecord.getMinBufferSize(rate, AudioFormat.CHANNEL_IN_MONO, audioFormat);
 
@@ -44,7 +47,7 @@ public class MicrophoneIn extends AudioIn {
                                 return recorder;
                         }
                     } catch (Exception e) {
-                        //Log.e("Error:", rate + "Exception, keep trying.",e);
+                        Log.e("AudioCapturer:", rate + "Exception, keep trying.",e);
                     }
             }
         }
@@ -65,19 +68,39 @@ public class MicrophoneIn extends AudioIn {
         Log.i("AudioCapturer:","Initialising recorder...");
         //(int audioSource, int sampleRateInHz, int channelConfig, int audioFormat, int bufferSizeInBytes)
         recorder = findAudioRecord();
+
         if(recorder == null || recorder.getState() != AudioRecord.STATE_INITIALIZED) {
-            Log.i("DATA:","Error, could not initialize audio");
+            Log.e("Microphone:","Error, could not initialize audio");
         }
         else {
+            Log.i("AudioCapturer:","Found configuration");
             int minBufferSize = AudioRecord.getMinBufferSize(RECORDER_SAMPLERATE,
                     RECORDER_CHANNELS, RECORDER_AUDIO_ENCODING);
         }
+    }
+    public static short[] shortMe(byte[] bytes) {
+        short[] out = new short[bytes.length / 2]; // will drop last byte if odd number
+        ByteBuffer bb = ByteBuffer.wrap(bytes);
+        for (int i = 0; i < out.length; i++) {
+            out[i] = bb.getShort();
+        }
+        //fft
+        /*DoubleFFT_1D fftDo = new DoubleFFT_1D(out.length);
+        double []samplefft = new double[out.length * 2];
+        fftDo.realForwardFull(samplefft);
+
+        int j = 0;
+        for( int i = 0 ; i < samplefft.length; i+=2 )
+            out[j++] = (short)samplefft[i];
+        */
+
+        return out;
     }
     public void run(){
         if(recorder != null)
         {
             Log.i("DATA:","Starting recording...");
-
+            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_AUDIO);
             audioData = new byte[BufferElements2Rec * BytesPerElement];
             recorder.startRecording();
             isRecording = true;
@@ -86,16 +109,9 @@ public class MicrophoneIn extends AudioIn {
                 int len = recorder.read(audioData, 0, BufferElements2Rec);
                 //Log.d("a","WORKING");
                 if(audioData != null) {
-                    //Data d = new Data(audioData,"PCM16",false);
-                    int actlen = BufferElements2Rec;
-                    int[] fynn = new int[actlen];
-                    for(int i = 0; i<actlen; i++)
-                    {
-                        fynn[i] = 0;
-                        for(int j = 0; j<BytesPerElement; j++)
-                            fynn[i] |= audioData[(i*BytesPerElement)+j]<<(8*j)&(0x000000ff * (int)(Math.pow(2,j)));
-                    }
-                    Data d = new Data(fynn);
+
+                    MainActivity.waveVisuals.updateAudioData(shortMe(audioData));
+                    Data d = new Data(audioData,len,2,true,false);
                     push(d);
                     //Log.d("D:",":"+d.toString());
                 }

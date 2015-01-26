@@ -8,7 +8,7 @@ public class FileIn extends AudioIn{
 	
 	private String filePath;
 	private WavFile wavFile;
-	
+	private int chunkSize = 1000;
 	public FileIn(String filePath){
 		this.filePath = filePath;
 		try {
@@ -31,17 +31,17 @@ public class FileIn extends AudioIn{
 	}
 	
 	private void read(){
-		System.out.println("Testing!");
-		int numChannels = wavFile.getNumChannels();                   
-		// Create a buffer of 100 frames                              
-		double[] buffer = new double[128 * numChannels];
+		System.out.println("FileIn:Blocking read...");
+		int numChannels = wavFile.getNumChannels();
+		wavFile.display();
+		double[] buffer = new double[chunkSize * numChannels];
 		int framesRead = 0;
 		do                                                            
 			{                                                             
 				// Read frames into buffer                                
 				try {
-					framesRead = wavFile.readFrames(buffer, 128);
-					push(new Data(buffer));
+					framesRead = wavFile.readFrames(buffer, chunkSize);
+					push(new Data(buffer,framesRead));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -50,14 +50,13 @@ public class FileIn extends AudioIn{
 					e.printStackTrace();
 				}             
 					                          
-			} while (framesRead != 0 && canRun);    
-		
-		
+			} while (framesRead != 0 && canRun);
+		System.out.println("FileIn: finished reading file");
 	}
 	
 	@Override
 	public void run(){ 
-		
+		System.out.println("FileIn: running..");
 		read();
 		try {
 			wavFile.close();

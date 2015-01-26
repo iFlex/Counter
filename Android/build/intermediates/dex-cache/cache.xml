@@ -1,17 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<pre-dex-items>
+<items version="2" >
 
     <item
-        dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-21383164a7c5aa1e0c28e7bd3ed48277d2f63f42.jar"
-        jar="/Users/MLF/Downloads/adt-bundle-mac-x86_64-20140702/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
+        jar="/Users/MLF/Library/Android/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
         jumboMode="false"
-        revision="20.0.0"
-        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+        revision="21.0.0"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-ac68151b76b780158c604621c88958dcf41e64da.jar" />
+    </item>
     <item
-        dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/debug/support-v13-19.1.0-51012627f4c23bcdaf2a5c2aeae12f7a6dd69925.jar"
-        jar="/Users/MLF/Downloads/adt-bundle-mac-x86_64-20140702/sdk/extras/android/m2repository/com/android/support/support-v13/19.1.0/support-v13-19.1.0.jar"
+        jar="/Users/MLF/Desktop/Counter/Android/app/lib/JLargeArrays-1.2.jar"
         jumboMode="false"
-        revision="20.0.0"
-        sha1="6b852a232f642c75a7fdfc7212b841b8c8f8959c"/>
+        revision="21.0.0"
+        sha1="85c8cd79cc2865ef37cd70f96cd82246ee642d58">
+        <dex dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/debug/JLargeArrays-1.2-eb2176a9287a1ea44dff8103867f70bbf7434a11.jar" />
+    </item>
+    <item
+        jar="/Users/MLF/Library/Android/sdk/extras/android/m2repository/com/android/support/support-v13/19.1.0/support-v13-19.1.0.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="6b852a232f642c75a7fdfc7212b841b8c8f8959c">
+        <dex dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/debug/support-v13-19.1.0-afadb841150a985ba17f78c6b713bfc302cb19ba.jar" />
+    </item>
+    <item
+        jar="/Users/MLF/Desktop/Counter/Android/app/lib/JTransforms-3.0.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="79477aec6929cd64cd863d6ac59c2445d00239a3">
+        <dex dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/debug/JTransforms-3.0-04e4e2c09b297c6578df2ce436a93b05b6a48b71.jar" />
+    </item>
 
-</pre-dex-items>
+</items>

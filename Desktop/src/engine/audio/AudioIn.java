@@ -21,7 +21,14 @@ public abstract class AudioIn implements Runnable
 		thread = new Thread(this);
 		canRun = false;
 	}
-
+	
+	/*Added by Milorad Liviu Felix*/
+	public void blockingStart(){
+		canRun = true;
+		this.run();
+	}
+	/**/
+	
 	public void start()
 	{
 		canRun = true;

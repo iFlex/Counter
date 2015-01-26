@@ -9,50 +9,103 @@ public class Data
 {
 	private double[] d;
 	
-	public Data(double[] b){
-		d = b;
+	public Data(){
+		d = null;
 	}
 	
-	public Data( byte[] b)
-	{
-		d = new double[b.length];
-		for( int i = 0 ; i < b.length ; ++i )
+	public Data(double[] b,int usableLength){
+		d = new double[usableLength];
+		for( int i = 0 ; i < usableLength; ++ i )
 			d[i] = b[i];
 	}
 	
-	public Data(byte[] b,int form){	
-		//broken, needs inspecting
-		long val = 0; 
-		int index = 0;
-	    int bytesPerRecord = form;
-	    int crntByte = 0;
-        
-		d = new double[(int)( b.length / bytesPerRecord )];
-	    for (int i = 0; i < b.length ; ++i) {
-            val <<= 8;
-            val |= (byte) b[i];
-            if(crntByte < bytesPerRecord)
-            	crntByte++; 
-            else {
-                crntByte = 0;
-                d[index++] = val;
-                val = 0;
-            }
-        }
+	public Data(byte[] b,int usableLength){
+		d = new double[usableLength];
+		for( int i = 0 ; i < usableLength; ++ i )
+			d[i] = b[i];
 	}
 	
-	public void set(double d){
+	public Data(byte[] b,int usableLength,int bytesPerSample, boolean signed, boolean bigEndian){
+		
+		int length = usableLength / bytesPerSample;
+		d = new double[length];
+		
+		long val = 0; 
+		long rangeSize = (1<<(bytesPerSample*8)) - 1;
+		long signLimit = (1<<(bytesPerSample*8-1));
+		long sign = 1;
+		
+		for( int i = 0; i < b.length; i+=bytesPerSample )
+		{
+			val = b[i];
+			for(int j = 1; j < bytesPerSample; ++j )
+			{
+				val <<= 8;
+				val |= b[i+j];
+			}
+			sign = 1;
+			if( signed && val > signLimit )
+				sign = -1;
+			if( bigEndian == false ){
+				//need to flip number
+				long aux = 0;
+				while( val != 0 ){
+					aux <<= 1;
+					aux |= (val&1);
+					val >>= 1;
+				}
+				val = aux;
+			}
+			d[i/bytesPerSample] = sign*val;//sign*(double)val/rangeSize;
+		}
+		
+	}
 
+	public void extend (Data od){
+		if( od == null )
+		{
+			System.out.println("Error: You have tried to extend a data object with an empy object");
+			return;
+		}
+		
+		double[] o = od.get();
+		
+		int dlength = 0;
+		if( d != null )
+			dlength = d.length;
+		
+		double[] dta = new double[dlength + o.length];
+		
+		int i=0;
+		for( i = 0 ; i < dlength ; ++ i )
+			dta[i] = d[i];
+		
+		for(int j = 0; j < o.length; ++j)
+			dta[i++] = o[j];
+		
+		//I hope this dereferecing of d does not cause Java Runtime to loose all it's references to that memory location and therefore cause a memory leak 
+		d = dta;
+	}
+	
+	public void set(double[] d){
+		this.d = d;
 	}
 	
 	public double[] get(){
 		return d;
 	}
 	
+	public int getLength(){
+		if( d == null )
+			return -1;
+		
+		return d.length;
+	}
+	
 	public String toString(){
 		String s = "";
 		if(d != null)
-			for( int i=0; i < d.length; ++i )
+			for( int i = 0; i < d.length; ++i )
 				s += " "+d[i];
 		return s;
 	}

@@ -10,6 +10,11 @@ import engine.audio.*;
 import engine.util.*;
 import engine.Processing.algorithms.*;
 
+import android.util.Log;
+import java.io.*;
+import android.content.Context;
+import rory.bain.counter.app.MainActivity;
+
 public class Processor implements Runnable
 {
 	private AudioIn audioIn;
@@ -18,15 +23,26 @@ public class Processor implements Runnable
 	private AtomicBoolean running;
 	private boolean canRun;
 	private Counter count;
-	
-	public Processor(Counter c)
+    FileOutputStream outputStream;
+
+
+    public Processor(Counter c)
 	{
-		count = c;
+
+        String filename = "myfile";
+        String string = "Hello world!";
+        try {
+            outputStream = MainActivity.ctx.openFileOutput(filename, Context.MODE_MULTI_PROCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        count = c;
 		audioIn = new MicrophoneIn();
 		t = new Thread(this);
 		running = new AtomicBoolean(false);
 		canRun = false;
-		n = new NaiveRecogniserMk2((double)120, 512, count);
+		n = new NaiveRecogniserMk2((double)0.2, 512, count);
 	}	
 
 	public void run(){
@@ -36,9 +52,7 @@ public class Processor implements Runnable
 			Data d = audioIn.getNext();
 			//System.out.println("Got data from audio:"+d);
 			if( d != null )
-			{
-				n.process(d);
-			}
+			    n.process(d);
 		}
 		running.set(false);
 	}
@@ -53,6 +67,12 @@ public class Processor implements Runnable
 	public void stop(){
 		canRun = false;
 		audioIn.stop();
+
+        try {
+            outputStream.close();
+        }catch(Exception e){
+            Log.i("BITCH","CLOSE:"+e);
+        }
 	}
 
 	public boolean isRunning(){

@@ -20,9 +20,11 @@ import android.widget.ListView;
 import rory.bain.counter.app.home_Fragment;
 import rory.bain.counter.app.history_Fragment;
 import rory.bain.counter.app.add_Fragment;
+import android.content.Context;
 //engine
 import engine.util.*;
 import engine.Processing.Processor;
+import felix.views.*;
 
 public class MainActivity extends Activity {
     String[] menutitles;  TypedArray menuIcons;
@@ -34,15 +36,17 @@ public class MainActivity extends Activity {
     private ActionBarDrawerToggle mDrawerToggle;
     private List<rowItem> rowItems;
     private customAdapter adapter;
-
     //engine
     public static Counter counter;
     public static Handler handler;
     static Processor processor;
+    //debug
+    public static Context ctx;
+    public static WaveformView waveVisuals;
 
     @SuppressLint("NewApi")
     @Override  protected void onCreate(Bundle savedInstanceState) {
-
+        MainActivity.ctx = getApplicationContext();
 //        ADDED HERE
         MainActivity.counter = new Counter();
         MainActivity.processor = new Processor(counter);

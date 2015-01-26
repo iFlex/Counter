@@ -41,7 +41,7 @@ public class FileIn extends AudioIn{
 				// Read frames into buffer                                
 				try {
 					framesRead = wavFile.readFrames(buffer, 128);
-					push(new Data(buffer));
+					push(new Data(buffer,framesRead));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
