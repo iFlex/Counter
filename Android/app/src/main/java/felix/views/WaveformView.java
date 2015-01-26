@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 import java.util.LinkedList;
-import engine.util.RingBuffer;
 /**
  * Created by MLF on 26/01/15.
  */

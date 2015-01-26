@@ -1,0 +1,4 @@
+def GasStation( strArr ):
+	nrRecords = strArr[0];
+	
+	

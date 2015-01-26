@@ -37,8 +37,8 @@ public class MainActivity extends Activity {
     private List<rowItem> rowItems;
     private customAdapter adapter;
     //engine
-    public static Counter counter;
     public static Handler handler;
+    public static Counter counter;
     static Processor processor;
     //debug
     public static Context ctx;

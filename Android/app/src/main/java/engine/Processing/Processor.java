@@ -23,26 +23,14 @@ public class Processor implements Runnable
 	private AtomicBoolean running;
 	private boolean canRun;
 	private Counter count;
-    FileOutputStream outputStream;
-
 
     public Processor(Counter c)
 	{
-
-        String filename = "myfile";
-        String string = "Hello world!";
-        try {
-            outputStream = MainActivity.ctx.openFileOutput(filename, Context.MODE_MULTI_PROCESS);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         count = c;
 		audioIn = new MicrophoneIn();
-		t = new Thread(this);
 		running = new AtomicBoolean(false);
 		canRun = false;
-		n = new NaiveRecogniserMk2((double)0.2, 512, count);
+		n = new NaiveRecogniserMk2((double)15000, 512, count);
 	}	
 
 	public void run(){
@@ -60,7 +48,9 @@ public class Processor implements Runnable
 	public void start(){
 		canRun = true;
 		running.set(true);
-		t.start();
+
+        t = new Thread(this);
+        t.start();
 		audioIn.start();
 	}
 
@@ -69,9 +59,9 @@ public class Processor implements Runnable
 		audioIn.stop();
 
         try {
-            outputStream.close();
-        }catch(Exception e){
-            Log.i("BITCH","CLOSE:"+e);
+            t.join();
+        } catch ( Exception e){
+            t = null;
         }
 	}
 

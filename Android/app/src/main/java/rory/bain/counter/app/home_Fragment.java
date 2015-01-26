@@ -10,18 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.os.*;
-
+import android.util.Log;
 import rory.bain.counter.app.MainActivity;
 import felix.views.*;
 
 @SuppressLint("NewApi")
 public class home_Fragment extends Fragment {
     int count;
-
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View rootView = inflater .inflate(R.layout.home_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.home_fragment, container, false);
         final TextView resultText = (TextView) rootView.findViewById(R.id.countText);
+        resultText.setText("0");
 
         Button startButton = (Button) rootView.findViewById(R.id.startButton);
         Button resButton = (Button) rootView.findViewById(R.id.resetButton);
@@ -30,9 +30,17 @@ public class home_Fragment extends Fragment {
         MainActivity.handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message inputMessage) {
-                resultText.setText(String.valueOf(MainActivity.counter.getCount()));
+                Log.d("Count:",MainActivity.counter.getCount()+":"+inputMessage.arg1);
+                resultText.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        resultText.setText(MainActivity.counter.getCount()+"");
+                    }
+                });
             }
         };
+
+        MainActivity.counter.setCommChannel(MainActivity.handler);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override

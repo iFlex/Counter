@@ -15,11 +15,16 @@ public class Data
 	public Data(){
 		d = null;
 	}
-	
-	public Data(double[] b,int usableLength){
+    //TODO: turn to generic type for function below
+    public Data(short[] b,int usableLength){
+        d = new double[usableLength];
+        for( int i = 0 ; i < usableLength; ++ i )
+            d[i] = b[i];
+    }
+    public Data(double[] b,int usableLength){
 		d = new double[usableLength];
 		for( int i = 0 ; i < usableLength; ++ i )
-			d[i] = b[i];
+			d[i] = (double)b[i];
 	}
 	
 	public Data(byte[] b,int usableLength){

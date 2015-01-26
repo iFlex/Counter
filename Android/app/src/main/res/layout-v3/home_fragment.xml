@@ -21,7 +21,7 @@
                 android:gravity="center"
                 android:shadowColor="@android:color/background_dark"
                 android:shadowRadius="40"
-                android:text="40"
+                android:text="0"
                 android:textColorLink="@android:color/background_light"
                 android:textSize="190sp"
                 android:textStyle="bold" />

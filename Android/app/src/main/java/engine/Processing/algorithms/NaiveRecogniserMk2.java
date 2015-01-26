@@ -131,7 +131,7 @@ public class NaiveRecogniserMk2 implements Recogniser
 		// For all the data inside the array
 		for(int i = 0; i<this.dataToProcess.length; i++)
 		{
-            System.out.print(this.dataToProcess[i] + " ");
+            //System.out.print(this.dataToProcess[i] + " ");
 			// If it is above the modulus of the threshold
 			if( ( this.dataToProcess[i] * this.dataToProcess[i] ) > ( this.threshold * this.threshold ) )
 			{
@@ -143,7 +143,6 @@ public class NaiveRecogniserMk2 implements Recogniser
 					try
 					{
 						count.increment(1.0);
-						//System.out.println("Count:"+count.getCount());
 					}
 					catch(Exception e)
 					{
