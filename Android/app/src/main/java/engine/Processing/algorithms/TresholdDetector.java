@@ -8,7 +8,8 @@ public class TresholdDetector implements Recogniser {
 	private double min = 0;
 	private double max = 0;
 	private Counter counter;
-	
+    public synchronized void setModel(String name){
+    }
 	public TresholdDetector(Counter c){
 		counter = c;
 	}

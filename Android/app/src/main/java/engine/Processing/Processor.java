@@ -27,11 +27,30 @@ public class Processor implements Runnable
     public Processor(Counter c)
 	{
         count = c;
-		audioIn = new MicrophoneIn();
 		running = new AtomicBoolean(false);
 		canRun = false;
 		n = new NaiveRecogniserMk2((double)15000, 512, count);
-	}	
+        //n = new FFTrecogniser(count);
+        audioIn = null;
+    }
+
+    public synchronized void setModel(String path){
+        n.setModel(path);
+    }
+    public synchronized void setInput(String nameOrPath){
+        canRun = false;
+        if( audioIn != null )
+        {
+            audioIn.stop();
+            audioIn = null;
+        }
+
+        if( nameOrPath.equals(".../microphone"))
+            audioIn = new MicrophoneIn();
+        else
+            audioIn = new FileIn(nameOrPath);
+        //TODO: if audioIn is no initilised properly canRun = false;
+    }
 
 	public void run(){
 		running.set(true);
@@ -48,6 +67,8 @@ public class Processor implements Runnable
 	public void start(){
 		canRun = true;
 		running.set(true);
+        if( audioIn == null )
+            audioIn = new MicrophoneIn();
 
         t = new Thread(this);
         t.start();
@@ -57,7 +78,7 @@ public class Processor implements Runnable
 	public void stop(){
 		canRun = false;
 		audioIn.stop();
-
+        audioIn = null;
         try {
             t.join();
         } catch ( Exception e){

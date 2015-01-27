@@ -56,7 +56,8 @@ public class NaiveRecogniserMk2 implements Recogniser
 
 	// The counter object to increment to
 	private Counter count;
-
+    public synchronized void setModel(String name){
+    }
 	// Starndart initalization
 	private void standardSettings()
 	{

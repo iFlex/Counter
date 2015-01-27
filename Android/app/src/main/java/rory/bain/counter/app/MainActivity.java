@@ -25,6 +25,7 @@ import android.content.Context;
 import engine.util.*;
 import engine.Processing.Processor;
 import felix.views.*;
+import android.net.Uri;
 
 public class MainActivity extends Activity {
     String[] menutitles;  TypedArray menuIcons;
@@ -50,6 +51,7 @@ public class MainActivity extends Activity {
 //        ADDED HERE
         MainActivity.counter = new Counter();
         MainActivity.processor = new Processor(counter);
+        //MainActivity.processor.setModel(Uri.parse("android.resource://com.rory.bain.counter.app/raw/clap.wav").getPath());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

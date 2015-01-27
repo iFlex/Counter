@@ -28,11 +28,29 @@ public class Processor implements Runnable
 		//n = new FftRidgeRecogniser(count);
 		n = new FFTrecogniser(count);
 		//debug = new micFFTout();
-		
 		running = new AtomicBoolean(false);
 		canRun = false;
+		audioIn = null;
 	}
-
+	
+	public synchronized void setModel(String path){
+		n.setModel(path);
+	}
+	public synchronized void setInput(String nameOrPath){ 
+		canRun = false;
+		if( audioIn != null )
+		{
+			audioIn.stop();
+			audioIn = null;
+		}
+		
+		if( nameOrPath.equals(".../microphone"))
+			audioIn = new PcMicrophoneIn();
+		else
+			audioIn = new FileIn(nameOrPath);
+		//TODO: if audioIn is no initilised properly canRun = false;
+	}
+	
 	public void run(){
 		running.set(true);
 		while(canRun)
@@ -48,10 +66,10 @@ public class Processor implements Runnable
 	public void start(){
 		canRun = true;
 		running.set(true);
-		//
-		//audioIn = new FileIn("res/7clap.wav");
-		audioIn= new PcMicrophoneIn();
-		//
+		
+		if( audioIn == null )
+			audioIn= new PcMicrophoneIn();
+		
         t = new Thread(this);
         t.start();
 		audioIn.start();
@@ -60,7 +78,7 @@ public class Processor implements Runnable
 	public void stop(){
 		canRun = false;
 		audioIn.stop();
-
+		audioIn = null;
         try {
             t.join();
         } catch ( Exception e){

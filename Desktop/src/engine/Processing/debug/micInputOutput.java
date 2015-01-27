@@ -17,6 +17,9 @@ public class micInputOutput implements Recogniser {
 	int position = 0;
 	int limit = 44100;// 1 file = 1 second
 	double max,min,mean;
+	public synchronized void setModel(String name){
+	}
+	
 	@Override
 	public void process(Data data) {
 		// TODO Auto-generated method stub	

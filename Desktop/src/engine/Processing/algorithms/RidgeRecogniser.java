@@ -38,6 +38,8 @@ public class RidgeRecogniser implements Recogniser {
 	FileOutputStream mic;
 	//alternative 
 	private RingBuffer buff;
+	public synchronized void setModel(String name){
+	}
 	
 	private double getAngle(double a, double b){
 		return 1+Math.atan2(b-a,sampleDistance);

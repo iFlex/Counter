@@ -12,8 +12,10 @@ public class MainActivity {
 		System.out.println("Toggle the recorder");
 		count = new Counter();
 		processor = new Processor(count);
-		Scanner sc = new Scanner(System.in);
+		processor.setInput("./res/7clap.wav");
+		processor.setModel("./res/clap.wav");
 		
+		Scanner sc = new Scanner(System.in);
 		while(true){
 			String s = sc.nextLine();
 			if(s.equals("start"))
@@ -27,7 +29,12 @@ public class MainActivity {
 				count.reset();
 			if(s.equals("exit"))
 				break;
-				
+			
+			if(s.equals("setInput"))
+				processor.setInput(sc.nextLine());
+			
+			if(s.equals("setModel"))
+				processor.setModel(sc.nextLine());
 		}
 		System.out.println("Bye!");
 	}

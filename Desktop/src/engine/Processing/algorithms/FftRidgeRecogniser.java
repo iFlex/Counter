@@ -9,6 +9,7 @@ import engine.Processing.Processor;
 import org.jtransforms.fft.DoubleFFT_1D;
 
 import engine.Processing.Recogniser;
+import engine.Processing.algorithms.FFTrecogniser.RingBuffer;
 import engine.util.Counter;
 import engine.util.Data;
 import engine.audio.*;
@@ -42,6 +43,10 @@ public class FftRidgeRecogniser implements Recogniser {
 	int findex=0;
 	//alternative 
 	private RingBuffer buff;
+	
+	public synchronized void setModel(String name){
+	}
+	
 	private void beautifyFFT(double[] data){
 		int index = 1;
 		for( int i = 2; i < data.length; i+=2 )

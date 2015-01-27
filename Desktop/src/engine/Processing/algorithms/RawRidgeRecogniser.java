@@ -37,7 +37,9 @@ public class RawRidgeRecogniser implements Recogniser {
 	FileOutputStream mic;
 	//alternative 
 	private RingBuffer buff;
-
+	public synchronized void setModel(String name){
+	}
+	
 	public RawRidgeRecogniser(Counter c){
 		System.out.println("RAW ridge recogniser");
 		//debug

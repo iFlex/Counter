@@ -23,7 +23,9 @@ public class NaiveRecogniserMk3GEMk1 implements Recogniser
 	{
 		return (Double[]) this.uphillData.toArray();
 	}
-
+	public synchronized void setModel(String name){
+	}
+	
 	// Boolean indicating if the data is currently in an uphill
 	private boolean isUphill;
 	public boolean getIsUphill()
