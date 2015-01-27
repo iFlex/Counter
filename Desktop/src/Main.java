@@ -54,7 +54,7 @@ public class Main {
 			long endTime = System.currentTimeMillis();
 			long duration = (endTime - startTime);
 			p.stop();
-			percentageCount = c.getCount()/correctCount*100;
+			percentageCount = (double)c.getCount()/correctCount*100;
 			
 			System.out.println(percentageCount+"% accuracy ("+c.getCount()+" = "+correctCount+")"); 
 		}
