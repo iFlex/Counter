@@ -20,21 +20,24 @@ public class MainActivity {
 			String s = sc.nextLine();
 			if(s.equals("start"))
 				processor.start();
-			if(s.equals("stop"))
+			else if(s.equals("stop"))
 			{
 				processor.stop();
 				System.out.println("Count:"+count.getCount());
 			}
-			if(s.equals("reset"))
+			else if(s.equals("reset"))
 				count.reset();
-			if(s.equals("exit"))
+			
+			else if(s.equals("exit"))
 				break;
 			
-			if(s.equals("setInput"))
+			else if(s.equals("setInput"))
 				processor.setInput(sc.nextLine());
 			
-			if(s.equals("setModel"))
+			else if(s.equals("setModel"))
 				processor.setModel(sc.nextLine());
+			else
+				System.out.println("Unknown command '"+s+"'");
 		}
 		System.out.println("Bye!");
 	}

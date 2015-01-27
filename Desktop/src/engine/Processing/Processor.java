@@ -53,7 +53,7 @@ public class Processor implements Runnable
 	
 	public void run(){
 		running.set(true);
-		while(canRun)
+		while(canRun && audioIn != null)
 		{
 			Data d = audioIn.getNext();
 			//System.out.println("Got data from audio:"+d);
@@ -64,12 +64,15 @@ public class Processor implements Runnable
 	}
 
 	public void start(){
+		if(running.get() == true)
+			stop();
+		
 		canRun = true;
 		running.set(true);
 		
 		if( audioIn == null )
 			audioIn= new PcMicrophoneIn();
-		
+			
         t = new Thread(this);
         t.start();
 		audioIn.start();
@@ -77,13 +80,19 @@ public class Processor implements Runnable
 
 	public void stop(){
 		canRun = false;
-		audioIn.stop();
-		audioIn = null;
-        try {
-            t.join();
-        } catch ( Exception e){
-            t = null;
-        }
+		if(audioIn != null)
+		{
+			audioIn.stop();
+			audioIn = null;
+		}
+		if( t != null)
+		{
+	        try {
+	            t.join();
+	        } catch ( Exception e){
+	            t = null;
+	        }
+		}
 	}
 
 	public boolean isRunning(){

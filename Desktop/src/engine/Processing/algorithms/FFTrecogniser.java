@@ -19,9 +19,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
+
 //
 public class FFTrecogniser implements Recogniser {
-
+	
 	//it reads its own data
 	private AudioIn SampleIn;
 	//Sample data
@@ -31,19 +32,27 @@ public class FFTrecogniser implements Recogniser {
 	DoubleFFT_1D fftDo;
 	double[] fftdta;
     double[] samplefft;
+    public int skipAmount = 32;
+    public int skipIndex = 0;
 	//debug
 	FileOutputStream dbg;
 	FileOutputStream rto;
 	FileOutputStream sampl;
 	FileOutputStream mic;
 	FileOutputStream fftmic;
+	public int co = 0;
 	//alternative 
 	private RingBuffer buff;
+	
+	/*private void FFT(){
+	}*/
+	
 	private void beautifyFFT(double[] data){
 		int index = 1;
 		for( int i = 2; i < data.length; i+=2 )
 			data[index++] = Math.abs(data[i]);
 	}
+	
 	private void Normalise(double[] buffer,int length){
 		//f(x) = (2*x)/MAX - 1/2;
 		// 75% = 1 25% = 0
@@ -110,7 +119,7 @@ public class FFTrecogniser implements Recogniser {
 		counter = c;
 	}
 	
-	private double compare( double noise){
+	private double compare( double noise ){
 		if(noise > 1)
 			noise = 1;
 		if( noise < 0 )
@@ -121,7 +130,7 @@ public class FFTrecogniser implements Recogniser {
 		double maxSimilarity = 0;
 		double avgSimilarity = 0;
 		double similarity = 0;
-		double segmentDensity = 20;
+		double segmentDensity = skipAmount*2;
 		int len = buff.getCapacity();
 		for(int i = 0; i < len ; i++ )
 		{
@@ -153,13 +162,14 @@ public class FFTrecogniser implements Recogniser {
 		}
 		return ( maxSimilarity + avgSimilarity ) / 2;
 	}
-	public int co = 0;
+	
 	private void _processNext(double a){
 		co++;
 		buff.push(a);
 		//if buffer has reached proper size for comparison then perform fft
-		if( buff.length() == buff.getCapacity() )
+		if( buff.length() == buff.getCapacity() && skipIndex < 1 )
 		{
+			skipIndex = skipAmount;
 			int len = buff.length(); 
 			int iter = 0;
 			int i = 0;
@@ -182,7 +192,7 @@ public class FFTrecogniser implements Recogniser {
 				System.out.println(ratio+" Count:"+counter.getCount()+" frame:"+(co));
 				counter.increment(ratio);
 				writeFFT(co-buff.getCapacity());
-				int jump = (int)(buff.getCapacity()*ratio);
+				int jump = (int)(buff.getCapacity()*0.95);
 				while(jump-- > 0)
 					try {
 						buff.pop();
@@ -194,6 +204,7 @@ public class FFTrecogniser implements Recogniser {
 			}
 			
 		}
+		skipIndex--;
 	}
 	
 	@Override
@@ -204,8 +215,8 @@ public class FFTrecogniser implements Recogniser {
 			_processNext(d[i]);
 		//long endTime = System.nanoTime();
 		//long duration = (endTime - startTime);
-		//if( co % 1000 == 0)
-			//System.out.println("Frame:"+co);
+		if( co % 1000 == 0)
+			System.out.println("Frame:"+co);
 		//if(d.length != 0)
 			//System.out.println("dT:"+(double)duration/1000000/d.length+"ms - sampling period:"+((1.0/44100)*1000)+" ms processed:"+d.length+" frames");
 		if( d.length == 0)

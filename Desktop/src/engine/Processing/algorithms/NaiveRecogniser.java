@@ -13,6 +13,7 @@ public class NaiveRecogniser implements Recogniser
 	private int downhillCount; // How many downhill doubles it has counted
 	private int window; // The window to ignore hills after a downhill to see if it is another count
 	private Counter count;
+	
 	// Starndart initalization
 	public synchronized void setModel(String name){
 	}

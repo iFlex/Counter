@@ -20,7 +20,7 @@ public abstract class AudioIn implements Runnable
 		inQueue = new ConcurrentLinkedQueue<Data>();
 		canRun = false;
 	}
-
+	
 	public void blockingStart(){
 		canRun = true;
 		run();
@@ -28,6 +28,9 @@ public abstract class AudioIn implements Runnable
 	
 	public void start()
 	{
+		if( thread != null)
+			stop();
+		
 		canRun = true;
         thread = new Thread(this);
         thread.start();
@@ -36,10 +39,14 @@ public abstract class AudioIn implements Runnable
 	public void stop()
 	{
         canRun = false;
-        try {
-            thread.join();
-        } catch ( Exception e){
-            thread = null;
+        if( thread != null)
+        {
+	        try {
+	            thread.join();
+	        } catch ( Exception e){
+	
+	        }
+	        thread = null;
         }
 	}
 	
