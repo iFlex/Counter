@@ -3,6 +3,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 import java.util.LinkedList;
@@ -11,119 +13,31 @@ import java.util.LinkedList;
  */
 public class WaveformView extends SurfaceView {
 
-   /* // The number of buffer frames to keep around (for a nice fade-out visualization).
-    private static final int HISTORY_SIZE = 12;
-
-    // To make quieter sounds still show up well on the display, we use +/- 8192 as the amplitude
-    // that reaches the top/bottom of the view instead of +/- 32767. Any samples that have
-    // magnitude higher than this limit will simply be clipped during drawing.
-    private static final float MAX_AMPLITUDE_TO_DRAW = 8192.0f;
-
-    // The queue that will hold historical audio data.
-    private RingBuffer mAudioData;
-
-    private final Paint mPaint;
-
-    public WaveformView(Context context) {
-        this(context, null, 0);
-    }
-
-    public WaveformView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public WaveformView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-
-        mAudioData = new RingBuffer(400);
-
-        mPaint = new Paint();
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setColor(Color.WHITE);
-        mPaint.setStrokeWidth(0);
-        mPaint.setAntiAlias(false);
-    }
-
-    public synchronized void updateAudio(short d){
-        mAudioData.push(d);
-
-        Canvas canvas = getHolder().lockCanvas();
-        if (canvas != null) {
-            drawWaveform(canvas);
-            getHolder().unlockCanvasAndPost(canvas);
-        }
-    }
-    public synchronized void updateAudioData(short[] buffer) {
-        short[] newBuffer;
-
-        // Update the display.
-        for (int i = 0; i < buffer.length; ++i)
-            mAudioData.push(buffer[i]);
-
-        Canvas canvas = getHolder().lockCanvas();
-        if (canvas != null) {
-            drawWaveform(canvas);
-            getHolder().unlockCanvasAndPost(canvas);
-        }
-    }
-
-    private void drawWaveform(Canvas canvas) {
-        // Clear the screen each time because SurfaceView won't do this for us.
-        canvas.drawColor(Color.TRANSPARENT);
-
-        float width = getWidth();
-        float height = getHeight();
-        float centerY = height / 2;
-
-        // We draw the history from oldest to newest so that the older audio data is further back
-        // and darker than the most recent data.
-        int colorDelta = 255 / (HISTORY_SIZE + 1);
-        int brightness = colorDelta;
-
-
-            float lastX = -1;
-            float lastY = -1;
-
-            int len = mAudioData.length();
-            int i,x;
-            //1. copy buffer data in fft buffer
-            for( i = mAudioData.start,x=0; len > 0 && x<width; i++,len--,x++ ){
-                i %= mAudioData.getCapacity();
-                short sample = (short)mAudioData.b[i];
-                float y = (sample / MAX_AMPLITUDE_TO_DRAW) * centerY + centerY;
-
-                if (lastX != -1) {
-                    canvas.drawLine(lastX, lastY, x, y, mPaint);
-                }
-
-                lastX = x;
-                lastY = y;
-            }
-
-    }*/
    // The number of buffer frames to keep around (for a nice fade-out visualization).
    private static final int HISTORY_SIZE = 6;
-
     // To make quieter sounds still show up well on the display, we use +/- 8192 as the amplitude
     // that reaches the top/bottom of the view instead of +/- 32767. Any samples that have
     // magnitude higher than this limit will simply be clipped during drawing.
     private static final float MAX_AMPLITUDE_TO_DRAW = 32767.0f*2;
-
     // The queue that will hold historical audio data.
     private final LinkedList<short[]> mAudioData;
-
     private final Paint mPaint;
 
+    private void _style(){
+        setZOrderOnTop(true);
+        getHolder().setFormat(PixelFormat.TRANSPARENT);
+    }
     public WaveformView(Context context) {
-        this(context, null, 0);
+        this(context, null, 0); _style();
     }
 
     public WaveformView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        this(context, attrs, 0); _style();
     }
 
     public WaveformView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        _style();
 
         mAudioData = new LinkedList<short[]>();
 
@@ -169,9 +83,9 @@ public class WaveformView extends SurfaceView {
      * @param canvas the {@link Canvas} object on which to draw
      */
     private void drawWaveform(Canvas canvas) {
-        // Clear the screen each time because SurfaceView won't do this for us.
-        canvas.drawColor(Color.BLACK);
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
+        // Clear the screen each time because SurfaceView won't do this for us.
         float width = getWidth();
         float height = getHeight();
         float centerY = height / 2;
@@ -182,7 +96,7 @@ public class WaveformView extends SurfaceView {
         int brightness = colorDelta;
 
         for (short[] buffer : mAudioData) {
-            mPaint.setColor(Color.argb(brightness, 128, 255, 192));
+            mPaint.setColor(Color.argb(brightness, 0, 0, 255));
 
             float lastX = -1;
             float lastY = -1;

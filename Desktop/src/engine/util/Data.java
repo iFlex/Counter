@@ -13,6 +13,13 @@ public class Data
 		d = null;
 	}
 	
+	//TODO: turn to generic type for function below
+    public Data(short[] b,int usableLength){
+        d = new double[usableLength];
+        for( int i = 0 ; i < usableLength; ++ i )
+            d[i] = b[i];
+    }
+
 	public Data(double[] b,int usableLength){
 		d = new double[usableLength];
 		for( int i = 0 ; i < usableLength; ++ i )

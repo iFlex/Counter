@@ -15,11 +15,13 @@ import engine.audio.*;
 
 import java.lang.Math.*;
 import java.io.FileNotFoundException;
+
 //debug
 import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
 //
+
 public class FftRidgeRecogniser implements Recogniser {
 
 	//it reads its own data
@@ -121,12 +123,12 @@ public class FftRidgeRecogniser implements Recogniser {
 			int iter = 0;
 			int i = 0;
 			//1. copy buffer data in fft buffer
-			for( i = buff.start; len > 0 ; i++,len--,iter++ ){
-				i%=buff.getCapacity();
+			for( i = buff.start; len > 0 ; i++,len--,iter++ ) {
+				i %= buff.getCapacity();
 				fftdta[iter] = buff.b[i];
 			}
 			len = buff.length();
-			//2. FFT
+			//2. FFT - this is 2 slow therefore needs to be improved somehow
 			fftDo.realForwardFull(fftdta);
 			beautifyFFT(fftdta);
 			//2. Normalise
@@ -153,20 +155,46 @@ public class FftRidgeRecogniser implements Recogniser {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}*/
+			
 			//3. Compare
-			double dif = 0;
-			double ratio = 0;
+			double areaUnderSample = 0;
+			double areaUnderMicrph = 0;
+			double maxSimilarity = 0;
+			double avgSimilarity = 0;
+			double similarity = 0;
+			double segmentDensity = 20;
 			for( i = 0; i < len ; i++ )
-				dif += ((len-(i/2))/len) * Math.abs(fftdta[i] - samplefft[i] );
-			ratio = 1-dif;
+			{
+				areaUnderSample += fftdta[i];
+				areaUnderMicrph += samplefft[i];
+				if( i % segmentDensity == 0 && i != 0)
+				{
+					similarity = areaUnderSample / areaUnderMicrph;
+					if(similarity > 1)
+						similarity = 1/similarity;
+					
+					if( similarity > maxSimilarity )
+						maxSimilarity = similarity;
+					
+					if(avgSimilarity == 0 )
+						avgSimilarity = similarity;
+					else
+					{
+						avgSimilarity += similarity;
+						avgSimilarity /= 2;
+					}
+					
+					areaUnderSample = 0;
+					areaUnderMicrph = 0;
+				}
+			}
+			double ratio = ( maxSimilarity + avgSimilarity ) / 2;
 			//4. Increment
 			if(ratio > 0.9)
 			{
 				System.out.println(ratio+" Count:"+counter.getCount()+" frame:"+(findex-1));
 				counter.increment(ratio);
-				
-				
-				try {
+				/*try {
 					fftmic = new FileOutputStream(new File("./debug/_fft/"+(findex)+"fft.txt"));
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
@@ -187,8 +215,7 @@ public class FftRidgeRecogniser implements Recogniser {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				
+				*/
 				int jump = (int)(buff.getCapacity());
 				while(jump-- > 0)
 					try {

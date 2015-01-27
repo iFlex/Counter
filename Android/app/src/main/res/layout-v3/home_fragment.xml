@@ -25,12 +25,15 @@
                 android:textColorLink="@android:color/background_light"
                 android:textSize="190sp"
                 android:textStyle="bold" />
+
         <felix.views.WaveformView
             android:id="@+id/waveform_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="30sp"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="0.93" />
+            android:layout_weight="0.93"
+            android:background="@android:color/transparent"
+            />
 
         <LinearLayout
                 android:layout_width="fill_parent"

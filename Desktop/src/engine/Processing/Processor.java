@@ -25,15 +25,12 @@ public class Processor implements Runnable
 	public Processor(Counter c)
 	{
 		count = c;
-		audioIn = new FileIn("res/noisySnap.wav");
-		//audioIn= new PcMicrophoneIn();
-		n = new FftRidgeRecogniser(count);
+		//n = new FftRidgeRecogniser(count);
+		n = new FFTrecogniser(count);
 		//debug = new micFFTout();
 		
 		running = new AtomicBoolean(false);
 		canRun = false;
-		t = new Thread(this);
-	
 	}
 
 	public void run(){
@@ -43,29 +40,35 @@ public class Processor implements Runnable
 			Data d = audioIn.getNext();
 			//System.out.println("Got data from audio:"+d);
 			if( d != null )
-			{
-				n.process(d);
-				//debug.process(d);
-			}
-			//System.out.println("Done processing");
-			//else
-				//break;
+			    n.process(d);
 		}
-		//running.set(false);
+		running.set(false);
 	}
 
 	public void start(){
 		canRun = true;
 		running.set(true);
-		t.start();
+		//
+		//audioIn = new FileIn("res/7clap.wav");
+		audioIn= new PcMicrophoneIn();
+		//
+        t = new Thread(this);
+        t.start();
 		audioIn.start();
 	}
 
 	public void stop(){
 		canRun = false;
 		audioIn.stop();
+
+        try {
+            t.join();
+        } catch ( Exception e){
+            t = null;
+        }
 	}
+
 	public boolean isRunning(){
-		return running.get();
+		return running.get() == true;
 	}
 }

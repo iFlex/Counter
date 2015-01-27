@@ -1,7 +1,7 @@
 /*
 * Author: JamesBrown
 * Sat 6 December 2014 16:30GMT
-* 
+* Refined: Milorad Liviu Felix
 */
 package engine.audio;
 import engine.util.Data;
@@ -18,27 +18,29 @@ public abstract class AudioIn implements Runnable
 	public AudioIn()
 	{
 		inQueue = new ConcurrentLinkedQueue<Data>();
-		thread = new Thread(this);
 		canRun = false;
 	}
-	
-	/*Added by Milorad Liviu Felix*/
+
 	public void blockingStart(){
 		canRun = true;
-		this.run();
+		run();
 	}
-	/**/
 	
 	public void start()
 	{
 		canRun = true;
-		thread.start();
+        thread = new Thread(this);
+        thread.start();
 	}
 	
 	public void stop()
 	{
-		canRun = false;
-		System.out.println("Stopping AudioIn");
+        canRun = false;
+        try {
+            thread.join();
+        } catch ( Exception e){
+            thread = null;
+        }
 	}
 	
 	public Data getNext()
@@ -46,9 +48,6 @@ public abstract class AudioIn implements Runnable
 		return inQueue.poll();
 	}
 
-	public void push(Data s) 
-	{
-		inQueue.add(s);
-	}
+	public void push( Data s ) { inQueue.add(s); }
 }
 

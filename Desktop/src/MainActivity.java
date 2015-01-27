@@ -23,8 +23,11 @@ public class MainActivity {
 				processor.stop();
 				System.out.println("Count:"+count.getCount());
 			}
+			if(s.equals("reset"))
+				count.reset();
 			if(s.equals("exit"))
 				break;
+				
 		}
 		System.out.println("Bye!");
 	}

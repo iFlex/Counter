@@ -41,7 +41,16 @@ public class FileIn extends AudioIn{
 				// Read frames into buffer                                
 				try {
 					framesRead = wavFile.readFrames(buffer, chunkSize);
-					push(new Data(buffer,framesRead));
+					if( numChannels > 1 )//make it mono
+					{
+						double[] nbuffer = new double[chunkSize];
+						for( int i = 0 ; i < buffer.length; i += numChannels )
+							nbuffer[(int)(i/numChannels)] = buffer[i];
+						
+						push(new Data(nbuffer,framesRead));
+					}
+					else
+						push(new Data(buffer,framesRead));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -20,7 +20,6 @@ public class MicrophoneIn extends AudioIn {
     short[] mAudioBuffer;
     AudioRecord recorder;
 
-
     private Handler handler;
     private Thread recordingThread = null;
     private boolean isRecording = false;
@@ -47,6 +46,9 @@ public class MicrophoneIn extends AudioIn {
             Log.i("DATA:","Starting recording...");
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_AUDIO);
 
+            //FFT
+            DoubleFFT_1D fftDo = new DoubleFFT_1D(mBufferSize/2);
+
             recorder.startRecording();
             canRun = true;
             isRecording = true;
@@ -54,9 +56,20 @@ public class MicrophoneIn extends AudioIn {
                 int count = 0;
                 int len = recorder.read(mAudioBuffer, 0, mBufferSize / 2);
                 if(mAudioBuffer != null) {
-                    MainActivity.waveVisuals.updateAudioData(mAudioBuffer);
                     Data d = new Data(mAudioBuffer,len);
                     push(d);
+                    /*
+                    double[] dta = d.get();
+                    double[] fftdta = new double[dta.length*2];
+
+                    for( int i = 0; i < dta.length; ++i )
+                        fftdta[i] = dta[i];
+
+                    fftDo.realForwardFull(fftdta);
+                    for( int i = 0; i < dta.length ; i++ )
+                        mAudioBuffer[i] = (short)fftdta[i*2];
+                    */
+                    MainActivity.waveVisuals.updateAudioData(mAudioBuffer);
                     //Log.d("D:",":"+d.toString());
                 }
                 else

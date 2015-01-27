@@ -21,6 +21,11 @@ public abstract class AudioIn implements Runnable
 		canRun = false;
 	}
 
+	public void blockingStart(){
+		canRun = true;
+		run();
+	}
+	
 	public void start()
 	{
 		canRun = true;
