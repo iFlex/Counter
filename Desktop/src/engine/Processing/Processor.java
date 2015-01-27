@@ -14,13 +14,14 @@ import engine.Processing.debug.*;
 
 public class Processor implements Runnable
 {
-	private AudioIn audioIn;
-	private Recogniser n;
-	private Recogniser debug;
-	private Thread t;
-	private AtomicBoolean running;
-	private boolean canRun;
-	private Counter count;
+	protected AudioIn audioIn;
+	protected Recogniser n;
+	protected Recogniser debug;
+	protected Thread t;
+	protected AtomicBoolean running;
+	protected boolean canRun;
+	protected String source;
+	protected Counter count;
 	
 	public Processor(Counter c)
 	{
@@ -44,6 +45,7 @@ public class Processor implements Runnable
 			audioIn = null;
 		}
 		
+		source = nameOrPath;
 		if( nameOrPath.equals(".../microphone"))
 			audioIn = new PcMicrophoneIn();
 		else
@@ -59,6 +61,8 @@ public class Processor implements Runnable
 			//System.out.println("Got data from audio:"+d);
 			if( d != null )
 			    n.process(d);
+			else if( !source.equalsIgnoreCase(".../microphone") && audioIn.ready == true )
+				break;
 		}
 		running.set(false);
 	}

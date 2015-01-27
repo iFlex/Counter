@@ -32,7 +32,7 @@ public class FFTrecogniser implements Recogniser {
 	DoubleFFT_1D fftDo;
 	double[] fftdta;
     double[] samplefft;
-    public int skipAmount = 32;
+    public int skipAmount = 100;
     public int skipIndex = 0;
 	//debug
 	FileOutputStream dbg;
@@ -130,7 +130,7 @@ public class FFTrecogniser implements Recogniser {
 		double maxSimilarity = 0;
 		double avgSimilarity = 0;
 		double similarity = 0;
-		double segmentDensity = skipAmount*2;
+		double segmentDensity = 100;//skipAmount*2;
 		int len = buff.getCapacity();
 		for(int i = 0; i < len ; i++ )
 		{
@@ -138,29 +138,76 @@ public class FFTrecogniser implements Recogniser {
 			{
 				areaUnderSample += fftdta[i];
 				areaUnderMicrph += samplefft[i];
-				if( i % segmentDensity == 0 && i != 0)
+			}
+			if( i % segmentDensity == 0 && i != 0)
+			{
+				similarity = areaUnderSample / areaUnderMicrph;
+				if(similarity > 1)
+					similarity = 1/similarity;
+				
+				if( similarity > maxSimilarity )
+					maxSimilarity = similarity;
+				
+				if(avgSimilarity == 0 )
+					avgSimilarity = similarity;
+				else
 				{
-					similarity = areaUnderSample / areaUnderMicrph;
-					if(similarity > 1)
-						similarity = 1/similarity;
-					
-					if( similarity > maxSimilarity )
-						maxSimilarity = similarity;
-					
-					if(avgSimilarity == 0 )
-						avgSimilarity = similarity;
-					else
-					{
-						avgSimilarity += similarity;
-						avgSimilarity /= 2;
-					}
-					
-					areaUnderSample = 0;
-					areaUnderMicrph = 0;
+					avgSimilarity += similarity;
+					avgSimilarity /= 2;
 				}
+				
+				areaUnderSample = 0;
+				areaUnderMicrph = 0;
 			}
 		}
 		return ( maxSimilarity + avgSimilarity ) / 2;
+	}
+	
+	private double mcompare( double noise ){
+		if(noise > 1)
+			noise = 1;
+		if( noise < 0 )
+			noise = 0;
+		
+		double sSample = 0;
+		double sMicrph = 0;
+		double largestDiff = 0;
+		double avgDiff = 0;
+		int segmentDensity = skipAmount*2;
+		int len = buff.getCapacity();
+		double[] diffs = new double[(len+1)/segmentDensity];
+		for(int i = 0; i < len ; i++ )
+		{
+			//if( fftdta[i] > noise )
+			//{
+				sSample += fftdta[i];
+				sMicrph += samplefft[i];
+			//}
+			if( (i % segmentDensity) == 0 && i != 0)
+			{
+				sSample /= segmentDensity;
+				sMicrph /= segmentDensity;
+				
+				double diff = Math.abs(sSample - sMicrph);
+				//diffs[i/segmentDensity] = diff;
+				avgDiff += diff;
+				if( largestDiff < diff || largestDiff == 0 )
+					largestDiff = diff;
+				
+				sSample = 0;
+				sMicrph = 0;
+			}
+		}
+		avgDiff /= (len/segmentDensity);
+		double r = (1 -(largestDiff+avgDiff)/2); 
+		/*if( r > 0.7 )
+		{
+			System.out.println("avgDiff:"+avgDiff+" largest:"+largestDiff+" r:"+r);
+			for( int i = 0 ; i < len/segmentDensity; ++i )
+				System.out.print(" "+diffs[i]);
+			System.out.println("");
+		}*/
+		return r;
 	}
 	
 	private void _processNext(double a){
@@ -189,7 +236,7 @@ public class FFTrecogniser implements Recogniser {
 			if( ratio > 0.75)
 			{
 				//4. Increment
-				System.out.println(ratio+" Count:"+counter.getCount()+" frame:"+(co));
+				System.out.println(ratio+" Count:"+counter.getCount()+" @ "+((co-buff.getCapacity())*(1.0/44100))+"s");
 				counter.increment(ratio);
 				writeFFT(co-buff.getCapacity());
 				int jump = (int)(buff.getCapacity()*0.95);
@@ -201,8 +248,8 @@ public class FFTrecogniser implements Recogniser {
 						//e.printStackTrace();
 						break;
 					}
+				skipIndex = 0;
 			}
-			
 		}
 		skipIndex--;
 	}
@@ -215,8 +262,8 @@ public class FFTrecogniser implements Recogniser {
 			_processNext(d[i]);
 		//long endTime = System.nanoTime();
 		//long duration = (endTime - startTime);
-		if( co % 1000 == 0)
-			System.out.println("Frame:"+co);
+		//if( co % 1000 == 0)
+			//System.out.println("Frame:"+co);
 		//if(d.length != 0)
 			//System.out.println("dT:"+(double)duration/1000000/d.length+"ms - sampling period:"+((1.0/44100)*1000)+" ms processed:"+d.length+" frames");
 		if( d.length == 0)

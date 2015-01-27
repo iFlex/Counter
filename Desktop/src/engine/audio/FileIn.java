@@ -73,6 +73,7 @@ public class FileIn extends AudioIn{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		ready = true;
 	}
 	
 }

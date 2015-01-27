@@ -14,6 +14,9 @@ public abstract class AudioIn implements Runnable
 	private ConcurrentLinkedQueue<Data> inQueue;
 	protected Thread thread;
 	protected boolean canRun;
+	protected boolean noMoreInput;
+	public boolean ready = false;
+	public boolean valid = true;
 	
 	public AudioIn()
 	{
@@ -28,6 +31,7 @@ public abstract class AudioIn implements Runnable
 	
 	public void start()
 	{
+		noMoreInput = false;
 		if( thread != null)
 			stop();
 		
