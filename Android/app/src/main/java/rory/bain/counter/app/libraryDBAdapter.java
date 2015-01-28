@@ -10,13 +10,15 @@ import android.util.Log;
 
 
 
-public class DBAdapter {
-
+/**
+ * Created by rorybain on 28/01/15.
+ */
+public class libraryDBAdapter {
     /////////////////////////////////////////////////////////////////////
     //	Constants & Data
     /////////////////////////////////////////////////////////////////////
     // For logging:
-    private static final String TAG = "DBAdapter";
+    private static final String TAG = "libraryDBAdapter";
 
     // DB Fields
     public static final String KEY_ROWID = "_id";
@@ -24,31 +26,37 @@ public class DBAdapter {
 
 
     //Setting up keys
-    public static final String KEY_COUNT = "count";
-    public static final String KEY_DATE = "date";
-    public static final String KEY_SOUND = "sound";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_ICON = "icon";
+    public static final String KEY_SAMPLE = "sample";
+    public static final String KEY_USED = "used";
+    public static final String KEY_BROKEN = "broken";
 
     //Setting up columns
-    public static final int COL_COUNT = 1;
-    public static final int COL_DATE = 2;
-    public static final int COL_SOUND = 3;
+    public static final int COL_NAME = 1;
+    public static final int COL_ICON = 2;
+    public static final int COL_SAMPLE = 3;
+    public static final int COL_USED = 4;
+    public static final int COL_BROKEN = 5;
 
 
-    public static final String[] ALL_KEYS = new String[] {KEY_ROWID, KEY_COUNT, KEY_DATE, KEY_SOUND};
+    public static final String[] ALL_KEYS = new String[] {KEY_ROWID, KEY_NAME, KEY_ICON, KEY_SAMPLE, KEY_USED, KEY_BROKEN};
 
     // DB info: it's name, and the table we are using (just one).
-    public static final String DATABASE_NAME = "MyDb";
+    public static final String DATABASE_NAME = "libraryDB";
     public static final String DATABASE_TABLE = "mainTable";
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 1;
 
     private static final String DATABASE_CREATE_SQL =
             "create table " + DATABASE_TABLE
                     + " (" + KEY_ROWID + " integer primary key autoincrement, "
                     //CHANGEABLE
-                    + KEY_COUNT + " integer not null, "
-                    + KEY_DATE + " string not null, "
-                    + KEY_SOUND + " string not null"
+                    + KEY_NAME + " string not null, "
+                    + KEY_ICON + " string not null, "
+                    + KEY_SAMPLE + " string not null, "
+                    + KEY_USED + " integer not null, "
+                    + KEY_BROKEN + " integer not null"
 
                     // Rest  of creation:
                     + ");";
@@ -63,13 +71,13 @@ public class DBAdapter {
     //	Public methods:
     /////////////////////////////////////////////////////////////////////
 
-    public DBAdapter(Context ctx) {
+    public libraryDBAdapter(Context ctx) {
         this.context = ctx;
         myDBHelper = new DatabaseHelper(context);
     }
 
     // Open the database connection.
-    public DBAdapter open() {
+    public libraryDBAdapter open() {
         db = myDBHelper.getWritableDatabase();
         return this;
     }
@@ -80,17 +88,15 @@ public class DBAdapter {
     }
 
     // Add a new set of values to the database.
-    public long insertRow(int count, String date, String sound) {
-		/*
-		 * CHANGE 3:
-		 */
-        // TODO: Update data in the row with new fields.
-        // TODO: Also change the function's arguments to be what you need!
+    public long insertRow(String name, String icon, String sample, int used, int broken) {
+
         // Create row's data:
         ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_COUNT, count);
-        initialValues.put(KEY_DATE, date);
-        initialValues.put(KEY_SOUND, sound);
+        initialValues.put(KEY_NAME, name);
+        initialValues.put(KEY_ICON, icon);
+        initialValues.put(KEY_SAMPLE, sample);
+        initialValues.put(KEY_USED, used);
+        initialValues.put(KEY_BROKEN, broken);
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE, null, initialValues);
@@ -136,7 +142,7 @@ public class DBAdapter {
     }
 
     // Change an existing row to be equal to new data.
-    public boolean updateRow(long rowId, int count, String date, String sound) {
+    public boolean updateRow(long rowId, String name, String icon, String sample, int broken, int used) {
         String where = KEY_ROWID + "=" + rowId;
 
 		/*
@@ -146,9 +152,11 @@ public class DBAdapter {
         // TODO: Also change the function's arguments to be what you need!
         // Create row's data:
         ContentValues newValues = new ContentValues();
-        newValues.put(KEY_COUNT, count);
-        newValues.put(KEY_DATE, date);
-        newValues.put(KEY_SOUND, sound);
+        newValues.put(KEY_NAME, name);
+        newValues.put(KEY_ICON, icon);
+        newValues.put(KEY_SAMPLE, sample);
+        newValues.put(KEY_BROKEN, broken);
+        newValues.put(KEY_USED, used);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE, newValues, where, null) != 0;

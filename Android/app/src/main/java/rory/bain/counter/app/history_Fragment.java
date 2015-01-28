@@ -39,21 +39,6 @@ public class history_Fragment extends Fragment {
                 MainActivity.myDB.deleteAll();
                 ListView listViews = (ListView) rootView.findViewById(R.id.historyList);
                 listViews.setVisibility(View.INVISIBLE);
-//                String date = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(new Date());
-//                MainActivity.myDB.insertRow(40, date, "Books");
-//                MainActivity.myDB.insertRow(32, date, "Books");
-//                MainActivity.myDB.insertRow(12, date, "Books");
-//                MainActivity.myDB.insertRow(10, date, "Books");
-//                MainActivity.myDB.insertRow(8, date, "Books");
-//                MainActivity.myDB.insertRow(56, date, "Books");
-//                MainActivity.myDB.insertRow(3, date, "books");
-//                MainActivity.myDB.insertRow(78, date, "Books");
-//                MainActivity.myDB.insertRow(23, date, "Books");
-//                MainActivity.myDB.insertRow(40, date, "Books");
-//                MainActivity.myDB.insertRow(31, date, "Books");
-//                MainActivity.myDB.insertRow(11, date, "Books");
-//                MainActivity.myDB.insertRow(13, date, "Books");
-
 
             }
         });
@@ -70,10 +55,10 @@ public class history_Fragment extends Fragment {
                 Map<String, String> datum = new HashMap<String, String>(2);
 
 
-                int id = cursor.getInt(DBAdapter.COL_ROWID);
-                int count = cursor.getInt(DBAdapter.COL_COUNT);
-                String date = cursor.getString(DBAdapter.COL_DATE);
-                String sound = cursor.getString(DBAdapter.COL_SOUND);
+                int id = cursor.getInt(historyDBAdapter.COL_ROWID);
+                int count = cursor.getInt(historyDBAdapter.COL_COUNT);
+                String date = cursor.getString(historyDBAdapter.COL_DATE);
+                String sound = cursor.getString(historyDBAdapter.COL_SOUND);
 
                 datum.put("date", date);
                 datum.put("count", String.valueOf(count));

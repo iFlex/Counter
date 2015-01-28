@@ -15,11 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import rory.bain.counter.app.home_Fragment;
-import rory.bain.counter.app.history_Fragment;
-import rory.bain.counter.app.add_Fragment;
 import android.content.Context;
 //engine
 import engine.util.*;
@@ -45,7 +41,8 @@ public class MainActivity extends Activity {
     public static Context ctx;
     public static WaveformView waveVisuals;
 
-    public static DBAdapter myDB;
+    public static historyDBAdapter myDB;
+    public static libraryDBAdapter libraryDB;
 
     @SuppressLint("NewApi")
     @Override  protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +61,8 @@ public class MainActivity extends Activity {
         mDrawerList = (ListView) findViewById(R.id.slider_list);
         rowItems = new ArrayList<rowItem>();
 
-        myDB = new DBAdapter(this);
+        myDB = new historyDBAdapter(this);
+        libraryDB = new libraryDBAdapter(this);
 
         for (int i = 0; i < menutitles.length; i++) {
             rowItem items = new rowItem(menutitles[i], menuIcons.getResourceId(      i, -1));
@@ -108,7 +106,7 @@ public class MainActivity extends Activity {
         switch (position) {
             case 0:      fragment = new home_Fragment();
                 break;
-            case 1:       fragment = new add_Fragment();
+            case 1:       fragment = new library_fragment();
                 break;
             case 2:         fragment = new history_Fragment();
                 break;
