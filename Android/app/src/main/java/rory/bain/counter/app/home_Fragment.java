@@ -13,6 +13,8 @@ import android.os.*;
 import android.util.Log;
 import rory.bain.counter.app.MainActivity;
 import felix.views.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @SuppressLint("NewApi")
 public class home_Fragment extends Fragment {
@@ -22,6 +24,7 @@ public class home_Fragment extends Fragment {
         View rootView = inflater.inflate(R.layout.home_fragment, container, false);
         final TextView resultText = (TextView) rootView.findViewById(R.id.countText);
         resultText.setText("0");
+        MainActivity.myDB.open();
 
         final Button startButton = (Button) rootView.findViewById(R.id.startButton);
         Button resButton = (Button) rootView.findViewById(R.id.resetButton);
@@ -50,6 +53,8 @@ public class home_Fragment extends Fragment {
                 }
                 else
                     MainActivity.processor.stop();
+                    String date = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(new Date());
+                    MainActivity.myDB.insertRow(MainActivity.counter.getCount(), date, "Books");
             }
         });
 

@@ -96,7 +96,7 @@ public class WaveformView extends SurfaceView {
         int brightness = colorDelta;
 
         for (short[] buffer : mAudioData) {
-            mPaint.setColor(Color.argb(brightness, 0, 0, 255));
+            mPaint.setColor(Color.argb(brightness, 0, 0, 0));
 
             float lastX = -1;
             float lastY = -1;

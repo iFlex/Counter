@@ -65,7 +65,7 @@ public class history_Fragment extends Fragment {
 
 
 
-        if(cursor.moveToFirst()) {
+        if(cursor.moveToLast()) {
             do {
                 Map<String, String> datum = new HashMap<String, String>(2);
 
@@ -79,7 +79,7 @@ public class history_Fragment extends Fragment {
                 datum.put("count", String.valueOf(count));
                 data.add(datum);
 
-            } while (cursor.moveToNext());
+            } while (cursor.moveToPrevious());
         }
 
 //        String[] myItems = new String[arrayListItems.size()];
