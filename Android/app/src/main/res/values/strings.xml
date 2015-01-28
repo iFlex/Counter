@@ -13,8 +13,8 @@
     <string name="imgdesc">imgdesc</string>
 
     <string-array name="titles">
-        <item>Home</item>
-        <item>Add</item>
+        <item>Count</item>
+        <item>Library</item>
         <item>History</item>
     </string-array>
 

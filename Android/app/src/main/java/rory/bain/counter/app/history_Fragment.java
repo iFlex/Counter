@@ -39,20 +39,20 @@ public class history_Fragment extends Fragment {
                 MainActivity.myDB.deleteAll();
                 ListView listViews = (ListView) rootView.findViewById(R.id.historyList);
                 listViews.setVisibility(View.INVISIBLE);
-                String date = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(new Date());
-                MainActivity.myDB.insertRow(40, date, "Books");
-                MainActivity.myDB.insertRow(32, date, "Books");
-                MainActivity.myDB.insertRow(12, date, "Books");
-                MainActivity.myDB.insertRow(10, date, "Books");
-                MainActivity.myDB.insertRow(8, date, "Books");
-                MainActivity.myDB.insertRow(56, date, "Books");
-                MainActivity.myDB.insertRow(3, date, "books");
-                MainActivity.myDB.insertRow(78, date, "Books");
-                MainActivity.myDB.insertRow(23, date, "Books");
-                MainActivity.myDB.insertRow(40, date, "Books");
-                MainActivity.myDB.insertRow(31, date, "Books");
-                MainActivity.myDB.insertRow(11, date, "Books");
-                MainActivity.myDB.insertRow(13, date, "Books");
+//                String date = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(new Date());
+//                MainActivity.myDB.insertRow(40, date, "Books");
+//                MainActivity.myDB.insertRow(32, date, "Books");
+//                MainActivity.myDB.insertRow(12, date, "Books");
+//                MainActivity.myDB.insertRow(10, date, "Books");
+//                MainActivity.myDB.insertRow(8, date, "Books");
+//                MainActivity.myDB.insertRow(56, date, "Books");
+//                MainActivity.myDB.insertRow(3, date, "books");
+//                MainActivity.myDB.insertRow(78, date, "Books");
+//                MainActivity.myDB.insertRow(23, date, "Books");
+//                MainActivity.myDB.insertRow(40, date, "Books");
+//                MainActivity.myDB.insertRow(31, date, "Books");
+//                MainActivity.myDB.insertRow(11, date, "Books");
+//                MainActivity.myDB.insertRow(13, date, "Books");
 
 
             }
