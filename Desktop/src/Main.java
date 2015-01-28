@@ -56,7 +56,7 @@ public class Main {
 			p.stop();
 			percentageCount = (double)c.getCount()/correctCount*100;
 			
-			System.out.println(percentageCount+"% accuracy ("+c.getCount()+" = "+correctCount+")"); 
+			System.out.println(percentageCount+"% accuracy "+((double)duration/1000)+"s ("+c.getCount()+" = "+correctCount+")"); 
 		}
 	}
 
