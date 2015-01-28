@@ -23,7 +23,7 @@ public class home_Fragment extends Fragment {
         final TextView resultText = (TextView) rootView.findViewById(R.id.countText);
         resultText.setText("0");
 
-        Button startButton = (Button) rootView.findViewById(R.id.startButton);
+        final Button startButton = (Button) rootView.findViewById(R.id.startButton);
         Button resButton = (Button) rootView.findViewById(R.id.resetButton);
         MainActivity.waveVisuals = (WaveformView) rootView.findViewById(R.id.waveform_view);
 
@@ -45,8 +45,9 @@ public class home_Fragment extends Fragment {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!MainActivity.processor.isRunning())
+                if(!MainActivity.processor.isRunning()) {
                     MainActivity.processor.start();
+                }
                 else
                     MainActivity.processor.stop();
             }

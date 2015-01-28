@@ -1,153 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
 
 
     <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_alignParentBottom="true"
-            android:gravity="left|right"
-            android:orientation="vertical" >
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:gravity="left|right|bottom"
+        android:orientation="vertical"
+        android:weightSum="4">
 
         <TextView
-                android:id="@+id/countText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:shadowColor="@android:color/background_dark"
-                android:shadowRadius="40"
-                android:textColorLink="@android:color/background_light"
-                android:textSize="250dp"
-                android:textStyle="bold" android:text="0"/>
+            android:id="@+id/countText"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2.51"
+            android:gravity="center|top"
+            android:shadowColor="@android:color/background_dark"
+            android:shadowRadius="40"
+            android:textColorLink="@android:color/background_light"
+            android:textSize="250sp"
+            android:textStyle="bold" android:text="0"/>
+
+        <felix.views.WaveformView
+            android:id="@+id/waveform_view"
+            android:layout_width="match_parent"
+            android:layout_height="30sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.93"
+            android:background="@android:color/transparent"
+            />
+
 
         <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|fill|start"
-                android:paddingTop="100dp" >
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="bottom|fill|start"
+            android:paddingTop="10dp" android:layout_weight="0.8">
 
             <Button
-                    android:id="@+id/startButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:text="Start" />
+                android:id="@+id/startButton"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:text="Start"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="0dp"/>
 
             <Button
-                    android:id="@+id/resetButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:text="Reset" />
+                android:id="@+id/resetButton"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:text="Reset"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="0dp"/>
 
         </LinearLayout>
 
+
+
         <HorizontalScrollView
-                android:id="@+id/horizontalScrollView1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|fill"
-                android:background="@android:color/background_light">
+            android:id="@+id/horizontalScrollView1"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:layout_gravity="bottom|center"
+            android:background="@android:color/background_light">
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:padding="10dp" >
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="bottom"
+                android:padding="10dp" >
 
                 <Button
-                        android:id="@+id/button3"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:maxWidth="80dp"
-                        android:minWidth="80dp"
-                        android:padding="10dp"
-                        android:text="One"/>
+                    android:id="@+id/button3"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:maxWidth="80dp"
+                    android:minWidth="80dp"
+                    android:padding="10dp"
+                    android:text="One"/>
 
                 <Button
-                        android:id="@+id/button4"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxWidth="81dp"
-                        android:minWidth="80dp"
-                        android:padding="10dp"
-                        android:text="Two"/>
+                    android:id="@+id/button4"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:maxWidth="81dp"
+                    android:minWidth="80dp"
+                    android:padding="10dp"
+                    android:text="Two"/>
 
                 <Button
-                        android:id="@+id/button7"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="80dp"
-                        android:text="Bike" />
+                    android:id="@+id/button7"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_height="wrap_content"
+                    android:minWidth="80dp"
+                    android:text="Bike" />
 
                 <Button
-                        android:id="@+id/button6"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="80dp"
-                        android:text="Coins" />
+                    android:id="@+id/button6"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_height="wrap_content"
+                    android:minWidth="80dp"
+                    android:text="Coins" />
 
                 <Button
-                        android:id="@+id/button5"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="80dp"
-                        android:text="Pages" />
+                    android:id="@+id/button5"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_height="wrap_content"
+                    android:minWidth="80dp"
+                    android:text="Pages" />
                 <Button
-                        android:id="@+id/button8"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="80dp"
-                        android:text="Pages" />
+                    android:id="@+id/button8"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_height="wrap_content"
+                    android:minWidth="80dp"
+                    android:text="Pages" />
                 <Button
-                        android:id="@+id/button9"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="80dp"
-                        android:text="Pages" />
+                    android:id="@+id/button9"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_height="wrap_content"
+                    android:minWidth="80dp"
+                    android:text="Pages" />
                 <Button
-                        android:id="@+id/button10"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="80dp"
-                        android:text="Pages" />
+                    android:id="@+id/button10"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_height="wrap_content"
+                    android:minWidth="80dp"
+                    android:text="Pages" />
                 <Button
-                        android:id="@+id/button11"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="80dp"
-                        android:text="Pages" />
+                    android:id="@+id/button11"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_height="wrap_content"
+                    android:minWidth="80dp"
+                    android:text="Pages" />
                 <Button
-                        android:id="@+id/button12"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="80dp"
-                        android:text="Pages" />
+                    android:id="@+id/button12"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_height="wrap_content"
+                    android:minWidth="80dp"
+                    android:text="Pages" />
                 <Button
-                        android:id="@+id/button13"
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="80dp"
-                        android:text="Pages" />
+                    android:id="@+id/button13"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_height="wrap_content"
+                    android:minWidth="80dp"
+                    android:text="Pages" />
 
 
             </LinearLayout>
         </HorizontalScrollView>
+
 
     </LinearLayout>
 </RelativeLayout>

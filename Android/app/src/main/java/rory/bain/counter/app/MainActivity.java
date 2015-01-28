@@ -45,6 +45,8 @@ public class MainActivity extends Activity {
     public static Context ctx;
     public static WaveformView waveVisuals;
 
+    public static DBAdapter myDB;
+
     @SuppressLint("NewApi")
     @Override  protected void onCreate(Bundle savedInstanceState) {
         MainActivity.ctx = getApplicationContext();
@@ -61,6 +63,8 @@ public class MainActivity extends Activity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerList = (ListView) findViewById(R.id.slider_list);
         rowItems = new ArrayList<rowItem>();
+
+        myDB = new DBAdapter(this);
 
         for (int i = 0; i < menutitles.length; i++) {
             rowItem items = new rowItem(menutitles[i], menuIcons.getResourceId(      i, -1));
