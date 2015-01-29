@@ -61,6 +61,7 @@ public class MainActivity extends Activity {
         mDrawerList = (ListView) findViewById(R.id.slider_list);
         rowItems = new ArrayList<rowItem>();
 
+
         myDB = new historyDBAdapter(this);
         libraryDB = new libraryDBAdapter(this);
 
