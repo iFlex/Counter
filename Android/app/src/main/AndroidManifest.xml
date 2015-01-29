@@ -15,10 +15,13 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="rory.bain.counter.app.addActivity"
+            android:label="@string/addView"
+            android:screenOrientation="portrait"
+        ></activity>
     </application>
 
 </manifest>
