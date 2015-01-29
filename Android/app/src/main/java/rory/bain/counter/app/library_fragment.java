@@ -26,7 +26,6 @@ public class library_fragment extends Fragment{
         final View rootView = inflater .inflate(R.layout.library_view, container, false);
         MainActivity.libraryDB.open();
 
-        MainActivity.libraryDB.insertRow("Books", "books.jpeg", "books.wav", 1, 1);
 
 
         Cursor cursor = MainActivity.libraryDB.getAllRows();
