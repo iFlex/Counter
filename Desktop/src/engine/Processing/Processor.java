@@ -53,7 +53,7 @@ public class Processor implements Runnable
 		//TODO: if audioIn is no initilised properly canRun = false;
 	}
 	
-	public void run(){
+	protected void run(){
 		running.set(true);
 		while(canRun && audioIn != null)
 		{
@@ -67,20 +67,29 @@ public class Processor implements Runnable
 		running.set(false);
 	}
 
-	public void start(){
-		if(running.get() == true)
+       protected void _init(){
+           if(running.get() == true)
 			stop();
 		
-		canRun = true;
-		running.set(true);
-		
-		if( audioIn == null )
-			audioIn= new PcMicrophoneIn();
+	    canRun = true;
+           if( audioIn == null )
+	        audioIn= new PcMicrophoneIn();
+       }
+
+	public void start(){
+		_init();
 			
-        t = new Thread(this);
-        t.start();
+              t = new Thread(this);
+              t.start();
 		audioIn.start();
+              running.set(true);
 	}
+
+       public void blockingRun(){
+           _init();
+           run();
+           stop();
+       }
 
 	public void stop(){
 		canRun = false;
