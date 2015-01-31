@@ -115,29 +115,23 @@ public class Tester {
 	// This will check if the model name and the target name is the same, if so
 	// return the count on the target name, otherwise return zero
 	// Use RegEx?
-	@SuppressWarnings("null")
 	private int parseCorrectCount(String modelFileName, String targetFileName) {
+		if( modelFileName == null || targetFileName == null){
+			//TODO: throw some exception in stead since this should not happen!
+			return 0;
+		}
+		
 		boolean sameBatch = false;
+		//filename_count_version
+		String[] parts = targetFileName.split("_");
 		
-		for (int i = 0; i < targetFileName.length(); i++){
-			if (targetFileName.substring(i) != "_" && targetFileName.substring(i) == modelFileName.substring(i)){
-				sameBatch = true;
-			}
-			else if (targetFileName.substring(i) == "_"){
-				break;
-			}
-			else{
-				sameBatch = false;
-			}
-		}
+		if( modelFileName.equals(parts[0]))
+			sameBatch = true;
 		
-		if(sameBatch){
-			int index = targetFileName.indexOf("_") + 1;
-			int lastIndex = targetFileName.lastIndexOf("_");
-			return Integer.parseInt(targetFileName.substring(index, lastIndex));
-		}
+		if(sameBatch && parts.length > 1)
+			return Integer.parseInt(parts[1]);
 		
-		return (Integer) null;
+		return 0;
 	}
 
 	// This is the descriptor class for a .tst file
