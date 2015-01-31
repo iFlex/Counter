@@ -38,6 +38,23 @@ public class RawRidgeRecogniser implements Recogniser {
 	//alternative 
 	private RingBuffer buff;
 	public synchronized void setModel(String name){
+		sample = new Data();
+		//for now load the sample here
+		SampleIn = new FileIn(name);
+		SampleIn.blockingStart();
+		//1. get the data
+		Data d = SampleIn.getNext();
+		while( d != null ){
+			sample.extend(d);
+			d = SampleIn.getNext();
+		}
+		rawSample = sample.get();
+		if( rawSample == null )
+		{
+			System.out.println("Error: could not initialise correctly! Sample is empty");
+			return;
+		}
+		buff = new RingBuffer(rawSample.length);
 	}
 	
 	public RawRidgeRecogniser(Counter c){
@@ -53,26 +70,7 @@ public class RawRidgeRecogniser implements Recogniser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		counter = c;
-		sample = new Data();
-		//for now load the sample here
-		SampleIn = new FileIn("res/snap.wav");
-		SampleIn.blockingStart();
-		SampleIn.run();
-		//1. get the data
-		Data d = SampleIn.getNext();
-		while( d != null ){
-			sample.extend(d);
-			d = SampleIn.getNext();
-		}
-		rawSample = sample.get();
-		if( rawSample == null )
-		{
-			System.out.println("Error: could not initialise correctly! Sample is empty");
-			return;
-		}
-		buff = new RingBuffer(rawSample.length);
 	}
 
 	public int co = 0;
@@ -96,15 +94,15 @@ public class RawRidgeRecogniser implements Recogniser {
 				if( lhs == 0 && rhs != 0)
 				{
 					_rat += rhs;
-					System.out.println("Mic Silence..");
+					//System.out.println("Mic Silence..");
 				}
 				if( rhs == 0 )
 				{
 					_rat += lhs;
-					if( lhs == 0 )
+					/*if( lhs == 0 )
 						System.out.println("Total Silene...");
 					else
-						System.out.println("Sample Silence..");
+						System.out.println("Sample Silence..");*/
 				}
 				if( lhs != 0 && rhs != 0 )
 				{

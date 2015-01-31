@@ -39,13 +39,6 @@ public class RidgeRecogniser implements Recogniser {
 	//alternative 
 	private RingBuffer buff;
 	public synchronized void setModel(String name){
-	}
-	
-	private double getAngle(double a, double b){
-		return 1+Math.atan2(b-a,sampleDistance);
-	}
-	
-	public RidgeRecogniser(Counter c){
 		//debug
 		dbg = null;
 		try {
@@ -58,7 +51,6 @@ public class RidgeRecogniser implements Recogniser {
 			e.printStackTrace();
 		}
 		
-		counter = c;
 		sample = new Data();
 		//for now load the sample here
 		SampleIn = new FileIn("res/snap.wav");
@@ -99,6 +91,14 @@ public class RidgeRecogniser implements Recogniser {
 		}
 		else
 			System.out.println("Error: could not initialise correctly! Sample is empty");
+	}
+	
+	private double getAngle(double a, double b){
+		return 1+Math.atan2(b-a,sampleDistance);
+	}
+	
+	public RidgeRecogniser(Counter c){
+		counter = c;
 	}
 
 	public int co = 0;
