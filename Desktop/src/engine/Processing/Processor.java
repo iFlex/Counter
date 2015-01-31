@@ -53,7 +53,7 @@ public class Processor implements Runnable
 		//TODO: if audioIn is no initilised properly canRun = false;
 	}
 	
-	public void run(){
+	protected void run(){
 		running.set(true);
 		while(canRun && audioIn != null)
 		{
@@ -90,6 +90,7 @@ public class Processor implements Runnable
          run();
          stop();
      }
+
 
 	public void stop(){
 		canRun = false;
