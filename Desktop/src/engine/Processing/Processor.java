@@ -44,7 +44,7 @@ public class Processor implements Runnable
 			audioIn.stop();
 			audioIn = null;
 		}
-		
+		System.out.println("Processor: Setting input "+nameOrPath);
 		source = nameOrPath;
 		if( nameOrPath.equals(".../microphone"))
 			audioIn = new PcMicrophoneIn();
@@ -82,12 +82,13 @@ public class Processor implements Runnable
 		t = new Thread(this);
         t.start();
 		audioIn.start();
-        running.set(true);
 	}
 
      public void blockingRun(){
          _init();
+         audioIn.start();
          run();
+         audioIn.stop();
          stop();
      }
 

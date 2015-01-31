@@ -68,14 +68,15 @@ public class TestResult {
 		this.duration = duration;
 	}
 
-	public void printTestResult(){
-		System.out.println("===== Results for Test: " + fileName + " =====" + '\n' +
+	public String getTestReport(){
+		String result = "===== Results for Test: " + fileName + " =====" + '\n' +
 							"Model :" + model + '\n' +
 							"Number of Files Tested: " + getNumFilesTested() + '\n'+
 							"Total Time Taken: " + duration + '\n' +
-							"Overall Test Accuracy: " + getGlobalAccuracy() + '\n');
+							"Overall Test Accuracy: " + getGlobalAccuracy() + '\n';
 		for (FileResult f: fileResult){
-			f.printFileResult();
+			result += f.getFileReport();
 		}
+		return result;
 	}
 }

@@ -5,9 +5,14 @@ import engine.util.Counter;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Tester {
 	String listName;
@@ -34,22 +39,31 @@ public class Tester {
 			// Read the file and create an array of File handles for the Test
 			// files
 			line_listfile = listfilein.readLine();
-			testfile = new File(line_listfile); // TODO exception handling
-			testfilein = new BufferedReader(new FileReader(testfile)); // TODO
-																		// exception
-																		// handling
-			TestResult tr = new TestResult(
-					line_listfile, testfilein.readLine());
+			testfile = null;
+			testfilein = null;
+			try{
+				testfile = new File(line_listfile); // TODO exception handling
+				testfilein = new BufferedReader(new FileReader(testfile)); // TODO
+																			// exception
+																			// handling
+			}
+			catch(Exception e){
+				break;
+			}
+			
+			TestResult tr = new TestResult(line_listfile, testfilein.readLine());
 			long testStartTime = System.currentTimeMillis();
 			// For each file, get the model and test all of the other wav files
 			do {
-				FileResult fr = new FileResult(testfilein.readLine(),
-						parseCorrectCount(tr.getModel(), testfilein.readLine()));
+				String testf = testfilein.readLine();
+				FileResult fr = new FileResult(
+						testf,
+						parseCorrectCount( tr.getModel(), testf ) 
+				);
 
 				Counter c = new Counter();
 				Processor p = new Processor(c);
-				double percentageCount = 0.0;
-
+				double percentageCount = 0.0; 
 				// Setting the model and file
 				p.setModel(tr.getModel());
 				p.setInput(fr.getFileName());
@@ -71,6 +85,10 @@ public class Tester {
 		} while (line_listfile != null);
 
 		listDuration = (System.currentTimeMillis() - listStartTime);
+		
+		DateFormat dateFormat = new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
+		Date date = new Date();
+		generateReport("./tests/results/"+dateFormat.format(date));
 	}
 
 	// TODO
@@ -89,32 +107,42 @@ public class Tester {
 	 */
 	public void generateReport(String filePath)
 	{
-		double overallSuccessRate = 0;
-		System.out.println("========= Test Results for Test List: " + listName + " =========" + '\n'
-							+"Success Rate per Batch: ");
-		
-		for(int i = 0; i<testList.size(); i++)
-				{
-					System.out.println(testList.get(i).getFileName() + " - " + testList.get(i).getGlobalAccuracy() + ", ");
-					overallSuccessRate += testList.get(i).getGlobalAccuracy();
-				}
-		
-		overallSuccessRate = overallSuccessRate/testList.size();
-		
-		System.out.println("Tests Run: " + testList.size() + '\n' 
-							+ "Overall Success Rate: " + overallSuccessRate + '\n' +
-							"Time Taken: " + listDuration + '\n');
-		for (int j = 0; j < testList.size();j++){
-			testList.get(j).printTestResult();
+		FileOutputStream fw = null;
+		try {
+			 fw = new FileOutputStream(new File(filePath));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
 		}
 		
-		// TODO the rest
+		double overallSuccessRate = 0;
+		try {
+			fw.write(("========= Test Results for Test List: " + listName + " =========" + '\n'+"Success Rate per Batch: \n").getBytes());
+			for(int i = 0; i<testList.size(); i++)
+			{
+				fw.write((testList.get(i).getFileName() + " - " + testList.get(i).getGlobalAccuracy() + ", ").getBytes());
+				overallSuccessRate += testList.get(i).getGlobalAccuracy();
+			}
+			
+			overallSuccessRate = overallSuccessRate/testList.size();
+			
+			fw.write(("Tests Run: " + testList.size() + '\n' 
+								+ "Overall Success Rate: " + overallSuccessRate + '\n' +
+								"Time Taken: " + listDuration + '\n').getBytes());
+			for (int j = 0; j < testList.size();j++)
+				fw.write(testList.get(j).getTestReport().getBytes());
+			
+			fw.close();
+			System.out.println("BatchTester:Test report generated "+filePath);
+			// TODO the rest
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("BatchTester:Test report generation failed...");
+		}
 	}
 
-	// TODO parse the filenames to see what is the correct count.
-	// This will check if the model name and the target name is the same, if so
-	// return the count on the target name, otherwise return zero
-	// Use RegEx?
 	private int parseCorrectCount(String modelFileName, String targetFileName) {
 		if( modelFileName == null || targetFileName == null){
 			//TODO: throw some exception in stead since this should not happen!

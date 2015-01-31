@@ -45,15 +45,14 @@ public class FileResult {
 		this.duration = duration;
 	}
 	
-	public void printFileResult(){
+	public String getFileReport(){
 		
-		System.out.println("== Results for file: " + filename + " ==" + '\n' + 
+		return "== Results for file: " + filename + " ==" + '\n' + 
 				"---------------------------" + '\n' + "Correct Count: " + correctCount + '\n' +
 				"Actual Count: " + actualCount + '\n' +
 				"Accuracy: " + accuracy + '\n' +
 				"---------------------------" + 
-				"Time taken: " + duration + '\n');
-		
+				"Time taken: " + duration + '\n';
 		
 	}
 	
