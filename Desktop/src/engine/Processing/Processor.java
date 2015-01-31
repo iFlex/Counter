@@ -26,8 +26,8 @@ public class Processor implements Runnable
 	public Processor(Counter c)
 	{
 		count = c;
-		//n = new FftRidgeRecogniser(count);
-		n = new FFTrecogniser(count);
+		n = new WaveFilteringNetwork(count);
+		//n = new FFTrecogniser(count);
 		//debug = new micFFTout();
 		running = new AtomicBoolean(false);
 		canRun = false;
@@ -53,7 +53,7 @@ public class Processor implements Runnable
 		//TODO: if audioIn is no initilised properly canRun = false;
 	}
 	
-	protected void run(){
+	public void run(){
 		running.set(true);
 		while(canRun && audioIn != null)
 		{
@@ -67,29 +67,30 @@ public class Processor implements Runnable
 		running.set(false);
 	}
 
-       protected void _init(){
-           if(running.get() == true)
+	protected void _init(){
+		if(running.get() == true)
 			stop();
 		
-	    canRun = true;
-           if( audioIn == null )
-	        audioIn= new PcMicrophoneIn();
-       }
+		canRun = true;
+		if( audioIn == null )
+			audioIn= new PcMicrophoneIn();
+     }
 
 	public void start(){
 		_init();
 			
-              t = new Thread(this);
-              t.start();
+		t = new Thread(this);
+        t.start();
 		audioIn.start();
-              running.set(true);
+        running.set(true);
 	}
 
-       public void blockingRun(){
-           _init();
-           run();
-           stop();
-       }
+     public void blockingRun(){
+         _init();
+         run();
+         stop();
+     }
+
 
 	public void stop(){
 		canRun = false;

@@ -12,8 +12,8 @@ public class CLI {
 		System.out.println("Toggle the recorder");
 		count = new Counter();
 		processor = new Processor(count);
-		processor.setInput("./res/7clap.wav");
-		processor.setModel("./res/clap.wav");
+		processor.setInput("./tests/7clap.wav");
+		processor.setModel("./tests/clap.wav");
 		
 		Scanner sc = new Scanner(System.in);
 		while(true){

@@ -6,6 +6,7 @@ import java.lang.Thread;
 
 public class Main {
 	public static String testsPath;
+	
 	public static void main(String[] args) {
 		Main.testsPath = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		String[] parts = Main.testsPath.split("/");
@@ -14,7 +15,7 @@ public class Main {
 			Main.testsPath += "/"+parts[i];
 		
 		//MODES 1. CLI mode 2. BATCH testing
-		String mode = "batch";
+		String mode = "cli";
 		if( args.length > 1 )
 			mode = args[0];
 		
