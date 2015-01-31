@@ -27,7 +27,7 @@ public class Tester {
 				testlistfile)); // TODO exception handling
 		File testfile;
 		BufferedReader testfilein;
-		testList = new ArrayList<TestResult>(); // Yay for O(n³) elements
+		testList = new ArrayList<TestResult>(); // Yay for O(nï¿½) elements
 
 		long listStartTime = System.currentTimeMillis();
 		do {
@@ -38,7 +38,6 @@ public class Tester {
 			testfilein = new BufferedReader(new FileReader(testfile)); // TODO
 																		// exception
 																		// handling
-
 			TestResult tr = new TestResult(
 					line_listfile, testfilein.readLine());
 			long testStartTime = System.currentTimeMillis();
@@ -84,8 +83,8 @@ public class Tester {
 	 * ===== Results for Test : FILENAME.tst ===== Model: FILENAME.wav Files
 	 * Tested: NUMBER Total Time Taken: TIME [UNIT] Global Accuracy: NUMBER%
 	 * 
-	 * == Results for file : FILENAME.wav == ———————————————— Correct = Counted
-	 * NUMBER = NUMBER Accuracy: NUMBER% ———————————————— Wav Length: TIME
+	 * == Results for file : FILENAME.wav == ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Correct = Counted
+	 * NUMBER = NUMBER Accuracy: NUMBER% ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Wav Length: TIME
 	 * [UNIT] Time Taken: TIME [UNIT]
 	 */
 	public void generateReport(String filePath)
