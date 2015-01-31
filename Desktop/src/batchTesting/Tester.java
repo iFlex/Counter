@@ -58,16 +58,7 @@ public class Tester
 				p.setModel(model);
 				p.setInput(fr.fileName);
 				long startTime = System.currentTimeMillis();
-				p.start();
-				// FIXME use join?
-				try {
-					p.isRunning(); // TODO FELIX CHECK THIS
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return; // Great Failure: Exit
-				};
-				p.stop(); // FIXME
+				p.blockingRun();
 				fr.duration = (System.currentTimeMillis() - startTime);
 				fr.actualCount = c.getCount();
 				fr.accuracy = 100 * (((double)fr.actualCount-(double)fr.correctCount)/(double)fr.correctCount);
