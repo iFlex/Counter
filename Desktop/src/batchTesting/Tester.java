@@ -40,17 +40,7 @@ public class Tester {
 																		// handling
 
 			TestResult tr = new TestResult(
-					line_listfile/* line in .lst file */, testfilein.readLine()/*
-																			 * model
-																			 * :
-																			 * e
-																			 * .
-																			 * g
-																			 * .
-																			 * clap
-																			 * .
-																			 * wav
-																			 */);
+					line_listfile, testfilein.readLine());
 			long testStartTime = System.currentTimeMillis();
 			// For each file, get the model and test all of the other wav files
 			do {
@@ -126,6 +116,7 @@ public class Tester {
 	// This will check if the model name and the target name is the same, if so
 	// return the count on the target name, otherwise return zero
 	// Use RegEx?
+	@SuppressWarnings("null")
 	private int parseCorrectCount(String modelFileName, String targetFileName) {
 		boolean sameBatch = false;
 		
@@ -142,8 +133,12 @@ public class Tester {
 		}
 		
 		if(sameBatch){
-			
+			int index = targetFileName.indexOf("_") + 1;
+			int lastIndex = targetFileName.lastIndexOf("_");
+			return Integer.parseInt(targetFileName.substring(index, lastIndex));
 		}
+		
+		return (Integer) null;
 	}
 
 	// This is the descriptor class for a .tst file
