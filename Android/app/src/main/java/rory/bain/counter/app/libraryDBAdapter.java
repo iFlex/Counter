@@ -19,6 +19,7 @@ public class libraryDBAdapter {
     /////////////////////////////////////////////////////////////////////
     // For logging:
     private static final String TAG = "libraryDBAdapter";
+    public static int size;
 
     // DB Fields
     public static final String KEY_ROWID = "_id";
@@ -99,11 +100,13 @@ public class libraryDBAdapter {
         initialValues.put(KEY_BROKEN, broken);
 
         // Insert it into the database.
+        size ++;
         return db.insert(DATABASE_TABLE, null, initialValues);
     }
 
     // Delete a row from the database, by rowId (primary key)
     public boolean deleteRow(long rowId) {
+        size --;
         String where = KEY_ROWID + "=" + rowId;
         return db.delete(DATABASE_TABLE, where, null) != 0;
     }

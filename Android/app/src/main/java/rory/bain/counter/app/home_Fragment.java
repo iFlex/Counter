@@ -28,14 +28,14 @@ public class home_Fragment extends Fragment {
         View rootView = inflater.inflate(R.layout.home_fragment, container, false);
         final TextView resultText = (TextView) rootView.findViewById(R.id.countText);
         resultText.setText("0");
-        MainActivity.libraryDB.open();
 
         final Button startButton = (Button) rootView.findViewById(R.id.startButton);
         Button resButton = (Button) rootView.findViewById(R.id.resetButton);
         MainActivity.waveVisuals = (WaveformView) rootView.findViewById(R.id.waveform_view);
 
+        MainActivity.libraryDB.open();
         Cursor cursor = MainActivity.libraryDB.getAllRows();
-        HorizontalScrollView scrollView = (HorizontalScrollView) rootView.findViewById(R.id.horizontalScrollView1);
+        HorizontalScrollView scrollView = (HorizontalScrollView) rootView.findViewById(R.id.horizontalScrollView2);
         LinearLayout linLayout = new LinearLayout(this.getActivity());
         linLayout.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -45,9 +45,9 @@ public class home_Fragment extends Fragment {
                 Button nextButton = new Button(this.getActivity());
                 nextButton.setText(cursor.getString(libraryDBAdapter.COL_NAME));
                 linLayout.addView(nextButton);
-                scrollView.addView(linLayout);
             } while (cursor.moveToPrevious());
         }
+        scrollView.addView(linLayout);
 
         MainActivity.handler = new Handler(Looper.getMainLooper()) {
             @Override

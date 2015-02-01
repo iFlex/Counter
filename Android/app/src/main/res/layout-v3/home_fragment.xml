@@ -69,119 +69,13 @@
 
 
         <HorizontalScrollView
-            android:id="@+id/horizontalScrollView1"
+            android:id="@+id/horizontalScrollView2"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5"
             android:layout_gravity="bottom|center"
             android:background="@android:color/background_light">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:orientation="horizontal"
-                android:layout_gravity="bottom"
-                android:padding="10dp" >
-
-                <Button
-                    android:id="@+id/button3"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:maxWidth="80dp"
-                    android:minWidth="80dp"
-                    android:padding="10dp"
-                    android:text="One"/>
-
-                <Button
-                    android:id="@+id/button4"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:maxWidth="81dp"
-                    android:minWidth="80dp"
-                    android:padding="10dp"
-                    android:text="Two"/>
-
-                <Button
-                    android:id="@+id/button7"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_height="wrap_content"
-                    android:minWidth="80dp"
-                    android:text="Bike" />
-
-                <Button
-                    android:id="@+id/button6"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_height="wrap_content"
-                    android:minWidth="80dp"
-                    android:text="Coins" />
-
-                <Button
-                    android:id="@+id/button5"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_height="wrap_content"
-                    android:minWidth="80dp"
-                    android:text="Pages" />
-                <Button
-                    android:id="@+id/button8"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_height="wrap_content"
-                    android:minWidth="80dp"
-                    android:text="Pages" />
-                <Button
-                    android:id="@+id/button9"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_height="wrap_content"
-                    android:minWidth="80dp"
-                    android:text="Pages" />
-                <Button
-                    android:id="@+id/button10"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_height="wrap_content"
-                    android:minWidth="80dp"
-                    android:text="Pages" />
-                <Button
-                    android:id="@+id/button11"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_height="wrap_content"
-                    android:minWidth="80dp"
-                    android:text="Pages" />
-                <Button
-                    android:id="@+id/button12"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_height="wrap_content"
-                    android:minWidth="80dp"
-                    android:text="Pages" />
-                <Button
-                    android:id="@+id/button13"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_height="wrap_content"
-                    android:minWidth="80dp"
-                    android:text="Pages" />
-
-
-            </LinearLayout>
         </HorizontalScrollView>
 
 
