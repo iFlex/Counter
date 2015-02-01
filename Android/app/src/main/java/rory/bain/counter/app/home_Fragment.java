@@ -1,5 +1,7 @@
 package rory.bain.counter.app;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import rory.bain.counter.app.R;
 import android.annotation.SuppressLint;
@@ -11,10 +13,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.os.*;
 import android.util.Log;
-import rory.bain.counter.app.MainActivity;
+import android.database.Cursor;
+
 import felix.views.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 @SuppressLint("NewApi")
 public class home_Fragment extends Fragment {
@@ -24,11 +28,26 @@ public class home_Fragment extends Fragment {
         View rootView = inflater.inflate(R.layout.home_fragment, container, false);
         final TextView resultText = (TextView) rootView.findViewById(R.id.countText);
         resultText.setText("0");
-        MainActivity.myDB.open();
+        MainActivity.libraryDB.open();
 
         final Button startButton = (Button) rootView.findViewById(R.id.startButton);
         Button resButton = (Button) rootView.findViewById(R.id.resetButton);
         MainActivity.waveVisuals = (WaveformView) rootView.findViewById(R.id.waveform_view);
+
+        Cursor cursor = MainActivity.libraryDB.getAllRows();
+        HorizontalScrollView scrollView = (HorizontalScrollView) rootView.findViewById(R.id.horizontalScrollView1);
+        LinearLayout linLayout = new LinearLayout(this.getActivity());
+        linLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+        if (cursor.moveToLast()) {
+            do {
+                int id = cursor.getInt(libraryDBAdapter.COL_ROWID);
+                Button nextButton = new Button(this.getActivity());
+                nextButton.setText(cursor.getString(libraryDBAdapter.COL_NAME));
+                linLayout.addView(nextButton);
+                scrollView.addView(linLayout);
+            } while (cursor.moveToPrevious());
+        }
 
         MainActivity.handler = new Handler(Looper.getMainLooper()) {
             @Override

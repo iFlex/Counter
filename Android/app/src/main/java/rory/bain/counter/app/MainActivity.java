@@ -21,7 +21,6 @@ import android.content.Context;
 import engine.util.*;
 import engine.Processing.Processor;
 import felix.views.*;
-import android.net.Uri;
 
 public class MainActivity extends Activity {
     String[] menutitles;  TypedArray menuIcons;
