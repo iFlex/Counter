@@ -31,12 +31,11 @@ public class Data
 		for( int i = 0 ; i < usableLength; ++ i )
 			d[i] = b[i];
 	}
-	
+
 	public Data(byte[] b,int usableLength,int bytesPerSample, boolean signed, boolean bigEndian){
 		
 		int length = usableLength / bytesPerSample;
 		d = new double[length];
-		
 		long val = 0; 
 		long rangeSize = (1<<(bytesPerSample*8)) - 1;
 		long signLimit = (1<<(bytesPerSample*8-1));
