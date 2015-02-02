@@ -1,9 +1,10 @@
 package rory.bain.counter.app;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.Fragment;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,8 +25,24 @@ public class addActivity extends Activity{
         final Button addFinished = (Button) findViewById(R.id.addFinished);
         final EditText text1 = (EditText) findViewById(R.id.textView1);
         final EditText text2 = (EditText) findViewById(R.id.textView2);
+        final EditText text3 = (EditText) findViewById(R.id.textView3);
+
+        //Setting up the keyboard next button to finish editing
+        text3.setOnEditorActionListener(new OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || actionId == EditorInfo.IME_ACTION_DONE) {
+                    MainActivity.libraryDB.insertRow(text1.getText().toString(), text2.getText().toString(), text2.getText().toString(), 1, 1);
+                    i = new Intent(getBaseContext(), MainActivity.class);
+                    startActivity(i);
+                }
+                return false;
+            }
 
 
+        });
+
+        //Adding the button in case the user doesn't know how to use the keyboard
         addFinished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
