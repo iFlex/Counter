@@ -16,7 +16,7 @@
             android:layout_weight="1"
             android:id="@+id/addButton"
             android:text="Add new sound"
-            android:background="@android:color/background_light"/>
+            />
 
         <ListView
             android:layout_width="match_parent"
