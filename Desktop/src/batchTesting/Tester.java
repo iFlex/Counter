@@ -55,8 +55,14 @@ public class Tester {
 			long testStartTime = System.currentTimeMillis();
 			// For each file, get the model and test all of the other wav files
 				
-				String testf = testfilein.readLine();
-				while (testfilein.readLine() != null){
+				do
+				{
+				
+					
+					String testf = testfilein.readLine();
+					if(testf == null){
+						break;
+					}
 				FileResult fr = new FileResult(		
 						testf,
 						parseCorrectCount( tr.getModel(), testf ));
@@ -82,7 +88,7 @@ public class Tester {
 				// (double)c.getCount()/correctCount*100;
 				tr.addFileResult(fr);
 
-			} 
+			} while (true);
 
 			tr.setDuration(System.currentTimeMillis() - testStartTime);
 			testList.add(tr);
@@ -124,9 +130,11 @@ public class Tester {
 		double overallSuccessRate = 0;
 		try {
 			fw.write(("========= Test Results for Test List: " + listName + " =========" + '\n'+"Success Rate per Batch: \n").getBytes());
+			
+			
 			for(int i = 0; i<testList.size(); i++)
 			{
-				fw.write((testList.get(i).getFileName() + " - " + testList.get(i).getGlobalAccuracy() + ", ").getBytes());
+				fw.write((testList.get(i).getFileName() + " - " + testList.get(i).getGlobalAccuracy()+"%" + ", ").getBytes());
 				overallSuccessRate += testList.get(i).getGlobalAccuracy();
 			}
 			

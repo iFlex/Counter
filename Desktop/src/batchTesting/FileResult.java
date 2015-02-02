@@ -48,11 +48,11 @@ public class FileResult {
 	public String getFileReport(){
 		
 		return "== Results for file: " + filename + " ==" + '\n' + 
-				"---------------------------" + '\n' + "Correct Count: " + correctCount + '\n' +
-				"Actual Count: " + actualCount + '\n' +
-				"Accuracy: " + accuracy + "%" +'\n' +
+				"---------------------------" + '\n' + actualCount + " - " + "Actual Count"+ '\n' +
+				correctCount + " - " + "Correct Count" + '\n' +
+				accuracy + "%" +" Accuracy" +'\n' +
 				"---------------------------" + '\n' +
-				"Time taken: " + duration/1000.000 + "s" + '\n'; //Changed duration from ms to s
+				duration/1000.000 + "s" + " - " + "Time taken" + '\n'; //Changed duration from ms to s
 		
 	}
 	
