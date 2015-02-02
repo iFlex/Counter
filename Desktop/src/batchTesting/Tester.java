@@ -58,23 +58,27 @@ public class Tester {
 				String testf = testfilein.readLine();
 				FileResult fr = new FileResult(
 						testf,
-						parseCorrectCount( tr.getModel(), testf ) 
-				);
+						parseCorrectCount( tr.getModel(), testf ));
 
 				Counter c = new Counter();
 				Processor p = new Processor(c);
-				double percentageCount = 0.0; 
 				// Setting the model and file
 				p.setModel(tr.getModel());
 				p.setInput(fr.getFileName());
 				long startTime = System.currentTimeMillis();
 				p.blockingRun();
+				System.out.println(c.getCount());
 				fr.setDuration(System.currentTimeMillis() - startTime);
 				fr.setActualCount(c.getCount());
-				fr.setAccuracy(100 * (((double) fr.getActualCount() - (double) fr
-						.getCorrectCount()) / (double) fr.getCorrectCount()));
+				
+				if(!(fr.getActualCount() == 0 && fr.getCorrectCount() == 0)){
+					fr.setAccuracy(100* ((( (double) fr.getActualCount()) / (double) fr.getCorrectCount())));
+				}
+				else{
+					fr.setAccuracy(0.0);
+				}
+				
 				// (double)c.getCount()/correctCount*100;
-
 				tr.addFileResult(fr);
 
 			} while (testfilein.readLine() != null);
@@ -86,7 +90,7 @@ public class Tester {
 
 		listDuration = (System.currentTimeMillis() - listStartTime);
 		
-		DateFormat dateFormat = new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_hhmmss");
 		Date date = new Date();
 		generateReport("./tests/results/"+dateFormat.format(date));
 	}
@@ -127,9 +131,9 @@ public class Tester {
 			
 			overallSuccessRate = overallSuccessRate/testList.size();
 			
-			fw.write(("Tests Run: " + testList.size() + '\n' 
-								+ "Overall Success Rate: " + overallSuccessRate + '\n' +
-								"Time Taken: " + listDuration + '\n').getBytes());
+			fw.write(('\n' + "Tests Run: " + testList.size() + '\n' 
+					  + "Overall Success Rate: " + overallSuccessRate + "%" + '\n' +
+								"Time Taken: " + listDuration/1000.000 +"s" +  '\n' +'\n' + '\n').getBytes()); //Changed duration from ms to s
 			for (int j = 0; j < testList.size();j++)
 				fw.write(testList.get(j).getTestReport().getBytes());
 			
@@ -144,14 +148,25 @@ public class Tester {
 	}
 
 	private int parseCorrectCount(String modelFileName, String targetFileName) {
+		
 		if( modelFileName == null || targetFileName == null){
 			//TODO: throw some exception in stead since this should not happen!
 			return 0;
 		}
 		
+		String [] model = modelFileName.split("/");
+		String [] target = targetFileName.split("/");
+		modelFileName = model[model.length - 1];
+		targetFileName = target[target.length - 1];
+		
+		modelFileName = modelFileName.substring(0,modelFileName.lastIndexOf("."));
+		modelFileName = modelFileName.toLowerCase();
+		
+		
 		boolean sameBatch = false;
 		//filename_count_version
 		String[] parts = targetFileName.split("_");
+		parts[0] = parts[0].toLowerCase();
 		
 		if( modelFileName.equals(parts[0]))
 			sameBatch = true;

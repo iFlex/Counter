@@ -72,10 +72,10 @@ public class TestResult {
 		String result = "===== Results for Test: " + fileName + " =====" + '\n' +
 							"Model :" + model + '\n' +
 							"Number of Files Tested: " + getNumFilesTested() + '\n'+
-							"Total Time Taken: " + duration + '\n' +
-							"Overall Test Accuracy: " + getGlobalAccuracy() + '\n';
+							"Total Time Taken: " + duration/1000.000 + "s" + '\n' + //Changed duration from ms to s
+							"Overall Test Accuracy: " + getGlobalAccuracy() + "%" + '\n' + '\n';
 		for (FileResult f: fileResult){
-			result += f.getFileReport();
+			result += f.getFileReport() + '\n';
 		}
 		return result;
 	}

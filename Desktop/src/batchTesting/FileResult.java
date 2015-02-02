@@ -9,9 +9,9 @@ public class FileResult {
 	//long waveLength; // TODO
 	private long duration; // Have
 	
-	public FileResult(String filename, int actualCount){
+	public FileResult(String filename, int correctCount){
 		this.filename = filename;
-		this.actualCount = actualCount;
+		this.correctCount = correctCount;
 	}
 	
 	public String getFileName() {
@@ -50,9 +50,9 @@ public class FileResult {
 		return "== Results for file: " + filename + " ==" + '\n' + 
 				"---------------------------" + '\n' + "Correct Count: " + correctCount + '\n' +
 				"Actual Count: " + actualCount + '\n' +
-				"Accuracy: " + accuracy + '\n' +
-				"---------------------------" + 
-				"Time taken: " + duration + '\n';
+				"Accuracy: " + accuracy + "%" +'\n' +
+				"---------------------------" + '\n' +
+				"Time taken: " + duration/1000.000 + "s" + '\n'; //Changed duration from ms to s
 		
 	}
 	
