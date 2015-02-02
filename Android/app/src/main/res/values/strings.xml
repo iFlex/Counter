@@ -22,9 +22,9 @@
 
     <array name="icons">
         <!--Add in icons here-->
-        <item>@drawable/ic_launcher</item>
-        <!--<item>@drawable/gplus</item>-->
-        <!--<item>@drawable/tb</item>-->
+        <item>@drawable/ic_mic</item>
+        <item>@drawable/ic_action</item>
+        <item>@drawable/ic_list</item>
     </array>
 
 </resources>
