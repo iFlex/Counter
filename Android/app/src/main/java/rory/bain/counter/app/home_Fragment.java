@@ -70,10 +70,11 @@ public class home_Fragment extends Fragment {
                 if(!MainActivity.processor.isRunning()) {
                     MainActivity.processor.start();
                 }
-                else
+                else {
                     MainActivity.processor.stop();
                     String date = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(new Date());
                     MainActivity.myDB.insertRow(MainActivity.counter.getCount(), date, "Books");
+                }
             }
         });
 
