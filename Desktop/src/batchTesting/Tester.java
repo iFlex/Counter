@@ -35,7 +35,9 @@ public class Tester {
 		testList = new ArrayList<TestResult>(); // Yay for O(n�) elements
 
 		long listStartTime = System.currentTimeMillis();
-		do {
+		
+		do
+		{
 			// Read the file and create an array of File handles for the Test
 			// files
 			line_listfile = listfilein.readLine();
@@ -43,9 +45,7 @@ public class Tester {
 			testfilein = null;
 			try{
 				testfile = new File(line_listfile); // TODO exception handling
-				testfilein = new BufferedReader(new FileReader(testfile)); // TODO
-																			// exception
-																			// handling
+				testfilein = new BufferedReader(new FileReader(testfile)); // TODO exception handling
 			}
 			catch(Exception e){
 				break;
@@ -54,9 +54,10 @@ public class Tester {
 			TestResult tr = new TestResult(line_listfile, testfilein.readLine());
 			long testStartTime = System.currentTimeMillis();
 			// For each file, get the model and test all of the other wav files
-			do {
+				
 				String testf = testfilein.readLine();
-				FileResult fr = new FileResult(
+				while (testfilein.readLine() != null){
+				FileResult fr = new FileResult(		
 						testf,
 						parseCorrectCount( tr.getModel(), testf ));
 
@@ -81,12 +82,12 @@ public class Tester {
 				// (double)c.getCount()/correctCount*100;
 				tr.addFileResult(fr);
 
-			} while (testfilein.readLine() != null);
+			} 
 
 			tr.setDuration(System.currentTimeMillis() - testStartTime);
 			testList.add(tr);
 
-		} while (line_listfile != null);
+		} while(line_listfile != null) ;
 
 		listDuration = (System.currentTimeMillis() - listStartTime);
 		

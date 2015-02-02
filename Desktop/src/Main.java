@@ -35,7 +35,7 @@ public class Main {
 			System.out.println("#Counter++ Testing facility: BATCH testing mode");
 			Tester t = new Tester();
 			try {
-				t.Test("./tests/batches/first_batch.list");
+				t.Test("./tests/batches/batch_1.list");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
