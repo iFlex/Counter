@@ -3,6 +3,8 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import engine.util.Counter;
 import rory.bain.counter.app.R;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -34,6 +36,7 @@ public class home_Fragment extends Fragment {
         MainActivity.waveVisuals = (WaveformView) rootView.findViewById(R.id.waveform_view);
 
         MainActivity.libraryDB.open();
+        MainActivity.myDB.open();
         Cursor cursor = MainActivity.libraryDB.getAllRows();
         HorizontalScrollView scrollView = (HorizontalScrollView) rootView.findViewById(R.id.horizontalScrollView2);
         LinearLayout linLayout = new LinearLayout(this.getActivity());

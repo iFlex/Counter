@@ -29,7 +29,6 @@ public class library_fragment extends Fragment{
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final View rootView = inflater .inflate(R.layout.library_view, container, false);
-        MainActivity.libraryDB.open();
         final Button addButton = (Button) rootView.findViewById(R.id.addButton);
 
         addButton.setOnClickListener(new View.OnClickListener() {
