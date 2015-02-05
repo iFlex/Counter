@@ -1,8 +1,8 @@
 fname = raw_input("filename:");
 with open(fname) as f:
     content = f.readlines()
-    count = 0
+    srt = [];
     for line in content:
-    	if line == '0.0\n':
-    		count+=1
-    print count;
+    	srt.append(float(line[0:-3]))
+    srt.sort();
+    print srt

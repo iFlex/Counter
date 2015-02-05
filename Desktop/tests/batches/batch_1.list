@@ -1,1 +1,3 @@
 ./tests/batches/claps.list
+./tests/batches/pops.list
+./tests/batches/tweets.list

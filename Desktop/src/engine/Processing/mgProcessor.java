@@ -56,21 +56,6 @@ public class mgProcessor implements Runnable
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		for(int i = 0; i < inw.length ; ++i )
-			try {
-				dbg.write((Math.abs(inw[i] - mdw[i])+"\n").getBytes());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		try {
-			dbg.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
 	}
 	protected void _init(){
 		startTime = System.currentTimeMillis();

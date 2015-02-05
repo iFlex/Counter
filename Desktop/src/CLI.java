@@ -21,23 +21,28 @@ public class CLI {
 		Scanner sc = new Scanner(System.in);
 		while(true){
 			String s = sc.nextLine();
-			if(s.equals("start"))
+			
+			if(s.equals("blr"))
+				processor.blockingRun();
+			
+			if(s.equals("start") || s.equals("S"))
 				processor.start();
-			else if(s.equals("stop"))
+			
+			else if(s.equals("stop") || s.equals("s"))
 			{
 				processor.stop();
 				System.out.println("Count:"+count.getCount());
 			}
-			else if(s.equals("reset"))
+			else if(s.equals("reset") || s.equals("r"))
 				count.reset();
 			
 			else if(s.equals("exit"))
 				break;
 			
-			else if(s.equals("setInput"))
+			else if(s.equals("setInput") || s.equals("si"))
 				processor.setInput(sc.nextLine());
 			
-			else if(s.equals("setModel"))
+			else if(s.equals("setModel") || s.equals("sm"))
 				processor.setModel(sc.nextLine());
 			else
 				System.out.println("Unknown command '"+s+"'");

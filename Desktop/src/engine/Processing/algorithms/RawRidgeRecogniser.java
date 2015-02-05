@@ -39,7 +39,9 @@ public class RawRidgeRecogniser implements Recogniser {
 	//alternative 
 	private RingBuffer buff,lagger,ddlt;
 	private RingSum chk;
+	private int co = 0;
 	public synchronized void setModel(String name){
+		co = 0;
 		sample = new Data();
 		//for now load the sample here
 		SampleIn = new FileIn(name);
@@ -91,15 +93,11 @@ public class RawRidgeRecogniser implements Recogniser {
 			e.printStackTrace();
 		}
 		counter = c;
+		co = 0;
 	}
 
-	public int co = 0;
-	private double lastVal = 0;
-	private boolean lastUp = false;
-	private int lastPos = 0;
-	int dpos = 0;
-	double rs = 0;
-	double parabolicDif = 0;
+	double runnerAvg = 0,theAvg=0;
+	double maxDrop = 65535; int maxDropPos=0, startTrack=0;
 	private void _processNext(double a){
 		buff.push(a);
 		co++;
@@ -107,55 +105,64 @@ public class RawRidgeRecogniser implements Recogniser {
 		//if buffer has reached proper size for comparison then perform fft
 		if( buff.length() == buff.getCapacity() )
 		{
-			int len = buff.length(),iter = 0;
 			double accumulator = 0, max = 0,lhs,rhs;
-			for( int i = buff.start; len > 0 ; i++,len--,iter++ ){
-				i%=buff.getCapacity();
-				lhs =  Math.abs(buff.b[i]);//*buff.b[i];
-				rhs =  Math.abs(rawSample[iter]);//*rawSample[iter];
+			int i;
+			for( i = 0; i < rawSample.length ; i++ ){
+				lhs =  Math.abs(buff.get(i));//*buff.b[i];
+				rhs =  Math.abs(rawSample[i]);//*rawSample[iter];
 				lhs =  Math.abs( lhs - rhs ); //accidental mistake yelded interesting result -= in stead of =
 				accumulator += lhs;
 				
 				if( max < lhs )
 					max = lhs;
 			}
-			accumulator /= iter;
+			accumulator /= i;
 			accumulator /= max;
+			runnerAvg += accumulator;
 			lagger.push(accumulator);
-			double val = accumulator - lagger.b[lagger.start]; 
-			//parabolic difference
-			parabolicDif = 0;iter--;
-			for( int i = 0; i < iter ; i++,iter-- )
-				parabolicDif += lagger.get(iter) - lagger.get(i);
-			
-			//
-			int zc = 0;
-			
-			if((lastVal < 0 && parabolicDif > 0))// || (lastVal > 0 && parabolicDif < 0))
-			{
-				zc = 1;
-				if( co - lastPos >= buff.getCapacity() )
-					certain = 1;
-				dpos = co - lastPos;
-				//zero crossing
-				lastVal = parabolicDif;
-				lastPos = co;
+			theAvg = (runnerAvg/co);
+			if( accumulator < theAvg ){
+				if(startTrack == 0)
+				{
+					startTrack = co;
+					
+				}
+				//track
+				if(accumulator < maxDrop ){
+					maxDrop = accumulator;
+					maxDropPos = co;
+				}
 			}
-			lastVal = parabolicDif;
-				
+			else
+			{
+				//problematic: detect if the max drop is low enough
+				if( startTrack != 0 && maxDrop <= theAvg * 0.75){ //only consider counting if the drop was low enough
+					//calculate how fast the maximum was reached
+					int dist =( buff.getCapacity() - ( maxDropPos - startTrack )); 
+					if(dist < 0)
+						dist = 1;
+					certain = (double)dist / buff.getCapacity();
+					//if(certain > 0.5)
+						System.out.println("crt:"+certain+" maxDrop:"+maxDrop+" avg:"+theAvg+" dist:"+( maxDropPos - startTrack )+" max:"+buff.getCapacity());
+				}
+				//evaluate
+				maxDrop = theAvg;
+				maxDropPos = co;
+				startTrack = 0;
+			}
 			try {
 				rto.write((accumulator+"\n").getBytes());
 				dbg.write((lagger.b[lagger.start]+"\n").getBytes());
 				//number of zero crossings in this graph should give away the count
-				sampl.write((val+"\n").getBytes() );
+				sampl.write((accumulator - lagger.b[lagger.start]+"\n").getBytes() );
 				mic.write((a+"\n").getBytes());
-				dd.write((zc+"\n").getBytes());//(chk.get()+"\n").getBytes());//( Math.abs(ddlt.getFirst() + ddlt.getLast()) + "\n" ).getBytes() );
+				dd.write((runnerAvg/co+"\n").getBytes());//(chk.get()+"\n").getBytes());//( Math.abs(ddlt.getFirst() + ddlt.getLast()) + "\n" ).getBytes() );
 			} catch (IOException e) {
 			// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			if(certain > 0.9)
+			if(certain > 0.5)
 			{
 				counter.increment(certain);
 				System.out.println(certain+" Count:"+counter.getCount());
@@ -169,7 +176,7 @@ public class RawRidgeRecogniser implements Recogniser {
 						break;
 					}*/
 			}
-		}
+		}	
 	}
 	
 	@Override

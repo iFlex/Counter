@@ -8,26 +8,33 @@ package engine.util;
 public class Data
 {
 	private double[] d;
-	
+	private short[] _d;
 	public Data(){
 		d = null;
 	}
 	
 	//TODO: turn to generic type for function below
     public Data(short[] b,int usableLength){
+    	_d = b;
         d = new double[usableLength];
+        _d = new short[usableLength];
         for( int i = 0 ; i < usableLength; ++ i )
             d[i] = b[i];
     }
 
 	public Data(double[] b,int usableLength){
 		d = new double[usableLength];
+		_d = new short[usableLength];
 		for( int i = 0 ; i < usableLength; ++ i )
+		{
 			d[i] = b[i];
+			_d[i] = (short)b[i];
+		}
 	}
 	
 	public Data(byte[] b,int usableLength){
 		d = new double[usableLength];
+		_d = new short[usableLength];
 		for( int i = 0 ; i < usableLength; ++ i )
 			d[i] = b[i];
 	}
@@ -36,6 +43,7 @@ public class Data
 		
 		int length = usableLength / bytesPerSample;
 		d = new double[length];
+		_d = new short[usableLength];
 		long val = 0; 
 		long rangeSize = (1<<(bytesPerSample*8)) - 1;
 		long signLimit = (1<<(bytesPerSample*8-1));
@@ -99,6 +107,16 @@ public class Data
 	
 	public double[] get(){
 		return d;
+	}
+	
+	public byte[] getRaw(){
+		byte[] ret = new byte[_d.length*2];
+		int idx = 0;
+		for(int i=0;i<_d.length;++i){
+			ret[idx++]=(byte)(_d[i] & 0x00ff);
+			ret[idx++]=(byte)(_d[i] >> 8);
+		}
+		return ret;
 	}
 	
 	public int getLength(){

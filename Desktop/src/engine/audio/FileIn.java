@@ -34,6 +34,7 @@ public class FileIn extends AudioIn{
 		System.out.println("FileIn:Blocking read...");
 		int numChannels = wavFile.getNumChannels();
 		wavFile.display();
+		
 		double[] buffer = new double[chunkSize * numChannels];
 		int framesRead = 0;
 		do                                                            

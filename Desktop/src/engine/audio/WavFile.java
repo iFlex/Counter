@@ -38,6 +38,7 @@ public class WavFile
 	private int validBits;					// 2 bytes unsigned, 0x0002 (2) to 0xFFFF (65,535)
 
 	// Buffering
+	public static byte[] header;
 	private byte[] buffer;					// Local buffer used for IO
 	private int bufferPointer;				// Points to the current position in local buffer
 	private int bytesRead;					// Bytes read after last read into local buffer
@@ -117,10 +118,13 @@ public class WavFile
 		putLE(RIFF_CHUNK_ID,	wavFile.buffer, 0, 4);
 		putLE(mainChunkSize,	wavFile.buffer, 4, 4);
 		putLE(RIFF_TYPE_ID,	wavFile.buffer, 8, 4);
-
+		
 		// Write out the header
+		header = new byte[12];
 		wavFile.oStream.write(wavFile.buffer, 0, 12);
-
+		for( int i = 0; i < 12; i++ )
+			header[i] = wavFile.buffer[i];
+		
 		// Put format data in buffer
 		long averageBytesPerSecond = sampleRate * wavFile.blockAlign;
 
