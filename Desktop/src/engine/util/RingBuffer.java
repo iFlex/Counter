@@ -27,17 +27,6 @@ public class RingBuffer{
 		
 	}
 	
-	private int indx;
-	public double getFirst(){
-		indx = start;
-		return b[indx];
-	}
-	public double getNext(){
-		indx++;
-		indx %= capacity;
-		return b[indx];
-	}
-	
 	public void push(double d){
 		b[stop++] = d;
 		
@@ -74,6 +63,21 @@ public class RingBuffer{
 		throw new Exception("Empty ring buffer");
 	}
 	
+	public double getFirst(){
+		return b[start];
+	}
+	
+	public double getLast(){
+		int pos = stop-1;
+		if( pos < 0 )
+			pos = capacity + pos;
+		return b[pos];
+	}
+	public double get(int pos){
+		pos += start;
+		pos %= capacity;
+		return b[pos];
+	}
 	public int getCapacity(){
 		return capacity;
 	}

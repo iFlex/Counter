@@ -27,7 +27,8 @@ public class Processor implements Runnable
 	{
 		count = c;
 		//n = new WaveFilteringNetwork(count);
-		n = new FFTrecogniser(count);
+		//n = new FFTrecogniser(count);
+		n = new RawRidgeRecogniser(count);
 		//debug = new micFFTout();
 		running = new AtomicBoolean(false);
 		canRun = false;

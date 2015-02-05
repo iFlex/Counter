@@ -4,18 +4,17 @@
  */
 
 package engine.Processing.algorithms;
+
+
 import engine.Processing.Processor;
+import engine.Processing.Recogniser;
+import engine.audio.*;
+import engine.util.*;
 
 import org.jtransforms.fft.DoubleFFT_1D;
-
-import engine.Processing.Recogniser;
-import engine.Processing.algorithms.FftRidgeRecogniser.RingBuffer;
-import engine.util.Counter;
-import engine.util.Data;
-import engine.audio.*;
-
 import java.lang.Math.*;
 import java.io.FileNotFoundException;
+
 //debug
 import java.io.FileOutputStream;
 import java.io.File;
@@ -35,8 +34,11 @@ public class RawRidgeRecogniser implements Recogniser {
 	FileOutputStream rto;
 	FileOutputStream sampl;
 	FileOutputStream mic;
+	FileOutputStream dd;
+	FileOutputStream smp;
 	//alternative 
-	private RingBuffer buff;
+	private RingBuffer buff,lagger,ddlt;
+	private RingSum chk;
 	public synchronized void setModel(String name){
 		sample = new Data();
 		//for now load the sample here
@@ -49,12 +51,27 @@ public class RawRidgeRecogniser implements Recogniser {
 			d = SampleIn.getNext();
 		}
 		rawSample = sample.get();
+		buff = new RingBuffer(rawSample.length);
+		lagger = new RingBuffer(rawSample.length);
+		ddlt = new RingBuffer(rawSample.length);
+		chk = new RingSum(rawSample.length);
+		
+		for( int i = 1 ; i < rawSample.length; ++i )
+		{
+			buff.push(0);
+			try {
+				smp.write((rawSample[i-1]+"\n").getBytes());
+			} catch (IOException e) {
+			// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		if( rawSample == null )
 		{
 			System.out.println("Error: could not initialise correctly! Sample is empty");
 			return;
 		}
-		buff = new RingBuffer(rawSample.length);
+		
 	}
 	
 	public RawRidgeRecogniser(Counter c){
@@ -62,10 +79,13 @@ public class RawRidgeRecogniser implements Recogniser {
 		//debug
 		dbg = null;
 		try {
-			dbg = new FileOutputStream(new File("output.txt"));
-			rto = new FileOutputStream(new File("ratio.txt"));
-			sampl = new FileOutputStream(new File("sample.txt"));
-			mic = new FileOutputStream(new File("mic.txt"));
+			dbg   = new FileOutputStream(new File("lagbehinder.txt"));
+			rto   = new FileOutputStream(new File("accumulator.txt"));
+			sampl = new FileOutputStream(new File("lagbehdelta.txt"));
+			mic   = new FileOutputStream(new File("rawmicinput.txt"));
+			dd    = new FileOutputStream(new File("zerocrosser.txt"));
+			smp   = new FileOutputStream(new File("thesamplesn.txt"));
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,69 +94,72 @@ public class RawRidgeRecogniser implements Recogniser {
 	}
 
 	public int co = 0;
+	private double lastVal = 0;
+	private boolean lastUp = false;
+	private int lastPos = 0;
+	int dpos = 0;
+	double rs = 0;
+	double parabolicDif = 0;
 	private void _processNext(double a){
 		buff.push(a);
 		co++;
+		double certain = 0;
 		//if buffer has reached proper size for comparison then perform fft
 		if( buff.length() == buff.getCapacity() )
 		{
-			int len = buff.length(); 
-			int iter = 0;
-			double ratio = 1;
-			double _rat = 0;
-			double lastRatio = 0;
-			
+			int len = buff.length(),iter = 0;
+			double accumulator = 0, max = 0,lhs,rhs;
 			for( int i = buff.start; len > 0 ; i++,len--,iter++ ){
 				i%=buff.getCapacity();
+				lhs =  Math.abs(buff.b[i]);//*buff.b[i];
+				rhs =  Math.abs(rawSample[iter]);//*rawSample[iter];
+				lhs =  Math.abs( lhs - rhs ); //accidental mistake yelded interesting result -= in stead of =
+				accumulator += lhs;
 				
-				double lhs = Math.abs(buff.b[i]);//*buff.b[i];
-				double rhs = Math.abs(rawSample[iter]);//*rawSample[iter];
-				if( lhs == 0 && rhs != 0)
-				{
-					_rat += rhs;
-					//System.out.println("Mic Silence..");
-				}
-				if( rhs == 0 )
-				{
-					_rat += lhs;
-					/*if( lhs == 0 )
-						System.out.println("Total Silene...");
-					else
-						System.out.println("Sample Silence..");*/
-				}
-				if( lhs != 0 && rhs != 0 )
-				{
-					if( lhs < rhs )
-					{
-						double aux = lhs;
-						lhs = rhs;
-						rhs = lhs;
-					}
-					//issue: when the microphone input is 2 silent it fits well anything
-					double q = Math.floor(lhs/rhs);
-					_rat += (lhs - q * rhs);
-				}
+				if( max < lhs )
+					max = lhs;
 			}
+			accumulator /= iter;
+			accumulator /= max;
+			lagger.push(accumulator);
+			double val = accumulator - lagger.b[lagger.start]; 
+			//parabolic difference
+			parabolicDif = 0;iter--;
+			for( int i = 0; i < iter ; i++,iter-- )
+				parabolicDif += lagger.get(iter) - lagger.get(i);
 			
-			lastRatio = _rat;
-			_rat = Math.abs(_rat/buff.length());
-			if( _rat == 0 )
-				ratio = 1;
-			else
-				ratio = 1 / _rat; //closeness of _rat to 0
+			//
+			int zc = 0;
 			
+			if((lastVal < 0 && parabolicDif > 0))// || (lastVal > 0 && parabolicDif < 0))
+			{
+				zc = 1;
+				if( co - lastPos >= buff.getCapacity() )
+					certain = 1;
+				dpos = co - lastPos;
+				//zero crossing
+				lastVal = parabolicDif;
+				lastPos = co;
+			}
+			lastVal = parabolicDif;
+				
 			try {
-				dbg.write((co+" rat:"+ratio+" r:"+_rat+" lr:"+lastRatio+"\n").getBytes());
+				rto.write((accumulator+"\n").getBytes());
+				dbg.write((lagger.b[lagger.start]+"\n").getBytes());
+				//number of zero crossings in this graph should give away the count
+				sampl.write((val+"\n").getBytes() );
+				mic.write((a+"\n").getBytes());
+				dd.write((zc+"\n").getBytes());//(chk.get()+"\n").getBytes());//( Math.abs(ddlt.getFirst() + ddlt.getLast()) + "\n" ).getBytes() );
 			} catch (IOException e) {
 			// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			if(ratio > 0.9)
+			if(certain > 0.9)
 			{
-				counter.increment(ratio);
-				System.out.println(ratio+" Count:"+counter.getCount());
-				int jump = (int)(buff.getCapacity());
+				counter.increment(certain);
+				System.out.println(certain+" Count:"+counter.getCount());
+				/*int jump = (int)(buff.getCapacity());
 				while(jump-- > 0)
 					try {
 						buff.pop();
@@ -144,17 +167,8 @@ public class RawRidgeRecogniser implements Recogniser {
 						// TODO Auto-generated catch block
 						//e.printStackTrace();
 						break;
-					}
+					}*/
 			}
-		}
-		else
-		{
-			/*try {
-				dbg.write((co+" raw:"+a+"\n").getBytes());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
 		}
 	}
 	
@@ -163,89 +177,6 @@ public class RawRidgeRecogniser implements Recogniser {
 		double[] d = data.get();
 		for( int i = 0; i < d.length; ++i)
 			_processNext(d[i]);
-		//System.out.println("CO:"+co);
-	}
-	
-	class RingBuffer{
-		
-		public double[] b;
-		public int start,stop,_length,capacity;
-		
-		RingBuffer(int length){
-			start=stop=_length=0;
-			capacity = length;
-			b = new double[capacity];
-		}
-		
-		private void normaliseIndexes(){
-			if(_length!=0)
-			{
-				if(start >= 0)
-					start %= capacity;
-				else
-					start = capacity + start;
-				
-				if( stop >= 0 )
-					stop %= capacity;
-				else
-					stop = capacity + stop;
-			}
-			
-		}
-		
-		public void push(double d){
-			b[stop++] = d;
-			
-			if( capacity == _length )
-				start++;
-			else
-				_length++;
-			
-			normaliseIndexes();
-		}
-		
-		public double pop() throws Exception{
-			if( _length > 0 )
-			{
-				double r = b[start];
-				start++;
-				_length--;
-				normaliseIndexes();
-				return r;
-			}
-			throw new Exception("Empty ring buffer");
-		}
-		
-		public double popEnd() throws Exception{
-			if( _length > 0 )
-			{
-				double r = b[stop];
-				stop--;
-				_length--;
-				normaliseIndexes();
-				return r;
-		
-			}
-			throw new Exception("Empty ring buffer");
-		}
-		
-		public int getCapacity(){
-			return capacity;
-		}
-		
-		public int length(){
-			return _length;
-		}
-		@Override
-		public String toString(){
-			String str = "";
-			int len = _length;
-			for( int i = start ; len > 0 ; ++i,len-- )
-			{
-				i%=capacity;
-				str+= " "+b[i];
-			}
-			return str;
-		}
+		System.out.println("CO:"+co);
 	}
 }
