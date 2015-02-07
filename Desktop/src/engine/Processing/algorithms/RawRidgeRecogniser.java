@@ -184,6 +184,6 @@ public class RawRidgeRecogniser implements Recogniser {
 		double[] d = data.get();
 		for( int i = 0; i < d.length; ++i)
 			_processNext(d[i]);
-		System.out.println("CO:"+co);
+		//System.out.println("CO:"+co);
 	}
 }
