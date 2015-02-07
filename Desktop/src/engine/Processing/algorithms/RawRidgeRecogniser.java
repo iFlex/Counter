@@ -38,7 +38,7 @@ public class RawRidgeRecogniser implements Recogniser {
 	FileOutputStream smp;
 	//alternative 
 	private RingBuffer buff,lagger,ddlt;
-	private RingSum chk;
+	//private RingSum chk;
 	private int co = 0;
 	public synchronized void setModel(String name){
 		co = 0;
@@ -56,7 +56,7 @@ public class RawRidgeRecogniser implements Recogniser {
 		buff = new RingBuffer(rawSample.length);
 		lagger = new RingBuffer(rawSample.length);
 		ddlt = new RingBuffer(rawSample.length);
-		chk = new RingSum(rawSample.length);
+		//chk = new RingSum(rawSample.length);
 		
 		for( int i = 1 ; i < rawSample.length; ++i )
 		{

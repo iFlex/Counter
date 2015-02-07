@@ -78,8 +78,12 @@ public class Tester {
 				fr.setDuration(System.currentTimeMillis() - startTime);
 				fr.setActualCount(c.getCount());
 				
-				if(!(fr.getActualCount() == 0 && fr.getCorrectCount() == 0)){
+				if(!(fr.getActualCount() == 0 || fr.getCorrectCount() == 0)){
 					fr.setAccuracy(100* ((( (double) fr.getActualCount()) / (double) fr.getCorrectCount())));
+				}
+				else if (fr.getActualCount() != 0 && fr.getCorrectCount() == 0){
+					fr.setAccuracy(((double) 1.0/(1.0 + (double) fr.getActualCount())));
+				
 				}
 				else{
 					fr.setAccuracy(0.0);

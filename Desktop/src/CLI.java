@@ -5,7 +5,6 @@ import java.util.Scanner;
 import engine.Processing.*;
 import engine.Processing.algorithms.*;
 import engine.util.Counter;
-import engine.util.RingSum;
 
 public class CLI {
 
