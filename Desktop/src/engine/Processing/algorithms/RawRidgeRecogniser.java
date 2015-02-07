@@ -141,7 +141,7 @@ public class RawRidgeRecogniser implements Recogniser {
 					int dist =( buff.getCapacity() - ( maxDropPos - startTrack )); 
 					if(dist < 0)
 						dist = 1;
-					certain = (double)dist / buff.getCapacity();
+					certain = ((double)dist / buff.getCapacity())*1.5;
 					//if(certain > 0.5)
 						System.out.println("crt:"+certain+" maxDrop:"+maxDrop+" avg:"+theAvg+" dist:"+( maxDropPos - startTrack )+" max:"+buff.getCapacity());
 				}
