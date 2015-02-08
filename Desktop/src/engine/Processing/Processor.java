@@ -15,7 +15,7 @@ import engine.Processing.debug.*;
 public class Processor implements Runnable
 {
 	protected AudioIn audioIn;
-	protected Recogniser n;
+	protected Recogniser consumer;
 	protected Recogniser debug;
 	protected Thread t;
 	protected AtomicBoolean running;
@@ -26,10 +26,10 @@ public class Processor implements Runnable
 	public Processor(Counter c)
 	{
 		count = c;
-		//n = new WaveFilteringNetwork(count);
-		//n = new FFTrecogniser(count);
-		n = new RawRidgeRecogniser(count);
-		//n = new mgRecogniser(count);
+		//consumer = new WaveFilteringNetwork(count);
+		//consumer = new FFTrecogniser(count);
+		consumer = new RawRidgeRecogniser(count);
+		//consumer = new mgRecogniser(count);
 		//debug = new micFFTout();
 		running = new AtomicBoolean(false);
 		canRun = false;
@@ -37,8 +37,9 @@ public class Processor implements Runnable
 	}
 	
 	public synchronized void setModel(String path){
-		n.setModel(path);
+		consumer.setModel(path);
 	}
+	
 	public synchronized void setInput(String nameOrPath){ 
 		canRun = false;
 		if( audioIn != null )
@@ -62,7 +63,7 @@ public class Processor implements Runnable
 			Data d = audioIn.getNext();
 			//System.out.println("Got data from audio:"+d);
 			if( d != null )
-			    n.process(d);
+			    consumer.process(d);
 			else if( !source.equalsIgnoreCase(".../microphone") && audioIn.ready == true )
 				break;
 		}

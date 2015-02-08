@@ -12,6 +12,7 @@ import engine.audio.*;
 import engine.util.*;
 
 import org.jtransforms.fft.DoubleFFT_1D;
+
 import java.lang.Math.*;
 import java.io.FileNotFoundException;
 
@@ -20,15 +21,8 @@ import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
 //
-public class RawRidgeRecogniser implements Recogniser {
-
-	//it reads its own data
-	private AudioIn SampleIn;
-	//Sample data
-	private Data sample;
-	//the counter
-	private Counter counter;
-	double[] rawSample;
+public class RawRidgeRecogniser extends Recogniser {
+	
 	//debug
 	FileOutputStream dbg;
 	FileOutputStream rto;
@@ -39,44 +33,9 @@ public class RawRidgeRecogniser implements Recogniser {
 	//alternative 
 	private RingBuffer buff,lagger,ddlt;
 	//private RingSum chk;
-	private int co = 0;
-	public synchronized void setModel(String name){
-		co = 0;
-		sample = new Data();
-		//for now load the sample here
-		SampleIn = new FileIn(name);
-		SampleIn.blockingStart();
-		//1. get the data
-		Data d = SampleIn.getNext();
-		while( d != null ){
-			sample.extend(d);
-			d = SampleIn.getNext();
-		}
-		rawSample = sample.get();
-		buff = new RingBuffer(rawSample.length);
-		lagger = new RingBuffer(rawSample.length);
-		ddlt = new RingBuffer(rawSample.length);
-		//chk = new RingSum(rawSample.length);
-		
-		for( int i = 1 ; i < rawSample.length; ++i )
-		{
-			buff.push(0);
-			try {
-				smp.write((rawSample[i-1]+"\n").getBytes());
-			} catch (IOException e) {
-			// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		if( rawSample == null )
-		{
-			System.out.println("Error: could not initialise correctly! Sample is empty");
-			return;
-		}
-		
-	}
 	
 	public RawRidgeRecogniser(Counter c){
+		super(c);
 		System.out.println("RAW ridge recogniser");
 		//debug
 		dbg = null;
@@ -92,24 +51,40 @@ public class RawRidgeRecogniser implements Recogniser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		counter = c;
-		co = 0;
 	}
-
+	public synchronized void setModel(String name){
+		super.setModel(name);
+		buff = new RingBuffer(rawModel.length);
+		lagger = new RingBuffer(rawModel.length);
+		ddlt = new RingBuffer(rawModel.length);
+		//chk = new RingSum(rawModel.length);
+		for( int i = 1 ; i < rawModel.length; ++i )
+		{
+			buff.push(0);
+			try {
+				smp.write((rawModel[i-1]+"\n").getBytes());
+			} catch (IOException e) {
+			// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
 	double runnerAvg = 0,theAvg=0;
 	double maxDrop = 65535; int maxDropPos=0, startTrack=0;
 	private void _processNext(double a){
 		buff.push(a);
-		co++;
+		position++;
 		double certain = 0;
 		//if buffer has reached proper size for comparison then perform fft
 		if( buff.length() == buff.getCapacity() )
 		{
 			double accumulator = 0, max = 0,lhs,rhs;
 			int i;
-			for( i = 0; i < rawSample.length ; i++ ){
+			for( i = 0; i < rawModel.length ; i++ ){
 				lhs =  Math.abs(buff.get(i));//*buff.b[i];
-				rhs =  Math.abs(rawSample[i]);//*rawSample[iter];
+				rhs =  Math.abs(rawModel[i]);//*rawModel[iter];
 				lhs =  Math.abs( lhs - rhs ); //accidental mistake yelded interesting result -= in stead of =
 				accumulator += lhs;
 				
@@ -120,17 +95,17 @@ public class RawRidgeRecogniser implements Recogniser {
 			accumulator /= max;
 			runnerAvg += accumulator;
 			lagger.push(accumulator);
-			theAvg = (runnerAvg/co);
+			theAvg = (runnerAvg/position);
 			if( accumulator < theAvg ){
 				if(startTrack == 0)
 				{
-					startTrack = co;
+					startTrack = (int) position;
 					
 				}
 				//track
 				if(accumulator < maxDrop ){
 					maxDrop = accumulator;
-					maxDropPos = co;
+					maxDropPos = (int) position;
 				}
 			}
 			else
@@ -147,7 +122,7 @@ public class RawRidgeRecogniser implements Recogniser {
 				}
 				//evaluate
 				maxDrop = theAvg;
-				maxDropPos = co;
+				maxDropPos = (int) position;
 				startTrack = 0;
 			}
 			try {
@@ -156,7 +131,7 @@ public class RawRidgeRecogniser implements Recogniser {
 				//number of zero crossings in this graph should give away the count
 				sampl.write((accumulator - lagger.b[lagger.start]+"\n").getBytes() );
 				mic.write((a+"\n").getBytes());
-				dd.write((runnerAvg/co+"\n").getBytes());//(chk.get()+"\n").getBytes());//( Math.abs(ddlt.getFirst() + ddlt.getLast()) + "\n" ).getBytes() );
+				dd.write((runnerAvg/position+"\n").getBytes());//(chk.get()+"\n").getBytes());//( Math.abs(ddlt.getFirst() + ddlt.getLast()) + "\n" ).getBytes() );
 			} catch (IOException e) {
 			// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -184,6 +159,6 @@ public class RawRidgeRecogniser implements Recogniser {
 		double[] d = data.get();
 		for( int i = 0; i < d.length; ++i)
 			_processNext(d[i]);
-		//System.out.println("CO:"+co);
+		//System.out.println("position:"+position);
 	}
 }
