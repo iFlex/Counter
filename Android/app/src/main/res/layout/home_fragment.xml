@@ -26,9 +26,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center|top"
-            android:shadowColor="@android:color/background_dark"
-            android:shadowRadius="40"
-            android:textColorLink="@android:color/background_light"
+            android:textColorLink="@color/iconColor"
             android:textSize="250sp"
             android:textStyle="bold" android:text="0"/>
 
@@ -66,7 +64,9 @@
                 android:layout_weight="1"
                 android:text="Start"
                 android:layout_margin="10dp"
-                android:layout_marginBottom="0dp"/>
+                android:layout_marginBottom="0dp"
+                android:background="@color/iconColor"
+                />
 
             <Button
                 android:id="@+id/resetButton"
@@ -75,7 +75,9 @@
                 android:layout_weight="1"
                 android:text="Reset"
                 android:layout_margin="10dp"
-                android:layout_marginBottom="0dp"/>
+                android:layout_marginBottom="0dp"
+                android:background="@color/iconColor"
+                />
 
         </LinearLayout>
 

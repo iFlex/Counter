@@ -50,5 +50,12 @@
         sha1="79477aec6929cd64cd863d6ac59c2445d00239a3">
         <dex dex="/Users/rorybain/Counter/Android/app/build/intermediates/pre-dexed/debug/JTransforms-3.0-bac324fb278d29d563e8851b1330dc3c7fb25f1e.jar" />
     </item>
+    <item
+        jar="/Users/rorybain/Counter/Android/app/lib/musicg-1.4.2.0.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="e4cc5194d9313717e173c63eb38dd220a63b5532">
+        <dex dex="/Users/rorybain/Counter/Android/app/build/intermediates/pre-dexed/debug/musicg-1.4.2.0-8c5897baaea1e25e5b7fcca2379e3b3a4e8f951c.jar" />
+    </item>
 
 </items>

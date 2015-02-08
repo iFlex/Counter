@@ -34,6 +34,7 @@ public class home_Fragment extends Fragment {
         resultText.setText("0");
 
         final Button startButton = (Button) rootView.findViewById(R.id.startButton);
+        final Button menuButton = (Button) rootView.findViewById(R.id.menuButton);
         Button resButton = (Button) rootView.findViewById(R.id.resetButton);
         MainActivity.waveVisuals = (WaveformView) rootView.findViewById(R.id.waveform_view);
 
@@ -48,6 +49,7 @@ public class home_Fragment extends Fragment {
             do {
                 int id = cursor.getInt(libraryDBAdapter.COL_ROWID);
                 Button nextButton = new Button(this.getActivity());
+
                 nextButton.setText(cursor.getString(libraryDBAdapter.COL_NAME));
                 linLayout.addView(nextButton);
                 nextButton.setOnClickListener(buttonListListener);
@@ -71,6 +73,13 @@ public class home_Fragment extends Fragment {
         };
 
         MainActivity.counter.setCommChannel(MainActivity.handler);
+
+        menuButton.setOnClickListener(new OnClickListener() {
+            @Override
+        public void onClick(View v) {
+                //Display menu bar
+            }
+        });
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override

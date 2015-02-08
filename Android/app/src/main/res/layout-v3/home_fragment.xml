@@ -4,18 +4,25 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     >
-
+    <Button
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="15dp"
+        android:background="@drawable/ic_drawer"
+        android:gravity="top|left"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/menuButton"/>
 
     <LinearLayout
-
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="left|right|bottom"
         android:orientation="vertical"
-        android:weightSum="4">
+        android:weightSum="4"
+        android:id="@+id/linearLayout">
         <!--<ImageView-->
             <!--android:id="@+id/drawerPullImage"-->
             <!--android:layout_width="40dp"-->
@@ -29,11 +36,8 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
-            android:gravity="center|center_vertical"
-            android:paddingTop="0dp"
-            android:shadowColor="@android:color/background_dark"
-            android:shadowRadius="40"
-            android:textColorLink="@android:color/background_light"
+            android:gravity="center_horizontal|top"
+            android:textColor="@color/iconColor"
             android:textSize="250sp"
             android:textStyle="bold" android:text="0"
             />
@@ -60,8 +64,10 @@
                 android:layout_height="80dp"
                 android:layout_weight="1"
                 android:text="Start"
+                android:textColor="@color/white"
                 android:layout_margin="10dp"
-                android:layout_marginBottom="0dp"/>
+                android:layout_marginBottom="0dp"
+                android:background="@color/iconColor"/>
 
             <Button
                 android:id="@+id/resetButton"
@@ -69,8 +75,10 @@
                 android:layout_height="80dp"
                 android:layout_weight="1"
                 android:text="Reset"
+                android:textColor="@color/white"
                 android:layout_margin="10dp"
-                android:layout_marginBottom="0dp"/>
+                android:layout_marginBottom="0dp"
+                android:background="@color/iconColor"/>
 
         </LinearLayout>
 
