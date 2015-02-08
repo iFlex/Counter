@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.musicg.wave.Wave;
+import android.app.Fragment;
+import android.app.FragmentManager;
 
 /**
  * Created by rorybain on 29/01/15.
@@ -49,7 +51,7 @@ public class addActivity extends Activity{
 
         resetButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //Delete the current recording, clear the screen. We may need some visual representation that a recording was made too. 
+                //Delete the current recording, clear the screen. We may need some visual representation that a recording was made too.
             }
         });
 
@@ -57,13 +59,18 @@ public class addActivity extends Activity{
         addFinished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               returnToMainMenu();
+                View view = findViewById(R.id.add_frame_container);
+                view.setVisibility(View.VISIBLE);
+                Fragment fragment = new naming_fragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.add_frame_container, fragment).commit();
+//               returnToMainMenu();
             }
         });
 
     }
 
-    private void returnToMainMenu() {
+    public void returnToMainMenu() {
 //////////////////////////////////////////////////////////////////
 //        Remember to uncomment this and put in real data
 //////////////////////////////////////////////////////////////////
