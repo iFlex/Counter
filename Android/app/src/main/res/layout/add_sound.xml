@@ -67,7 +67,7 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/addStop"
+                android:id="@+id/addReset"
                 android:layout_gravity="center|bottom"
                 android:text="Reset"
                 android:layout_weight="1"/>

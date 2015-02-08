@@ -23,10 +23,10 @@ public class addActivity extends Activity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_sound);
+        final Button startButton = (Button) findViewById(R.id.addStart);
+        final Button resetButton = (Button) findViewById(R.id.addReset);
         final Button addFinished = (Button) findViewById(R.id.addFinished);
-//        final EditText text1 = (EditText) findViewById(R.id.textView1);
         final EditText countText = (EditText) findViewById(R.id.textView2);
-//        final EditText text3 = (EditText) findViewById(R.id.textView3);
 
         //Setting up the keyboard next button to finish editing
         countText.setOnEditorActionListener(new OnEditorActionListener() {
@@ -39,6 +39,18 @@ public class addActivity extends Activity{
             }
 
 
+        });
+
+        startButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //start recording if not already started, if it is already recording, then stop
+            }
+        });
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Delete the current recording, clear the screen. We may need some visual representation that a recording was made too. 
+            }
         });
 
         //Adding the button in case the user doesn't know how to use the keyboard
