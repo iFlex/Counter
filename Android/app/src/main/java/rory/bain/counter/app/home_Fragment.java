@@ -74,6 +74,8 @@ public class home_Fragment extends Fragment {
 
         MainActivity.counter.setCommChannel(MainActivity.handler);
 
+
+        //Currently not working
         menuButton.setOnClickListener(new OnClickListener() {
             @Override
         public void onClick(View v) {

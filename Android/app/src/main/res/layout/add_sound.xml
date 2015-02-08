@@ -10,7 +10,7 @@
         android:layout_gravity="center_horizontal"
         android:weightSum="10">
 
-        <EditText
+      <!--  <EditText
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="3"
@@ -22,9 +22,7 @@
                 android:scrollHorizontally="true"
                 android:inputType="textAutoCorrect"
                 android:capitalize="words"
-                android:id="@+id/textView1"
-
-        />
+                android:id="@+id/textView1"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -53,13 +51,59 @@
             android:capitalize="words"
             android:id="@+id/textView3"
             />
+-->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/addStart"
+                android:layout_gravity="center|bottom"
+                android:text="Start"
+                android:layout_weight="1"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/addStop"
+                android:layout_gravity="center|bottom"
+                android:text="Reset"
+                android:layout_weight="1"/>
+
+            </LinearLayout>
+
+        <felix.views.WaveformView
+            android:id="@+id/waveform_view"
+            android:layout_width="match_parent"
+            android:layout_height="100sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.3"
+            android:background="@android:color/transparent"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:hint="Number of events..."
+            android:layout_gravity="right|bottom"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:scrollHorizontally="true"
+            android:inputType="numberDecimal"
+            android:capitalize="words"
+            android:id="@+id/textView2"
+            />
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:id="@+id/addFinished"
             android:layout_gravity="center|bottom"
-            android:text="Done"/>
+            android:text="Finished"/>
 
         <!--<ListView-->
             <!--android:layout_width="match_parent"-->

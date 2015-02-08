@@ -24,18 +24,16 @@ public class addActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_sound);
         final Button addFinished = (Button) findViewById(R.id.addFinished);
-        final EditText text1 = (EditText) findViewById(R.id.textView1);
-        final EditText text2 = (EditText) findViewById(R.id.textView2);
-        final EditText text3 = (EditText) findViewById(R.id.textView3);
+//        final EditText text1 = (EditText) findViewById(R.id.textView1);
+        final EditText countText = (EditText) findViewById(R.id.textView2);
+//        final EditText text3 = (EditText) findViewById(R.id.textView3);
 
         //Setting up the keyboard next button to finish editing
-        text3.setOnEditorActionListener(new OnEditorActionListener() {
+        countText.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || actionId == EditorInfo.IME_ACTION_DONE) {
-                    MainActivity.libraryDB.insertRow(text1.getText().toString(), text2.getText().toString(), text2.getText().toString(), 1, 1);
-                    i = new Intent(getBaseContext(), MainActivity.class);
-                    startActivity(i);
+                    returnToMainMenu();
                 }
                 return false;
             }
@@ -47,13 +45,18 @@ public class addActivity extends Activity{
         addFinished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.libraryDB.insertRow(text1.getText().toString(), text2.getText().toString(), text2.getText().toString(), 1, 1);
-                i = new Intent(getBaseContext(), MainActivity.class);
-                startActivity(i);
+               returnToMainMenu();
             }
         });
 
     }
 
-
+    private void returnToMainMenu() {
+//////////////////////////////////////////////////////////////////
+//        Remember to uncomment this and put in real data
+//////////////////////////////////////////////////////////////////
+//        MainActivity.libraryDB.insertRow(text1.getText().toString(), text2.getText().toString(), text2.getText().toString(), 1, 1);
+        i = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(i);
+    }
 }
