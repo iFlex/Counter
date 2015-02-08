@@ -37,4 +37,5 @@ dependencies {
     compile files('lib/JLargeArrays-1.2.jar')
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:support-v13:21.0.3'
+    compile files('lib/musicg-1.4.2.0.jar')
 }

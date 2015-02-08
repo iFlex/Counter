@@ -1,4 +1,5 @@
 package rory.bain.counter.app;
+import android.content.DialogInterface;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -11,6 +12,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.os.*;
@@ -48,6 +50,9 @@ public class home_Fragment extends Fragment {
                 Button nextButton = new Button(this.getActivity());
                 nextButton.setText(cursor.getString(libraryDBAdapter.COL_NAME));
                 linLayout.addView(nextButton);
+                nextButton.setOnClickListener(buttonListListener);
+                //Tag should be something that we can identify library objects using
+                nextButton.setTag(cursor.getInt(libraryDBAdapter.COL_ROWID));
             } while (cursor.moveToPrevious());
         }
         scrollView.addView(linLayout);
@@ -91,4 +96,15 @@ public class home_Fragment extends Fragment {
 
         return rootView;
     }
+    private OnClickListener buttonListListener = new OnClickListener() {
+        public void onClick(View view) {
+            //Once xml button styles have been defined, make the view set to the 'highlighted' style
+            int v = (int) view.getTag();
+            MainActivity.libraryDB.open();
+            //Should use a cursor to tidy this up, however for now it just needs to be able to access the data
+            //Also need to implemented selected sound
+            String sample = MainActivity.libraryDB.getRow(v).getString(libraryDBAdapter.COL_SAMPLE);
+        }
+
+    };
 }

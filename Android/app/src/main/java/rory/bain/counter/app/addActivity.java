@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.musicg.wave.Wave;
 
 /**
  * Created by rorybain on 29/01/15.
