@@ -16,12 +16,14 @@ import android.media.AudioFormat;
  * Created by MLF on 08/02/15.
  */
 public class modelMaker extends Recogniser {
-    private Data data;
+    private Data sample;
     private Data model;
     private long startPosition;
     private long endPosition;
-
-
+    private int stage = 0;
+    private Recogniser EventDetector;
+    private Recogniser CorrectnessChecker;
+    private WaveformView visualiser = null;
     public void setStartPosition(long position)
     {
         this.startPosition = position;
@@ -40,46 +42,64 @@ public class modelMaker extends Recogniser {
         return this.endPosition;
     }
 
+    public void setVisualiser(WaveformView w) {
+        visualiser = w;
+    }
+
     public modelMaker(Counter counter)
     {
         super(counter);
-        this.data = new Data();
-        this.model = new Data();
+        sample = new Data();
+        model = new Data();
+        stage = 0;
+
+        EventDetector = new NaiveRecogniserMk3((double)5000 ,1024, counter); //TODO remove hard coded variables
+        CorrectnessChecker = new RawRidgeRecogniser(counter);
     }
 
     public void process(Data data) {
-        this.data.extend(data);
-        Log.d("god new frame:",":"+data.get().length);
+        if(stage == 0) {
+            sample.extend(data);
+            EventDetector.process(data);
+            if( visualiser != null )
+                visualiser.updateAudioData(getSample());
+        }
+        else {
+            CorrectnessChecker.setRawModel(model);
+            CorrectnessChecker.process(sample);
+        }
     }
 
     public void reset()
     {
-        this.data = new Data();
-        this.counter.reset();
+        sample = new Data();
+        model = new Data();
+        counter.reset();
+        stage = 0;
     }
 
-    public void detectEvent()
+    public void detectEventBoundaries()
     {
-        Counter nr_counter = new Counter();
-        NaiveRecogniserMk3 nr = new NaiveRecogniserMk3((double)5000 ,1024, nr_counter); //TODO remove hard coded variables
-        nr.process(this.data);
-        LinkedList<Long> positions = nr.getPositions();
+        stage = 0;
+        LinkedList<Long> positions = EventDetector.getPositions();
         try {
             this.startPosition = positions.get(0);
             this.endPosition = positions.get(1);
         }
         catch(Exception e){
             startPosition = 0;
-            endPosition = data.get().length/2;
+            endPosition = 0;
         }
-        Log.d("BGLABLA:","c:"+nr_counter.getCount()+" s:"+startPosition+" e:"+endPosition);
+        Log.d("BGLABLA:","c:"+counter.getCount()+" s:"+startPosition+" e:"+endPosition);
     }
 
     public short[] extractModel()
     {
+        counter.reset();
+        stage = 1;
         double[] modeldata;
         modeldata = new double[(int)(this.endPosition - this.startPosition)];
-        double[] thedata = this.data.get();
+        double[] thedata = sample.get();
         short[] graphdata = new short[thedata.length];
         int j = 0; long i = this.startPosition;
 
@@ -95,15 +115,9 @@ public class modelMaker extends Recogniser {
         return graphdata;
     }
 
-    public boolean checkCorrectness(int count)
-    {
-        Counter c = new Counter();
-        extractModel();
-        RawRidgeRecogniser rr = new RawRidgeRecogniser(c);
-        rr.setRawModel(this.model);
-        rr.process(this.data);
-        Log.d("RRRRRRR:","c:"+c.getCount()+" cr:"+count);
-        return (c.getCount() == count);
+    public boolean checkCorrectness(int correct) {
+        Log.d("Checking correctness:","C:"+correct+" cnt:"+counter.getCount());
+        return ( counter.getCount() == correct && stage ==1 );
     }
 
     public short[] getModel(){
@@ -116,11 +130,21 @@ public class modelMaker extends Recogniser {
 
         return graphdata;
     }
+    public short[] getSample(){
+        double[] modeldata = sample.get();
+        short[] graphdata = new short[modeldata.length];
+        long i = this.startPosition;
+
+        for( i = 0 ; i < modeldata.length ; i++)
+            graphdata[(int)i] = (short)modeldata[(int)i];
+
+        return graphdata;
+    }
     AudioTrack atrack = null;
     public void playbackSelection(){
         cancelPlayback();
 
-        double[] rdta = data.get();
+        double[] rdta = sample.get();
         short[] pbkdata = new short[rdta.length];
         int j = 0;
         for( int i = 0 ; i < rdta.length; ++i ) {
