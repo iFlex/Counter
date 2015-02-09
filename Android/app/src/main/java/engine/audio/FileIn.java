@@ -5,7 +5,12 @@ import java.io.IOException;
 import engine.util.Data;
 
 public class FileIn extends AudioIn{
-	
+	//FIXME Different
+	/*
+	private String filePath;
+	private WavFile wavFile;
+	private int chunkSize = 1000
+	 */
 	private String filePath;
 	private WavFile wavFile;
 	
@@ -30,6 +35,8 @@ public class FileIn extends AudioIn{
 		this.filePath = filePath;
 	}
 	
+	//FIXME Different
+	//Method on Desktop too big to copy and not cause confusion, see the desktop app's folder for its method
 	private void read(){
 		System.out.println("Testing!");
 		int numChannels = wavFile.getNumChannels();                   
@@ -55,6 +62,21 @@ public class FileIn extends AudioIn{
 		
 	}
 	
+	//FIXME Different
+	//The difference is not the println
+	/*
+	public void run(){ 
+		System.out.println("FileIn: running..");
+		read();
+		try {
+			wavFile.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ready = true;
+	
+	 */
 	@Override
 	public void run(){ 
 		

@@ -78,7 +78,7 @@ public class Data
 	public void extend (Data od){
 		if( od == null )
 		{
-			System.out.println("Error: You have tried to extend a data object with an empy object");
+			System.out.println("Error: You have tried to extend a data object with an empty object");
 			return;
 		}
 		

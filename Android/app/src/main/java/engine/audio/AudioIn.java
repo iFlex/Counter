@@ -11,6 +11,15 @@ import java.lang.Thread;
 // Gets data from any audio input possible, the Microphone, for example
 public abstract class AudioIn implements Runnable
 {
+	//FIXME Different
+	/*
+ 	private ConcurrentLinkedQueue<Data> inQueue;
+	protected Thread thread;
+	protected boolean canRun;
+	protected boolean noMoreInput;
+	public boolean ready = false;
+	public boolean valid = true
+	 */
 	private ConcurrentLinkedQueue<Data> inQueue;
 	protected Thread thread;
 	protected boolean canRun;
@@ -25,7 +34,19 @@ public abstract class AudioIn implements Runnable
 		canRun = true;
 		run();
 	}
+	//FIXME DIFFERENT
+	/*
+	public void start()
+	{
+		noMoreInput = false;
+		if( thread != null)
+			stop();
+		
+		canRun = true;
+        thread = new Thread(this);
+        thread.start();
 	
+	 */
 	public void start()
 	{
 		canRun = true;
@@ -33,6 +54,21 @@ public abstract class AudioIn implements Runnable
         thread.start();
 	}
 	
+	//FIXME Different
+	/*
+	public void stop()
+	{
+        canRun = false;
+        if( thread != null)
+        {
+	        try {
+	            thread.join();
+	        } catch ( Exception e){
+	
+	        }
+	        thread = null;
+        }
+	 */
 	public void stop()
 	{
         canRun = false;
