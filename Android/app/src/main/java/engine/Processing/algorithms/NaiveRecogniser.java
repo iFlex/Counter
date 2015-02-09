@@ -3,7 +3,7 @@ import engine.Processing.Processor;
 import engine.Processing.Recogniser;
 import engine.util.*;
 
-public class NaiveRecogniser implements Recogniser
+public class NaiveRecogniser extends Recogniser
 {
 	private double threshold; // The threshold that the data needs to pass to be considered a uphill count
 	private boolean actualState; // If it is true, means it is actually in a hill.
@@ -13,9 +13,11 @@ public class NaiveRecogniser implements Recogniser
 	private int downhillCount; // How many downhill doubles it has counted
 	private int window; // The window to ignore hills after a downhill to see if it is another count
 	private Counter count;
+	
 	// Starndart initalization
-    public synchronized void setModel(String name){
-    }
+	public synchronized void setModel(String name){
+	}
+	
 	private void standardSettings()
 	{
 		this.threshold = 0.8;
@@ -28,13 +30,13 @@ public class NaiveRecogniser implements Recogniser
 
 	public NaiveRecogniser(Counter c)
 	{
-		count = c;
+		super(c);
 		this.standardSettings();
 	}
 
 	public NaiveRecogniser(double Threshold,Counter c)
 	{
-		count = c;
+        super(c);
 		this.standardSettings();
 		this.threshold = Threshold;
 	}

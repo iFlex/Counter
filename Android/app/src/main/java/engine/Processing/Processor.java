@@ -24,14 +24,21 @@ public class Processor implements Runnable
 	private boolean canRun;
 	private Counter count;
 
+    void _init(Counter c){
+        count = c;
+        running = new AtomicBoolean(false);
+        canRun = false;
+        audioIn = null;
+    }
     public Processor(Counter c)
 	{
-        count = c;
-		running = new AtomicBoolean(false);
-		canRun = false;
-		n = new NaiveRecogniserMk2((double)15000, 512, count);
-        //n = new FFTrecogniser(count);
-        audioIn = null;
+        _init(c);
+        n = new NaiveRecogniserMk3((double)5000, 512, count);
+    }
+    public Processor(Counter c, Recogniser r)
+    {
+        _init(c);
+        n = r;
     }
 
     public synchronized void setModel(String path){
@@ -64,29 +71,50 @@ public class Processor implements Runnable
 		running.set(false);
 	}
 
-	public void start(){
-		canRun = true;
-		running.set(true);
+    protected void _init(){
+        if(running.get() == true)
+            stop();
+
+        canRun = true;
         if( audioIn == null )
-            audioIn = new MicrophoneIn();
+            audioIn= new MicrophoneIn();
+    }
+
+    public void start(){
+        _init();
 
         t = new Thread(this);
         t.start();
-		audioIn.start();
-	}
+        audioIn.start();
+    }
 
-	public void stop(){
-		canRun = false;
-		audioIn.stop();
-        audioIn = null;
-        try {
-            t.join();
-        } catch ( Exception e){
-            t = null;
+    public void blockingRun(){
+        _init();
+        audioIn.start();
+        run();
+        audioIn.stop();
+        stop();
+    }
+
+
+    public void stop(){
+        canRun = false;
+        if(audioIn != null)
+        {
+            audioIn.stop();
+            audioIn = null;
         }
-	}
+        if( t != null)
+        {
+            try {
+                t.join();
+            } catch ( Exception e){
+                t = null;
+            }
+        }
+    }
 
-	public boolean isRunning(){
-		return running.get() == true;
-	}
+    public boolean isRunning(){
+        return running.get();
+    }
 }

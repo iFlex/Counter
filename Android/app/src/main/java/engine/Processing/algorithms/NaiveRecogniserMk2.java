@@ -5,7 +5,7 @@ import engine.Processing.Processor;
 import engine.Processing.Recogniser;
 import engine.util.*;
 
-public class NaiveRecogniserMk2 implements Recogniser
+public class NaiveRecogniserMk2 extends Recogniser
 {
 	// The threshold that the data needs to pass to be considered a uphill count
 	private double threshold;
@@ -71,26 +71,26 @@ public class NaiveRecogniserMk2 implements Recogniser
 
 	public NaiveRecogniserMk2(Counter c)
 	{
+        super(c);
 		this.standardSettings();
-		count = c;
 	}
 
 	public NaiveRecogniserMk2(double Threshold,Counter c)
 	{
+        super(c);
 		this.standardSettings();
 		this.threshold = Threshold;
-		count = c;
 	}
 	
 	public NaiveRecogniserMk2(double Threshold, int Window, Counter c)
 	{
+        super(c);
 		this.threshold = Threshold;
 		this.actualState = false;
 		this.dataToProcess = new double[Window*2];
 		this.window = Window;
 		this.downhillCount = window;
 		this.atIndex = 0;
-		count = c;
 	}
 	
 	public void process(Data data)
@@ -143,7 +143,8 @@ public class NaiveRecogniserMk2 implements Recogniser
 					// TODO FIXME
 					try
 					{
-						count.increment(1.0);
+                        pushFramePos(position);
+						counter.increment(1.0);
 					}
 					catch(Exception e)
 					{
@@ -155,9 +156,13 @@ public class NaiveRecogniserMk2 implements Recogniser
 			}
 			else
 			{
+                if(this.downhillCount >= this.window)
+                    pushFramePos(position);
+
 				this.downhillCount++;
 			}
-		}
+		    position++;
+        }
         System.out.println();
 		this.atIndex = 0;
 		return c;

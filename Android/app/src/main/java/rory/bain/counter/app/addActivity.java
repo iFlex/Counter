@@ -14,29 +14,45 @@ import com.musicg.wave.Wave;
 import android.app.Fragment;
 import android.app.FragmentManager;
 
+import felix.views.WaveformView;
+import felix.views.modelMaker;
+import engine.util.Counter;
+import engine.Processing.Processor;
+import android.util.Log;
 /**
  * Created by rorybain on 29/01/15.
  */
 public class addActivity extends Activity{
     public static Intent i;
+    private modelMaker mMaker;
+    private Processor sampler;
+    private WaveformView waveVisuals;
+    private WaveformView modelVisuals;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+
+        Counter c = new Counter();
+        mMaker = new modelMaker(c);
+        sampler = new Processor(c,mMaker);
         setContentView(R.layout.add_sound);
+        waveVisuals = (WaveformView) findViewById(R.id.waveform_view);
+        modelVisuals = (WaveformView) findViewById(R.id.modelform_view);
+        waveVisuals.setHistorySize(1);
+
         final Button startButton = (Button) findViewById(R.id.addStart);
         final Button resetButton = (Button) findViewById(R.id.addReset);
         final Button addFinished = (Button) findViewById(R.id.addFinished);
+        final Button playback    = (Button) findViewById(R.id.playback);
         final EditText countText = (EditText) findViewById(R.id.textView2);
 
         //Setting up the keyboard next button to finish editing
         countText.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || actionId == EditorInfo.IME_ACTION_DONE) {
-                    returnToMainMenu();
-                }
+                //if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || actionId == EditorInfo.IME_ACTION_DONE) {
+                //}
                 return false;
             }
 
@@ -46,12 +62,23 @@ public class addActivity extends Activity{
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //start recording if not already started, if it is already recording, then stop
+                if(sampler.isRunning()) {
+                    sampler.stop();
+                    mMaker.detectEvent();
+                    waveVisuals.setLines((int)mMaker.getStartPosition(),(int)mMaker.getEndPosition());
+                    waveVisuals.updateAudioData(mMaker.extractModel());
+                    modelVisuals.updateAudioData(mMaker.getModel());
+                } else {
+                    mMaker.reset();
+                    sampler.start();
+                }
             }
         });
 
         resetButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Delete the current recording, clear the screen. We may need some visual representation that a recording was made too.
+                sampler.stop();
             }
         });
 
@@ -59,15 +86,38 @@ public class addActivity extends Activity{
         addFinished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View view = findViewById(R.id.add_frame_container);
-                view.setVisibility(View.VISIBLE);
-                Fragment fragment = new naming_fragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.add_frame_container, fragment).commit();
-//               returnToMainMenu();
+                mMaker.extractModel();
+                int correctCount = 0;
+                try{
+                    correctCount = Integer.parseInt(countText.getText().toString());
+                }
+                catch(Exception e){
+                    //no need to do anything here!
+                }
+                Log.i("CORRECT COUNT:",":"+correctCount);
+                if( correctCount == 0 ){
+                    //TODO: Rory - alert user about how badly he's using the app :D
+                    Log.i("JEEZ!","add the correct count!");
+                }
+                else {
+                    if (mMaker.checkCorrectness(Integer.parseInt(countText.getText().toString()))) {
+                        View view = findViewById(R.id.add_frame_container);
+                        view.setVisibility(View.VISIBLE);
+                        Fragment fragment = new naming_fragment();
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.add_frame_container, fragment).commit();
+                    } else {
+                        //TODO: Rory - Display a message telling the user that the sample is not good and user needs to retry or give up
+                    }
+                }
             }
         });
-
+        playback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMaker.playbackSelection();
+            }
+        });
     }
 
     public void returnToMainMenu() {

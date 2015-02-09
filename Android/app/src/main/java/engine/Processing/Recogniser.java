@@ -1,8 +1,77 @@
 // Process the data to put into the counter
 package engine.Processing;
+import java.io.IOException;
+import java.util.LinkedList;
+
+import engine.audio.AudioIn;
+import engine.audio.FileIn;
+import engine.util.Counter;
 import engine.util.Data;
-public interface Recogniser
+import engine.util.RingBuffer;
+
+public abstract class Recogniser
 {
-    public abstract void  setModel(String path);
-	public abstract void process(Data data);
+	//the counter
+	protected Counter counter;
+	protected long position;
+	protected double[] rawModel;
+	protected LinkedList<Long> positions;
+	
+	private void _init(Counter c){
+		counter = c;
+		position = 0;
+		positions = new LinkedList<Long>();
+	}
+	
+	protected Recogniser(Counter c){
+		_init(c);
+	}
+	
+	public Recogniser(Counter c, Data thesample){
+		_init(c);
+		rawModel = thesample.get();
+	}
+	
+	public void setModel(String name){
+		positions.clear();
+		position = 0;
+		
+		//Sample data
+		Data sample;
+		//it reads its own data
+		AudioIn SampleIn;
+		sample = new Data();
+		
+		//for now load the sample here
+		SampleIn = new FileIn(name);
+		SampleIn.blockingStart();
+		
+		//1. get the data
+		Data d = SampleIn.getNext();
+		while( d != null ){
+			sample.extend(d);
+			d = SampleIn.getNext();
+		}
+		rawModel = sample.get();
+		if( rawModel == null )
+		{
+			System.out.println("Error: could not initialise correctly! Sample is empty");
+			return;
+		}
+	};//reset position
+	
+	public synchronized void setRawModel(Data m){
+		rawModel = m.get();
+	}
+	
+	protected void pushFramePos(long pos){
+		positions.add(pos);
+	}
+	
+	public LinkedList<Long> getPositions(){
+		return positions;
+	}
+	
+	public abstract void process(Data data);//reset 
 }
+

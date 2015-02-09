@@ -4,7 +4,10 @@ import java.util.Scanner;
 
 import engine.Processing.*;
 import engine.Processing.algorithms.*;
+import engine.audio.AudioIn;
+import engine.audio.FileIn;
 import engine.util.Counter;
+import engine.util.Data;
 
 public class CLI {
 
@@ -43,8 +46,31 @@ public class CLI {
 			
 			else if(s.equals("setModel") || s.equals("sm"))
 				processor.setModel(sc.nextLine());
+			else if(s.equals("testFromRam")){
+				System.out.println("Initialising audio...");
+				AudioIn a = new FileIn("./tests/samples/clap_7_0.wav");
+				System.out.println("Starting audio_in");
+				a.blockingStart();
+				System.out.println("AudioIn finished now collecting data...");
+				Data d = new Data();
+				Data nxt;
+				while((nxt = a.getNext()) != null )
+				d.extend(nxt);
+				a.stop();
+				System.out.println("Stopped audio in");
+				Counter c = new Counter();
+				System.out.println("Starting recogniser");
+				RawRidgeRecogniser rrr = new RawRidgeRecogniser(c);
+				rrr.setModel("./tests/models/clap.wav");
+				System.out.println("Starting recogniser's processing");
+				long startTime = System.currentTimeMillis();
+				rrr.process(d);
+				long endTime = System.currentTimeMillis();
+				System.out.println("Done:"+c.getCount()+" time:"+(double)(endTime-startTime)/1000);
+			}
 			else
 				System.out.println("Unknown command '"+s+"'");
+			
 		}
 		System.out.println("Bye!");
 	}
