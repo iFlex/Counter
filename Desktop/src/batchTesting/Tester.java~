@@ -37,7 +37,7 @@ public class Tester {
 		long listStartTime = System.currentTimeMillis();
 
 		//TODO Change it to
-		//while((line_listfile = listfilein.readLine()) != null)
+		//
 		do
 		{ 
 			// Read the file and create an array of File handles for the Test
@@ -50,17 +50,13 @@ public class Tester {
 				testfilein = new BufferedReader(new FileReader(testfile)); // TODO exception handling
 			}
 			catch(Exception e){
-				break; //FIXME This should not be a break
-				// Do a continue, maybe?
+				break; //FIXME This should not be break
 			}
 			
 			TestResult tr = new TestResult(line_listfile, testfilein.readLine());
 			long testStartTime = System.currentTimeMillis();
 			// For each file, get the model and test all of the other wav files
-			
-			//TODO Change to
-			//String testf;
-			//while((testf = testfilein.readLine())!=null)	
+				
 			do
 			{
 				String testf = testfilein.readLine();
@@ -82,7 +78,6 @@ public class Tester {
 				fr.setDuration(System.currentTimeMillis() - startTime);
 				fr.setActualCount(c.getCount());
 				
-				//TODO Change to the correct statistical function
 				if(!(fr.getActualCount() == 0 || fr.getCorrectCount() == 0)){
 					fr.setAccuracy(100* ((( (double) fr.getActualCount()) / (double) fr.getCorrectCount())));
 				}
