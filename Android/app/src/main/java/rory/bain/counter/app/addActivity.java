@@ -3,6 +3,7 @@ package rory.bain.counter.app;
 import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.content.Intent;
@@ -47,6 +48,10 @@ public class addActivity extends Activity{
         final Button addFinished = (Button) findViewById(R.id.addFinished);
         final Button playback    = (Button) findViewById(R.id.playback);
         final EditText countText = (EditText) findViewById(R.id.textView2);
+//        final LinearLayout lin = (LinearLayout) findViewById(R.id.addSound_InnerLinLayout);
+//        final DrawView dView = new DrawView(this);
+//        lin.addView(dView);
+
 
         //Setting up the keyboard next button to finish editing
         countText.setOnEditorActionListener(new OnEditorActionListener() {
