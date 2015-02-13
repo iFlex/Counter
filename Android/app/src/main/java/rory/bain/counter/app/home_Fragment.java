@@ -1,12 +1,8 @@
 package rory.bain.counter.app;
-import android.content.DialogInterface;
-import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import engine.util.Counter;
-import rory.bain.counter.app.R;
+import android.graphics.Color;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -18,21 +14,20 @@ import android.widget.Button;
 import android.os.*;
 import android.util.Log;
 import android.database.Cursor;
-
 import felix.views.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 @SuppressLint("NewApi")
 public class home_Fragment extends Fragment {
     int count;
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+
         View rootView = inflater.inflate(R.layout.home_fragment, container, false);
         final TextView resultText = (TextView) rootView.findViewById(R.id.countText);
         resultText.setText("0");
-
+        MainActivity.counter.reset();
         final Button startButton = (Button) rootView.findViewById(R.id.startButton);
         final Button menuButton = (Button) rootView.findViewById(R.id.menuButton);
         Button resButton = (Button) rootView.findViewById(R.id.resetButton);
@@ -88,9 +83,13 @@ public class home_Fragment extends Fragment {
             public void onClick(View v) {
                 if(!MainActivity.processor.isRunning()) {
                     MainActivity.processor.start();
+                    startButton.setText("Stop");
+                    startButton.setBackgroundColor(Color.parseColor("#d2d2d2"));
                 }
                 else {
                     MainActivity.processor.stop();
+                    startButton.setText("Start");
+                    startButton.setBackgroundColor(Color.parseColor("#8a8d94"));
                     String date = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(new Date());
                     MainActivity.myDB.insertRow(MainActivity.counter.getCount(), date, "Books");
                 }

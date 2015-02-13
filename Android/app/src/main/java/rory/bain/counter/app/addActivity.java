@@ -43,7 +43,7 @@ public class addActivity extends Activity{
         mMaker.setVisualiser(waveVisuals);
 
         final Button startButton = (Button) findViewById(R.id.addStart);
-        final Button resetButton = (Button) findViewById(R.id.addReset);
+//        final Button resetButton = (Button) findViewById(R.id.addReset);
         final Button addFinished = (Button) findViewById(R.id.addFinished);
         final Button playback    = (Button) findViewById(R.id.playback);
         final EditText countText = (EditText) findViewById(R.id.textView2);
@@ -76,12 +76,12 @@ public class addActivity extends Activity{
             }
         });
 
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //Delete the current recording, clear the screen. We may need some visual representation that a recording was made too.
-                sampler.stop();
-            }
-        });
+//        resetButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                //Delete the current recording, clear the screen. We may need some visual representation that a recording was made too.
+//                sampler.stop();
+//            }
+//        });
 
         //Adding the button in case the user doesn't know how to use the keyboard
         addFinished.setOnClickListener(new View.OnClickListener() {

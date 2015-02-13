@@ -69,21 +69,21 @@
                 android:id="@+id/addStart"
                 android:layout_gravity="center|bottom"
                 android:text="Start"
-                android:layout_weight="1"/>
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:id="@+id/addReset"
-                android:layout_gravity="center|bottom"
-                android:text="Reset"
-                android:layout_weight="1"/>
+                android:layout_weight="2"/>
+            <!--<Button-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:id="@+id/addReset"-->
+                <!--android:layout_gravity="center|bottom"-->
+                <!--android:text="Reset"-->
+                <!--android:layout_weight="1"/>-->
 
             </LinearLayout>
 
         <felix.views.WaveformView
             android:id="@+id/waveform_view"
             android:layout_width="match_parent"
-            android:layout_height="260dp"
+            android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
             android:background="@android:color/transparent"
             />
@@ -91,7 +91,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="6"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:hint="Number of events..."
             android:layout_gravity="right|bottom"

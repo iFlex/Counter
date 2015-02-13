@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerList = (ListView) findViewById(R.id.slider_list);
         rowItems = new ArrayList<rowItem>();
-        getActionBar().hide();
+//        getActionBar().hide();
 
 
         myDB = new historyDBAdapter(this);
