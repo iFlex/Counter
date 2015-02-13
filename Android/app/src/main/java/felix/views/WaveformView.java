@@ -63,6 +63,14 @@ public class WaveformView extends SurfaceView {
      *
      * @param buffer the most recent buffer of audio samples
      */
+    public synchronized void redraw(){
+        // Update the display.
+        Canvas canvas = getHolder().lockCanvas();
+        if (canvas != null) {
+            drawWaveform(canvas);
+            getHolder().unlockCanvasAndPost(canvas);
+        }
+    }
     public synchronized void updateAudioData(short[] buffer) {
         short[] newBuffer;
 
@@ -80,12 +88,7 @@ public class WaveformView extends SurfaceView {
 
         mAudioData.addLast(newBuffer);
 
-        // Update the display.
-        Canvas canvas = getHolder().lockCanvas();
-        if (canvas != null) {
-            drawWaveform(canvas);
-            getHolder().unlockCanvasAndPost(canvas);
-        }
+        redraw();
     }
 
     /**
