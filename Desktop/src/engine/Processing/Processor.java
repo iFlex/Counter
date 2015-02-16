@@ -28,7 +28,7 @@ public class Processor implements Runnable
 		count = c;
 		//consumer = new WaveFilteringNetwork(count);
 		//consumer = new FFTrecogniser(count);
-		consumer = new RawRidgeRecogniser(count);
+		consumer = new mgRecogniser(count);
 		//consumer = new mgRecogniser(count);
 		//debug = new micFFTout();
 		running = new AtomicBoolean(false);
