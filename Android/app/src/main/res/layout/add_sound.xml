@@ -129,7 +129,7 @@
         <rory.bain.counter.app.DrawView
             android:id="@+id/dview"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:background="@android:color/transparent"
             />
