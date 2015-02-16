@@ -10,16 +10,16 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ViewParent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
 //TODO: Need to set this to initiate with a rectangle, not appear when touch detected.
 public class DrawView extends View {
-    int viewWidth;
-    int viewHeight;
+    private float viewWidth = 680.0f;
 
-    Point[] points = new Point[4];
+            Point[] points = new Point[4];
 
     /**
      * point1 and point 3 are of same group and same as point 2 and point4
@@ -88,8 +88,8 @@ public class DrawView extends View {
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.parseColor("#55DB1255"));
         paint.setStrokeWidth(0);
-        Log.d("Left", left + "");
-        Log.d("Right", right + "");
+//        Log.d("Left", left + "");
+//        Log.d("Right", right + "");
         canvas.drawRect(
                 left + colorballs.get(0).getWidthOfBall() / 2,
                 30,
@@ -110,53 +110,49 @@ public class DrawView extends View {
     }
 
     public void initiateTrimmer() {
+        int X = 15;
+        int Y = 100;
+        if (points[0] == null) {
+            //initialize rectangle.
+            points[0] = new Point();
+            points[0].x = X;
+            points[0].y = Y;
 
-        paint.setAntiAlias(true);
-        paint.setDither(true);
-        paint.setStrokeJoin(Paint.Join.ROUND);
-        paint.setStrokeWidth(5);
+            points[1] = new Point();
+            points[1].x = X;
+            points[1].y = Y + 30;
 
-        //draw stroke
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.parseColor("#000000"));
-        paint.setStrokeWidth(2);
-        int x = this.getWidth();
-        canvas.drawRect(
-                15,
-                30,
-                1020,
-                190, paint);
-        //fill the rectangle
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.parseColor("#55DB1255"));
-        paint.setStrokeWidth(0);
-//        Log.d("Left", left + "");
-//        Log.d("Right", right + "");
-        canvas.drawRect(
-                15,
-                30,
-                1020,
-                190, paint);
-        //draw the corners
-        BitmapDrawable bitmap = new BitmapDrawable();
-        // draw the balls on the canvas
-        paint.setColor(Color.BLUE);
-        paint.setTextSize(18);
-        paint.setStrokeWidth(0);
-        for (int i =0; i < colorballs.size(); i ++) {
-            ColorBall ball = colorballs.get(i);
-            canvas.drawBitmap(ball.getBitmap(), ball.getX(), 30,
-                    paint);
+            points[2] = new Point();
+            points[2].x = X + 30;
+            points[2].y = Y + 30;
+
+            points[3] = new Point();
+            points[3].x = X + 30;
+            points[3].y = Y;
+
+            balID = 2;
+            groupId = 1;
+            // declare each ball with the ColorBall class
+            for (Point pt : points) {
+                colorballs.add(new ColorBall(getContext(), R.drawable.ic_drawer, pt));
+            }
+
+            colorballs.get(0).setX(0);
+            colorballs.get(0).setY(0);
+            colorballs.get(2).setX(680);
+            colorballs.get(2).setY(20);
+            invalidate();
+
         }
-
     }
-
     // events when touching the screen
     public boolean onTouchEvent(MotionEvent event) {
         int eventaction = event.getAction();
 
         int X = (int) event.getX();
+
         int Y = (int) event.getY();
+
 
         switch (eventaction) {
 
@@ -199,11 +195,11 @@ public class DrawView extends View {
                         paint.setColor(Color.CYAN);
                         // calculate the radius from the touch to the center of the
                         // ball
+                        //- 50 at the end is a certainty for the size of the point, may need to be changed so that points cannot be too close together
                         double radCircle = Math
                                 .sqrt((double) (((centerX - X) * (centerX - X)) + (centerY - Y)
-                                        * (centerY - Y)));
-
-                        if (radCircle < ball.getWidthOfBall()) {
+                                        * (centerY - Y))) - 50;
+                        if (radCircle  < ball.getWidthOfBall()) {
 
                             balID = ball.getID();
                             if (balID == 1 || balID == 3) {
@@ -239,7 +235,20 @@ public class DrawView extends View {
                         colorballs.get(2).setX(colorballs.get(3).getX());
                         colorballs.get(2).setY(colorballs.get(1).getY());
                     }
+//                    ViewParent  parent = this.getParent();
 
+                    float l = colorballs.get(1).getX()/viewWidth;
+                    float r = colorballs.get(3).getX()/viewWidth;
+
+
+                    int length = addActivity.mMaker.getSoundLength();
+                    //must check for -1
+                    int xLength = Math.round(l*length);
+                    int yLength = Math.round(r*length);
+                    addActivity.mMaker.setStartPosition(xLength);
+                    addActivity.mMaker.setEndPosition(yLength);
+                    addActivity.waveVisuals.setLines(xLength,yLength);
+                    addActivity.waveVisuals.redraw();
                     invalidate();
                 }
 

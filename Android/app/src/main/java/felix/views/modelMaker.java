@@ -167,4 +167,7 @@ public class modelMaker extends Recogniser {
            atrack = null;
        }
     }
+    public int getSoundLength(){
+        return sample.getLength();
+    }
 }

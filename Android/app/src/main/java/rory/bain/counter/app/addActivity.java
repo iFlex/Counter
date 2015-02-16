@@ -27,10 +27,11 @@ import android.util.Log;
  */
 public class addActivity extends Activity{
     public static Intent i;
-    private modelMaker mMaker;
+    public static modelMaker mMaker;
     private Processor sampler;
-    private WaveformView waveVisuals;
+    public static WaveformView waveVisuals;
     private WaveformView modelVisuals;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class addActivity extends Activity{
         final EditText countText = (EditText) findViewById(R.id.textView2);
         final DrawView dView = (DrawView) findViewById(R.id.dview);
         dView.initiateTrimmer();
-        dView.invalidate();
+
 //        final LinearLayout lin = (LinearLayout) findViewById(R.id.addSound_InnerLinLayout);
 //        final DrawView dView = new DrawView(this);
 //        lin.addView(dView);
