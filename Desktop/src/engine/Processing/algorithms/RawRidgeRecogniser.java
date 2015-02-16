@@ -118,7 +118,7 @@ public class RawRidgeRecogniser extends Recogniser {
 						dist = 1;
 					certain = ((double)dist / buff.getCapacity())*1.5;
 					//if(certain > 0.5)
-						System.out.println("crt:"+certain+" maxDrop:"+maxDrop+" avg:"+theAvg+" dist:"+( maxDropPos - startTrack )+" max:"+buff.getCapacity());
+						System.out.println("crt:"+certain+" maxDrop:"+maxDrop+" avg:"+theAvg+" dist:"+( maxDropPos - startTrack )+" max:"+buff.getCapacity()+" time:"+((double)position/44100));
 				}
 				//evaluate
 				maxDrop = theAvg;
@@ -140,7 +140,7 @@ public class RawRidgeRecogniser extends Recogniser {
 			if(certain > 0.5)
 			{
 				counter.increment(certain);
-				System.out.println(certain+" Count:"+counter.getCount());
+				System.out.println(certain+" Count:"+counter.getCount()+" time:"+((double)position/44100));
 				/*int jump = (int)(buff.getCapacity());
 				while(jump-- > 0)
 					try {
@@ -159,6 +159,7 @@ public class RawRidgeRecogniser extends Recogniser {
 		double[] d = data.get();
 		for( int i = 0; i < d.length; ++i)
 			_processNext(d[i]);
-		//System.out.println("position:"+position);
+		if( data.getLength() == 0 )
+			System.out.println("End of data!");
 	}
 }

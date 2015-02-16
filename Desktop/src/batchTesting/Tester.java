@@ -36,13 +36,12 @@ public class Tester {
 
 		long listStartTime = System.currentTimeMillis();
 
-		//TODO Change it to
-		//while((line_listfile = listfilein.readLine()) != null)
-		do
+		while((line_listfile = listfilein.readLine()) != null)
+		//do OLD
 		{ 
 			// Read the file and create an array of File handles for the Test
 			// files
-			line_listfile = listfilein.readLine();
+			//line_listfile = listfilein.readLine(); OLD
 			testfile = null;
 			testfilein = null;
 			try{
@@ -50,23 +49,23 @@ public class Tester {
 				testfilein = new BufferedReader(new FileReader(testfile)); // TODO exception handling
 			}
 			catch(Exception e){
-				break; //FIXME This should not be a break
-				// Do a continue, maybe?
+				System.err.println("Error occurred when trying to read the file" + line_listfile);
+				continue;
+				//break; //OLD
 			}
 			
 			TestResult tr = new TestResult(line_listfile, testfilein.readLine());
 			long testStartTime = System.currentTimeMillis();
 			// For each file, get the model and test all of the other wav files
 			
-			//TODO Change to
-			//String testf;
-			//while((testf = testfilein.readLine())!=null)	
-			do
+			String testf;
+			while((testf = testfilein.readLine())!=null)	
+			//do OLD
 			{
-				String testf = testfilein.readLine();
-				if(testf == null){
-					break;
-				}
+				//String testf = testfilein.readLine();	OLD
+				//if(testf == null){	OLD
+				//	break;	OLD
+				//}	OLD
 				FileResult fr = new FileResult(		
 						testf,
 						parseCorrectCount( tr.getModel(), testf ));
@@ -97,18 +96,19 @@ public class Tester {
 				// (double)c.getCount()/correctCount*100;
 				tr.addFileResult(fr);
 
-			} while (true);
+			}// while (true); OLD
 
 			tr.setDuration(System.currentTimeMillis() - testStartTime);
 			testList.add(tr);
 
-		} while(line_listfile != null) ;
+		}// while(line_listfile != null) ; OLD
 
 		listDuration = (System.currentTimeMillis() - listStartTime);
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_hhmmss");
 		Date date = new Date();
 		generateReport("./tests/results/"+dateFormat.format(date));
+		listfilein.close();
 	}
 
 
