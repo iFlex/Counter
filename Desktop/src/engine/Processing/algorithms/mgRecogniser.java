@@ -75,7 +75,18 @@ public class mgRecogniser extends Recogniser {
 		s = model.getFingerprintSimilarity(frag);
 		System.out.println("Similarity:"+s.getSimilarity());
 		counter.increment(s.getSimilarity());
-		int offset = this.toprocess.getLength()*4/5;
+		
+		int offset = this.s.getMostSimilarFramePosition() + this.model.size();
+		System.err.println("Offset: "+offset);
+		System.err.println("toprocess Length: "+ this.toprocess.getLength());
+		if(offset >= this.toprocess.getLength())
+		{
+			this.toprocess = new Data();
+			return;
+		}
+		offset = offset < 0 ? this.toprocess.getLength()*1/2 : offset; // Checks if the offset is negative, if it is, set it to half of the sample 
+		//offset = offset < this.toprocess.getLength()*4/5 ? this.toprocess.getLength()*4/5 : offset;
+		System.err.println("Dummy!");
 		int size = this.toprocess.getLength()-offset;
 		double[] newdata = new double[size];
 		double[] olddata = this.toprocess.get();
