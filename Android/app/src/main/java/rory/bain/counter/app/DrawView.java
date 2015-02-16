@@ -9,11 +9,15 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
-//TODO: Set up this to be rectangle of fixed height, changeable width.
+//TODO: Need to set this to initiate with a rectangle, not appear when touch detected.
 public class DrawView extends View {
+    int viewWidth;
+    int viewHeight;
 
     Point[] points = new Point[4];
 
@@ -46,9 +50,13 @@ public class DrawView extends View {
         canvas = new Canvas();
     }
 
-    // the method that draws the balls
+
+//    the method that draws the balls
     @Override
     protected void onDraw(Canvas canvas) {
+
+
+
         if(points[3]==null) //point4 null when user did not touch and move on screen.
             return;
         int left, top, right, bottom;
@@ -69,22 +77,24 @@ public class DrawView extends View {
 
         //draw stroke
         paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.parseColor("#AADB1255"));
+        paint.setColor(Color.parseColor("#000000"));
         paint.setStrokeWidth(2);
         canvas.drawRect(
                 left + colorballs.get(0).getWidthOfBall() / 2,
-                top + colorballs.get(0).getWidthOfBall() / 2,
+                30,
                 right + colorballs.get(2).getWidthOfBall() / 2,
-                bottom + colorballs.get(2).getWidthOfBall() / 2, paint);
+                190, paint);
         //fill the rectangle
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.parseColor("#55DB1255"));
         paint.setStrokeWidth(0);
+        Log.d("Left", left + "");
+        Log.d("Right", right + "");
         canvas.drawRect(
                 left + colorballs.get(0).getWidthOfBall() / 2,
-                top + colorballs.get(0).getWidthOfBall() / 2,
+                30,
                 right + colorballs.get(2).getWidthOfBall() / 2,
-                bottom + colorballs.get(2).getWidthOfBall() / 2, paint);
+                190, paint);
 
         //draw the corners
         BitmapDrawable bitmap = new BitmapDrawable();
@@ -94,11 +104,51 @@ public class DrawView extends View {
         paint.setStrokeWidth(0);
         for (int i =0; i < colorballs.size(); i ++) {
             ColorBall ball = colorballs.get(i);
-            canvas.drawBitmap(ball.getBitmap(), ball.getX(), ball.getY(),
+            canvas.drawBitmap(ball.getBitmap(), ball.getX(), 30,
                     paint);
-
-            canvas.drawText("" + (i+1), ball.getX(), ball.getY(), paint);
         }
+    }
+
+    public void initiateTrimmer() {
+
+        paint.setAntiAlias(true);
+        paint.setDither(true);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStrokeWidth(5);
+
+        //draw stroke
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.parseColor("#000000"));
+        paint.setStrokeWidth(2);
+        int x = this.getWidth();
+        canvas.drawRect(
+                15,
+                30,
+                1020,
+                190, paint);
+        //fill the rectangle
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.parseColor("#55DB1255"));
+        paint.setStrokeWidth(0);
+//        Log.d("Left", left + "");
+//        Log.d("Right", right + "");
+        canvas.drawRect(
+                15,
+                30,
+                1020,
+                190, paint);
+        //draw the corners
+        BitmapDrawable bitmap = new BitmapDrawable();
+        // draw the balls on the canvas
+        paint.setColor(Color.BLUE);
+        paint.setTextSize(18);
+        paint.setStrokeWidth(0);
+        for (int i =0; i < colorballs.size(); i ++) {
+            ColorBall ball = colorballs.get(i);
+            canvas.drawBitmap(ball.getBitmap(), ball.getX(), 30,
+                    paint);
+        }
+
     }
 
     // events when touching the screen
@@ -106,6 +156,7 @@ public class DrawView extends View {
         int eventaction = event.getAction();
 
         int X = (int) event.getX();
+        int Y = (int) event.getY();
 
         switch (eventaction) {
 
@@ -115,25 +166,25 @@ public class DrawView extends View {
                     //initialize rectangle.
                     points[0] = new Point();
                     points[0].x = X;
-//                    points[0].y = Y;
+                    points[0].y = Y;
 
                     points[1] = new Point();
                     points[1].x = X;
-//                    points[1].y = Y + 30;
+                    points[1].y = Y + 30;
 
                     points[2] = new Point();
                     points[2].x = X + 30;
-//                    points[2].y = Y + 30;
+                    points[2].y = Y + 30;
 
                     points[3] = new Point();
                     points[3].x = X +30;
-//                    points[3].y = Y;
+                    points[3].y = Y;
 
                     balID = 2;
                     groupId = 1;
                     // declare each ball with the ColorBall class
                     for (Point pt : points) {
-                        colorballs.add(new ColorBall(getContext(), R.drawable.ic_mic, pt));
+                        colorballs.add(new ColorBall(getContext(), R.drawable.ic_drawer, pt));
                     }
                 } else {
                     //resize rectangle
@@ -149,8 +200,8 @@ public class DrawView extends View {
                         // calculate the radius from the touch to the center of the
                         // ball
                         double radCircle = Math
-                                .sqrt((double) (((centerX - X) * (centerX - X)) + (centerY)
-                                        * (centerY)));
+                                .sqrt((double) (((centerX - X) * (centerX - X)) + (centerY - Y)
+                                        * (centerY - Y)));
 
                         if (radCircle < ball.getWidthOfBall()) {
 
@@ -174,7 +225,7 @@ public class DrawView extends View {
                 if (balID > -1) {
                     // move the balls the same as the finger
                     colorballs.get(balID).setX(X);
-//                    colorballs.get(balID).setY(Y);
+                    colorballs.get(balID).setY(Y);
 
                     paint.setColor(Color.CYAN);
                     if (groupId == 1) {

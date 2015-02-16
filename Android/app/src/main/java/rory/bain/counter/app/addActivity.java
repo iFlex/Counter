@@ -1,6 +1,8 @@
 package rory.bain.counter.app;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
@@ -48,6 +50,9 @@ public class addActivity extends Activity{
         final Button addFinished = (Button) findViewById(R.id.addFinished);
         final Button playback    = (Button) findViewById(R.id.playback);
         final EditText countText = (EditText) findViewById(R.id.textView2);
+        final DrawView dView = (DrawView) findViewById(R.id.dview);
+        dView.initiateTrimmer();
+        dView.invalidate();
 //        final LinearLayout lin = (LinearLayout) findViewById(R.id.addSound_InnerLinLayout);
 //        final DrawView dView = new DrawView(this);
 //        lin.addView(dView);
@@ -101,7 +106,7 @@ public class addActivity extends Activity{
                 }
                 Log.i("CORRECT COUNT:",":"+correctCount);
                 if( correctCount == 0 ){
-                    //TODO: Rory - alert user about how badly he's using the app :D
+                    sendUserMessage("Please add the correct count of events to continue");
                     Log.i("JEEZ!","add the correct count!");
                     return;
                 }
@@ -115,7 +120,7 @@ public class addActivity extends Activity{
                         FragmentManager fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.add_frame_container, fragment).commit();
                     } else {
-                        //TODO: Rory - Display a message telling the user that the sample is not good and user needs to retry or give up
+                        sendUserMessage("Sample is poor quality, please retry or go back");
                     }*/
             }
         });
@@ -134,5 +139,18 @@ public class addActivity extends Activity{
 //        MainActivity.libraryDB.insertRow(text1.getText().toString(), text2.getText().toString(), text2.getText().toString(), 1, 1);
         i = new Intent(getBaseContext(), MainActivity.class);
         startActivity(i);
+    }
+
+    private void sendUserMessage(String message){
+        AlertDialog aDia = new AlertDialog.Builder(addActivity.this).create();
+        aDia.setTitle("Oops!");
+        aDia.setMessage(message);
+        aDia.setButton("Ok!", new DialogInterface.OnClickListener() {
+            public void onClick (DialogInterface dialog, int which) {
+                //Do we want to do anything here?
+                return;
+            }
+        });
+        aDia.show();
     }
 }
