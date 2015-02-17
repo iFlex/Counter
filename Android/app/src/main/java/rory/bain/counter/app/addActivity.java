@@ -30,8 +30,27 @@ public class addActivity extends Activity{
     public static modelMaker mMaker;
     private Processor sampler;
     public static WaveformView waveVisuals;
-    private WaveformView modelVisuals;
-
+    public static WaveformView modelVisuals;
+    private long overall = 0;
+    private int correctCount = 0;
+    private addActivity thisReff = this;
+    private boolean advance = false;
+    //threading issues
+    public void goToFinalise(){
+        if (advance) {
+            View view = findViewById(R.id.add_frame_container);
+            view.setVisibility(View.VISIBLE);
+            Fragment fragment = new naming_fragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.add_frame_container, fragment).commit();
+        } else {
+            sendUserMessage("Sample is poor quality, please retry or go back");
+        }
+    }
+    public void checkResults(){
+        advance = mMaker.checkCorrectness(correctCount);
+        Log.d("Count results:","Correct:"+correctCount+" advancing:"+advance);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,14 +94,20 @@ public class addActivity extends Activity{
             public void onClick(View v) {
                 //start recording if not already started, if it is already recording, then stop
                 if(sampler.isRunning()) {
-                    sampler.stop(); //quick - threading
+                    sampler.drainStop(); //quick - threading
                     mMaker.detectEventBoundaries(); //quick
                     waveVisuals.setLines((int)mMaker.getStartPosition(),(int)mMaker.getEndPosition()); //quick
                     waveVisuals.updateAudioData(mMaker.extractModel()); // slow
                     //modelVisuals.updateAudioData(mMaker.getModel()); // slow
+                    Log.d("Samplign time:",(System.currentTimeMillis() - MainActivity.timedebug)+"ms"+" overall:"+(System.currentTimeMillis() - overall ) );
                 } else {
+                    sampler.setCallback(null,"");
+                    sampler.ExitOnNoData = false;
+
                     mMaker.reset();
                     sampler.start();
+                    MainActivity.timedebug = 0;
+                    overall = System.currentTimeMillis();
                 }
             }
         });
@@ -98,37 +123,34 @@ public class addActivity extends Activity{
         addFinished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int correctCount = 0;
+                correctCount = 0;
                 try{
                     correctCount = Integer.parseInt(countText.getText().toString());
                 }
                 catch(Exception e){
-                    //no need to do anything here!
+                    correctCount = 0;
                 }
                 Log.i("CORRECT COUNT:",":"+correctCount);
                 if( correctCount == 0 ){
                     sendUserMessage("Please add the correct count of events to continue");
-                    Log.i("JEEZ!","add the correct count!");
                     return;
                 }
+                //process
                 mMaker.extractModel();
+                sampler.setRawInput( mMaker.sample );
+                sampler.setCallback(thisReff,"checkResults");
+                sampler.ExitOnNoData = true;
                 sampler.start();
-                //now do polling in a thread untill the sampler finishes and at the end do this check:
-                    /*if (mMaker.checkCorrectness(Integer.parseInt(countText.getText().toString()))) {
-                        View view = findViewById(R.id.add_frame_container);
-                        view.setVisibility(View.VISIBLE);
-                        Fragment fragment = new naming_fragment();
-                        FragmentManager fragmentManager = getFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.add_frame_container, fragment).commit();
-                    } else {
-                        sendUserMessage("Sample is poor quality, please retry or go back");
-                    }*/
+                Log.d("Checking...","Checking model against sample");
             }
         });
         playback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMaker.playbackSelection();
+                short[] m = mMaker.extractModel();
+                short[] s = mMaker.getModel();
+                mMaker.playRaw(s);
+                Log.d("_The Model:","len:"+m.length);
             }
         });
     }

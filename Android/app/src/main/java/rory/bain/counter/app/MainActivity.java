@@ -7,6 +7,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
 import android.os.*;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -23,6 +25,10 @@ import engine.Processing.Processor;
 import felix.views.*;
 
 public class MainActivity extends Activity {
+    //debug items
+    public static long timedebug;
+    //
+
     String[] menutitles;  TypedArray menuIcons;
     // nav drawer title
     private CharSequence mDrawerTitle;

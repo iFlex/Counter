@@ -23,8 +23,14 @@ public class Processor implements Runnable
 	private AtomicBoolean running;
 	private boolean canRun;
 	private Counter count;
+    private Object callback;
+    private String callbackMethod;
+    //warning only set before starting processor ( unsafe to set otherwise )
+    public boolean ExitOnNoData;
 
     void _init(Counter c){
+        ExitOnNoData = false;
+        callback = null;
         count = c;
         running = new AtomicBoolean(false);
         canRun = false;
@@ -40,7 +46,10 @@ public class Processor implements Runnable
         _init(c);
         n = r;
     }
-
+    public synchronized void setCallback( Object c, String method ){
+        callback  = c;
+        callbackMethod = method;
+    }
     public synchronized void setModel(String path){
         n.setModel(path);
     }
@@ -59,6 +68,24 @@ public class Processor implements Runnable
         //TODO: if audioIn is no initilised properly canRun = false;
     }
 
+    public synchronized void setRawInput( Data i ){
+        audioIn = new AudioIn();
+        audioIn.push(i);
+    }
+
+    public void drain(){
+        while( true )
+        {
+            Data d = audioIn.getNext();
+            //System.out.println("Got data from audio:"+d);
+            if( d != null )
+                n.process(d);
+            else {
+                break;
+            }
+        }
+    }
+
 	public void run(){
 		running.set(true);
 		while(canRun)
@@ -67,6 +94,26 @@ public class Processor implements Runnable
 			//System.out.println("Got data from audio:"+d);
 			if( d != null )
 			    n.process(d);
+            else {
+
+                if( callback != null ) {
+                        System.out.println("Calling:"+callbackMethod);
+                        try {
+                            callback.getClass().getMethod(callbackMethod).invoke(callback);
+                        } catch (SecurityException e) {
+                            Log.d("Processor Callback:"," Security exception: "+ e);
+                        } catch (NoSuchMethodException e) {
+                            Log.d("Processor Callback:"," No such method : "+ e);
+                        } catch (Exception e) {
+                            Log.d("Processor Callback:"," Run error: "+ e);
+                            for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+                                System.out.println(ste);
+                            }
+                        }
+                }
+                if(ExitOnNoData)
+                    break;
+            }
 		}
 		running.set(false);
 	}
@@ -111,6 +158,24 @@ public class Processor implements Runnable
             } catch ( Exception e){
                 t = null;
             }
+        }
+    }
+
+    public void drainStop(){
+        canRun = false;
+        if( t != null)
+        {
+            try {
+                t.join();
+            } catch ( Exception e){
+                t = null;
+            }
+        }
+        if(audioIn != null)
+        {
+            audioIn.drainStop();
+            drain();
+            audioIn = null;
         }
     }
 

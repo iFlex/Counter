@@ -7,6 +7,8 @@ import engine.Processing.algorithms.NaiveRecogniserMk3;
 import engine.Processing.algorithms.RawRidgeRecogniser;
 import engine.util.Counter;
 import engine.util.Data;
+
+import android.media.AudioRecord;
 import android.util.Log;
 import java.util.ListIterator;
 import android.media.AudioTrack;
@@ -16,14 +18,18 @@ import android.media.AudioFormat;
  * Created by MLF on 08/02/15.
  */
 public class modelMaker extends Recogniser {
-    private Data sample;
-    private Data model;
+    public Data sample;
+    public Data model;
     private long startPosition;
     private long endPosition;
     private int stage = 0;
     private Recogniser EventDetector;
     private Recogniser CorrectnessChecker;
     private WaveformView visualiser = null;
+    AudioTrack atrack = null;
+    short[] audiopadd;
+    int minbuflen = 0;
+
     public void setStartPosition(long position)
     {
         this.startPosition = position;
@@ -55,6 +61,11 @@ public class modelMaker extends Recogniser {
 
         EventDetector = new NaiveRecogniserMk3((double)5000 ,1024, counter); //TODO remove hard coded variables
         CorrectnessChecker = new RawRidgeRecogniser(counter);
+        /////////////////////////////////////////////////////
+        minbuflen = AudioRecord.getMinBufferSize(44100, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
+        audiopadd = new short[minbuflen+1];
+        for( int i = 0 ; i < audiopadd.length ; ++i )
+            audiopadd[i] = 0;
     }
 
     public void process(Data data) {
@@ -103,13 +114,14 @@ public class modelMaker extends Recogniser {
         short[] graphdata = new short[thedata.length];
         int j = 0; long i = this.startPosition;
 
-        for(;i<this.endPosition; j++, i++)
-            modeldata[j] = thedata[(int)i];
+        for(;i<this.endPosition && i < thedata.length && j < modeldata.length; j++, i++) {
+            modeldata[j] = thedata[(int) i];
+        }
 
-        for(i=0;i<thedata.length;++i)
+        for( i = 0 ; i < thedata.length ; ++i )
             graphdata[(int)i] = (short) thedata[(int)i];
 
-        Log.d("DATADATA:","td:"+thedata.length+" md:"+modeldata.length);
+        Log.d("DATADATA:","td:"+thedata.length+" md:"+modeldata.length+" s:"+this.startPosition+" e:"+this.endPosition);
         this.model = new Data(modeldata, modeldata.length);
 
         return graphdata;
@@ -124,6 +136,7 @@ public class modelMaker extends Recogniser {
         double[] modeldata = model.get();
         short[] graphdata = new short[modeldata.length];
         long i = this.startPosition;
+        Log.d("DATADATA:"," md:"+modeldata.length+" s:"+this.startPosition+" e:"+this.endPosition);
 
         for( i = 0 ; i < modeldata.length ; i++)
             graphdata[(int)i] = (short)modeldata[(int)i];
@@ -140,23 +153,38 @@ public class modelMaker extends Recogniser {
 
         return graphdata;
     }
-    AudioTrack atrack = null;
     public void playbackSelection(){
         cancelPlayback();
 
         double[] rdta = sample.get();
-        short[] pbkdata = new short[rdta.length];
+        int len = rdta.length;
+        len += ( len%2 == 1 ) ? 1 : 0 ;
+        short[] pbkdata = new short[len];
         int j = 0;
         for( int i = 0 ; i < rdta.length; ++i ) {
             pbkdata[i] = (short)rdta[i];
-            //pbkdata[j++] = (byte)((int)rdta[i] & 0xff);
-            //pbkdata[j++] = (byte)(((int)rdta[i]>>8) & 0xff);
         }
-        Log.d("PLAYBACK:","len:"+pbkdata.length);
-        atrack = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT,pbkdata.length, AudioTrack.MODE_STATIC);
+        pbkdata[len-1] = 0;
+
+        Log.d("PLAYBACK:","len:"+pbkdata.length+" = "+rdta.length+" time:"+((double)pbkdata.length / 44100 ));
+        try {
+            atrack = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT, pbkdata.length, AudioTrack.MODE_STATIC);
+        }catch(Exception e){
+            Log.d("ERROR:","Cand ininialise audio track with length:"+rdta.length+" err:"+e);
+            return;
+        }
         atrack.setPlaybackRate(44100);
         atrack.write(pbkdata, 0, pbkdata.length);
         atrack.play();
+        long start = System.currentTimeMillis();
+        long now = start;
+        long diff = 0;
+        do{
+            now = System.currentTimeMillis();
+            diff = now - start;
+        }
+        while( diff < ((double)rdta.length*2)/44100 );
+        Log.d("DONE!","DONE!");
     }
 
     public void cancelPlayback(){
@@ -167,6 +195,27 @@ public class modelMaker extends Recogniser {
            atrack = null;
        }
     }
+    public int totalPlayed=0;
+    public void playRaw(short[] raw){
+        if(atrack == null ) {
+            cancelPlayback();
+            try {
+                atrack = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_CONFIGURATION_MONO, AudioFormat.ENCODING_PCM_16BIT, minbuflen, AudioTrack.MODE_STREAM);
+            } catch (Exception e) {
+                Log.d("ERROR:", "Cand ininialise audio track with length:" + raw.length + " err:" + e);
+                return;
+            }
+            atrack.setPlaybackRate(44100);
+            atrack.play();
+        }
+        atrack.write(raw, 0, raw.length);
+        totalPlayed += raw.length;
+        if( minbuflen > totalPlayed )
+            atrack.write(audiopadd, 0, minbuflen);
+        else
+            totalPlayed %= minbuflen;
+    }
+
     public int getSoundLength(){
         return sample.getLength();
     }

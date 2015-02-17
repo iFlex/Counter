@@ -85,7 +85,7 @@
         <felix.views.WaveformView
             android:id="@+id/waveform_view"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
             android:background="@android:color/transparent"
             />
@@ -118,6 +118,7 @@
             android:id="@+id/playback"
             android:layout_gravity="center|bottom"
             android:text="Playback"/>
+
 
         <felix.views.WaveformView
             android:id="@+id/modelform_view"

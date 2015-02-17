@@ -9,6 +9,7 @@ import engine.util.Data;
 import rory.bain.counter.app.MainActivity;
 import java.nio.ByteBuffer;
 import org.jtransforms.fft.DoubleFFT_1D;
+import java.util.Arrays;
 /**
  * Created by MLF on 07/12/14.
  */
@@ -36,7 +37,7 @@ public class MicrophoneIn extends AudioIn {
         //TODO: put init here
 
         mBufferSize = AudioRecord.getMinBufferSize(SAMPLING_RATE, AudioFormat.CHANNEL_IN_MONO,AudioFormat.ENCODING_PCM_16BIT);
-        mAudioBuffer = new short[ mBufferSize / 2 ];
+        mAudioBuffer = new short[ mBufferSize ];
         recorder = new AudioRecord(AudioSource.MIC, SAMPLING_RATE,AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, mBufferSize);
         Log.d("Recorder:","bufflen:"+mBufferSize+" rec:"+recorder);
     }
@@ -46,31 +47,21 @@ public class MicrophoneIn extends AudioIn {
             Log.i("DATA:","Starting recording...");
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_AUDIO);
 
-            //FFT
-            DoubleFFT_1D fftDo = new DoubleFFT_1D(mBufferSize/2);
-
             recorder.startRecording();
             canRun = true;
             isRecording = true;
+            if( MainActivity.timedebug == 0 )
+                MainActivity.timedebug = System.currentTimeMillis();
+
             while(canRun) {
                 int count = 0;
-                int len = recorder.read(mAudioBuffer, 0, mBufferSize / 2);
+                int len = recorder.read(mAudioBuffer, 0, mBufferSize);
+                //MainActivity.rec[MainActivity.recpos++] =  Arrays.copyOf(mAudioBuffer, len);
+
                 if(mAudioBuffer != null) {
                     Data d = new Data(mAudioBuffer,len);
                     push(d);
-                    /*
-                    double[] dta = d.get();
-                    double[] fftdta = new double[dta.length*2];
-
-                    for( int i = 0; i < dta.length; ++i )
-                        fftdta[i] = dta[i];
-
-                    fftDo.realForwardFull(fftdta);
-                    for( int i = 0; i < dta.length ; i++ )
-                        mAudioBuffer[i] = (short)fftdta[i*2];
-                    */
-                    MainActivity.waveVisuals.updateAudioData(mAudioBuffer);
-                    //Log.d("D:",":"+d.toString());
+                    //MainActivity.waveVisuals.updateAudioData(mAudioBuffer);
                 }
                 else
                     Log.d("NODATA","...");
@@ -78,9 +69,10 @@ public class MicrophoneIn extends AudioIn {
             recorder.stop();
 
             isRecording = false;
-            /*
+
             recorder.release();
             recorder = null;
+            /*
             recordingThread = null;
             */
         }

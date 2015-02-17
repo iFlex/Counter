@@ -8,67 +8,45 @@ import engine.util.Data;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.lang.Thread;
+import android.util.Log;
 // Gets data from any audio input possible, the Microphone, for example
-public abstract class AudioIn implements Runnable
+public class AudioIn implements Runnable
 {
-	//FIXME Different
-	/*
- 	private ConcurrentLinkedQueue<Data> inQueue;
-	protected Thread thread;
-	protected boolean canRun;
-	protected boolean noMoreInput;
-	public boolean ready = false;
-	public boolean valid = true
-	 */
 	private ConcurrentLinkedQueue<Data> inQueue;
 	protected Thread thread;
 	protected boolean canRun;
-	
+
 	public AudioIn()
 	{
 		inQueue = new ConcurrentLinkedQueue<Data>();
 		canRun = false;
 	}
 
+    public void run(){
+        //default run does nothing to support mock data input
+    }
 	public void blockingStart(){
 		canRun = true;
 		run();
 	}
-	//FIXME DIFFERENT
-	/*
-	public void start()
-	{
-		noMoreInput = false;
-		if( thread != null)
-			stop();
-		
-		canRun = true;
-        thread = new Thread(this);
-        thread.start();
-	
-	 */
-	public void start()
+
+    public void start()
 	{
 		canRun = true;
         thread = new Thread(this);
         thread.start();
 	}
-	
-	//FIXME Different
-	/*
-	public void stop()
-	{
-        canRun = false;
-        if( thread != null)
-        {
-	        try {
-	            thread.join();
-	        } catch ( Exception e){
-	
-	        }
-	        thread = null;
-        }
-	 */
+
+    public void drainStop(){
+        long now  = System.currentTimeMillis();
+        int spins =  0;
+        Log.d("Drain Stop","starting.");
+        while( inQueue.isEmpty() == false )
+            spins++;//busy waiting
+        Log.d("Drain Stop","stopping. Delta:"+(System.currentTimeMillis() - now )+" ms count:"+spins);
+        stop();
+    }
+
 	public void stop()
 	{
         canRun = false;

@@ -10,6 +10,7 @@ import engine.Processing.Processor;
 import engine.Processing.Recogniser;
 import engine.audio.*;
 import engine.util.*;
+import rory.bain.counter.app.addActivity;
 
 import org.jtransforms.fft.DoubleFFT_1D;
 
@@ -20,15 +21,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+
 //
 public class RawRidgeRecogniser extends Recogniser {
 	
 	//alternative
 	private RingBuffer buff,lagger,ddlt;
 	//private RingSum chk;
-	
+    ArrayList<Short> output;
+
 	public RawRidgeRecogniser(Counter c){
 		super(c);
+        output = new ArrayList<Short>(10);
 		System.out.println("RAW ridge recogniser");
 	}
 
@@ -54,7 +59,9 @@ public class RawRidgeRecogniser extends Recogniser {
     }
 
 	double runnerAvg = 0,theAvg=0;
-	double maxDrop = 65535; int maxDropPos=0, startTrack=0;
+	double maxDrop = 65535,lastDrop = 0;
+    int maxDropPos=0, startTrack=0,nrDrops = 0,nrUps = 0,dropsTillMin = 0,upsTillMin = 0;
+
 	private void _processNext(double a){
 		buff.push(a);
 		position++;
@@ -78,34 +85,55 @@ public class RawRidgeRecogniser extends Recogniser {
 			runnerAvg += accumulator;
 			lagger.push(accumulator);
 			theAvg = (runnerAvg/position);
-			if( accumulator < theAvg ){
+            output.add((short)(accumulator*25000));
+            if( accumulator < theAvg ){
 				if(startTrack == 0)
 				{
 					startTrack = (int) position;
 					
 				}
 				//track
+                if( lastDrop > accumulator )//dropping
+                    nrDrops ++;
+                else
+                    nrUps ++;
+                lastDrop = accumulator;
+
 				if(accumulator < maxDrop ){
 					maxDrop = accumulator;
 					maxDropPos = (int) position;
-				}
-			}
+                    dropsTillMin = nrDrops;
+				    upsTillMin = nrUps;
+                }
+
+            }
 			else
 			{
 				//problematic: detect if the max drop is low enough
-				if( startTrack != 0 && maxDrop <= theAvg * 0.8){ //only consider counting if the drop was low enough
+				if( startTrack != 0 && maxDrop <= theAvg * 0.75){ //only consider counting if the drop was low enough
 					//calculate how fast the maximum was reached
 					int dist =( buff.getCapacity() - ( maxDropPos - startTrack )); 
 					if(dist < 0)
 						dist = 1;
-					certain = ((double)dist / buff.getCapacity())*1.5;
-					//if(certain > 0.5)
-						System.out.println("crt:"+certain+" maxDrop:"+maxDrop+" avg:"+theAvg+" dist:"+( maxDropPos - startTrack )+" max:"+buff.getCapacity());
+
+					certain   = (
+                            ( (double)dist / buff.getCapacity() ) +
+                            ( (double)dropsTillMin / ( dropsTillMin + upsTillMin ) )
+                    )/2;
+
+					System.out.println("c:"+certain+
+                    " peakDist:"+(((double)dist / buff.getCapacity()))+
+                    " du:"+( (double)dropsTillMin / ( dropsTillMin + upsTillMin ) )+
+                    " dn:"+dropsTillMin+" up:"+upsTillMin+
+                    " maxDrop:"+maxDrop+" avg:"+theAvg+
+                    " dist:"+( maxDropPos - startTrack )+" max:"+buff.getCapacity());
 				}
 				//evaluate
 				maxDrop = theAvg;
-				maxDropPos = (int) position;
+                maxDropPos = (int) position;
 				startTrack = 0;
+                nrDrops = 0;
+                nrUps = 0;
 			}
 
 			if(certain > 0.5)
@@ -122,6 +150,7 @@ public class RawRidgeRecogniser extends Recogniser {
 						break;
 					}*/
 			}
+            //plot accumulator
 		}	
 	}
 	
@@ -129,8 +158,16 @@ public class RawRidgeRecogniser extends Recogniser {
 	public void process(Data data) {
 		double[] d = data.get();
         Log.d("RRR:","dl:"+data.get().length);
-		for( int i = 0; i < d.length; ++i)
-			_processNext(d[i]);
-		//System.out.println("position:"+position);
-	}
+		for( int i = 0; i < d.length; ++i) {
+            _processNext(d[i]);
+            if(position % 1000 == 0 ) {
+                short[] arr = new short[output.size()];
+                for (int j = 0; j < output.size(); ++j)
+                    arr[j] = output.get(j);
+
+                addActivity.modelVisuals.updateAudioData(arr);
+                Log.d("Plotter:", "plotting after:" + position);
+            }
+        }
+    }
 }
