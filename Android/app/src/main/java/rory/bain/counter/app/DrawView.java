@@ -10,10 +10,8 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.ViewParent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 
 //TODO: Need to set this to initiate with a rectangle, not appear when touch detected.
 public class DrawView extends View {
@@ -86,8 +84,8 @@ public class DrawView extends View {
                 190, paint);
         //fill the rectangle
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.parseColor("#55DB1255"));
-        paint.setStrokeWidth(0);
+        paint.setColor(Color.parseColor("#dadada"));
+        paint.setStrokeWidth(2);
 //        Log.d("Left", left + "");
 //        Log.d("Right", right + "");
         canvas.drawRect(
@@ -120,11 +118,11 @@ public class DrawView extends View {
 
             points[1] = new Point();
             points[1].x = X;
-            points[1].y = Y + 30;
+            points[1].y = Y + 20;
 
             points[2] = new Point();
             points[2].x = X + 30;
-            points[2].y = Y + 30;
+            points[2].y = Y + 20;
 
             points[3] = new Point();
             points[3].x = X + 30;
@@ -133,14 +131,21 @@ public class DrawView extends View {
             balID = 2;
             groupId = 1;
             // declare each ball with the ColorBall class
-            for (Point pt : points) {
-                colorballs.add(new ColorBall(getContext(), R.drawable.ic_drawer, pt));
-            }
+
+            colorballs.add(new ColorBall(getContext(), R.drawable.leftfinal, points[0]));
+            colorballs.add(new ColorBall(getContext(), R.drawable.blank, points[1]));
+            colorballs.add(new ColorBall(getContext(), R.drawable.rightfinal, points[2]));
+            colorballs.add(new ColorBall(getContext(), R.drawable.blank, points[3]));
+
 
             colorballs.get(0).setX(0);
             colorballs.get(0).setY(0);
-            colorballs.get(2).setX(680);
-            colorballs.get(2).setY(20);
+            colorballs.get(2).setX(650);
+            colorballs.get(2).setY(18);
+            colorballs.get(1).setX(0);
+            colorballs.get(1).setY(30);
+            colorballs.get(3).setX(650);
+            colorballs.get(3).setY(18);
             invalidate();
 
         }
@@ -158,6 +163,7 @@ public class DrawView extends View {
 
             case MotionEvent.ACTION_DOWN: // touch down so check if the finger is on
                 // a ball
+                Log.d("coordinates", "at position " + X + "and y " + Y);
                 if (points[0] == null) {
                     //initialize rectangle.
                     points[0] = new Point();
@@ -196,10 +202,12 @@ public class DrawView extends View {
                         // calculate the radius from the touch to the center of the
                         // ball
                         //- 50 at the end is a certainty for the size of the point, may need to be changed so that points cannot be too close together
+                        Log.d("y value is", Y+ "");
                         double radCircle = Math
                                 .sqrt((double) (((centerX - X) * (centerX - X)) + (centerY - Y)
-                                        * (centerY - Y))) - 50;
-                        if (radCircle  < ball.getWidthOfBall()) {
+                                        * (centerY - Y))) - 100;
+                        Log.d("rad circle vs width", "radCircle = " + radCircle + "width is " + ball.getWidthOfBall());
+                         if (radCircle  < ball.getWidthOfBall()) {
 
                             balID = ball.getID();
                             if (balID == 1 || balID == 3) {
@@ -220,9 +228,19 @@ public class DrawView extends View {
 
                 if (balID > -1) {
                     // move the balls the same as the finger
-                    colorballs.get(balID).setX(X);
-                    colorballs.get(balID).setY(Y);
-
+                    if (X < 650 && X > 30) {
+                        if (balID == 1){
+                            if (colorballs.get(3).getX() > X + 5){
+                                colorballs.get(balID).setX(X);
+                                colorballs.get(balID).setY(Y);
+                            }
+                        } else {
+                            if (colorballs.get(1).getX() < X - 5){
+                                colorballs.get(balID).setX(X);
+                                colorballs.get(balID).setY(Y);
+                            }
+                        }
+                    }
                     paint.setColor(Color.CYAN);
                     if (groupId == 1) {
                         colorballs.get(1).setX(colorballs.get(0).getX());

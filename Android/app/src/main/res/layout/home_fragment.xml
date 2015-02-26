@@ -11,14 +11,14 @@
         android:gravity="left|right|bottom"
         android:orientation="vertical"
         android:weightSum="4">
-        <ImageView
-            android:id="@+id/drawerPullImage"
-            android:layout_width="40dp"
-            android:layout_height="0dp"
-            android:padding="10dp"
-            android:src="@drawable/ic_drawer"
-            android:layout_weight="0.5"
-            android:layout_gravity="top"/>
+        <!--<ImageView-->
+            <!--android:id="@+id/drawerPullImage"-->
+            <!--android:layout_width="40dp"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:padding="10dp"-->
+            <!--android:src="@drawable/ic_drawer"-->
+            <!--android:layout_weight="0.5"-->
+            <!--android:layout_gravity="top"/>-->
 
         <TextView
             android:id="@+id/countText"
