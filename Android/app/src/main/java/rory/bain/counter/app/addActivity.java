@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -16,7 +16,7 @@ import android.widget.EditText;
 import com.musicg.wave.Wave;
 import android.app.Fragment;
 import android.app.FragmentManager;
-
+import android.widget.VideoView;
 import felix.views.WaveformView;
 import felix.views.modelMaker;
 import engine.util.Counter;
@@ -141,6 +141,17 @@ public class addActivity extends Activity{
                 sampler.setCallback(thisReff,"checkResults");
                 sampler.ExitOnNoData = true;
                 sampler.start();
+                LinearLayout myLayout = (LinearLayout) findViewById(R.id.addSound_linLayout);
+                for ( int i = 0; i < myLayout.getChildCount();  i++ ){
+                    View view = myLayout.getChildAt(i);
+                    view.setVisibility(View.GONE); // Or whatever you want to do with the view.
+                }
+                myLayout.setWeightSum(1);
+                TextView pleaseWaitText = new TextView(addActivity.this);
+                pleaseWaitText.setTextSize(30);
+                pleaseWaitText.setText("Loading..");
+                pleaseWaitText.setGravity(1);
+                myLayout.addView(pleaseWaitText);
                 Log.d("Checking...","Checking model against sample");
             }
         });
@@ -175,5 +186,10 @@ public class addActivity extends Activity{
             }
         });
         aDia.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        sendUserMessage("Sorry! You can't go back while a sound is processing!");
     }
 }

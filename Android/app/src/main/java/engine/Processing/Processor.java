@@ -90,6 +90,7 @@ public class Processor implements Runnable
 		running.set(true);
 		while(canRun)
 		{
+
 			Data d = audioIn.getNext();
 			//System.out.println("Got data from audio:"+d);
 			if( d != null )
