@@ -190,25 +190,44 @@ public class DrawView extends View {
                     }
                 } else {
                     //resize rectangle
+//                    balID = -1;
+//                    groupId = -1;
+//                    for (int i = colorballs.size()-1; i>=0; i--) {
+//                        ColorBall ball = colorballs.get(i);
+//                        // check if inside the bounds of the ball (circle)
+//                        // get the center for the ball
+//                        int centerX = ball.getX() + ball.getWidthOfBall();
+//                        int centerY = ball.getY() + ball.getHeightOfBall();
+//                        paint.setColor(Color.CYAN);
+//                        // calculate the radius from the touch to the center of the
+//                        // ball
+//                        //- 50 at the end is a certainty for the size of the point, may need to be changed so that points cannot be too close together
+//                        Log.d("y value is", Y+ "");
+//                        double radCircle = Math
+//                                .sqrt((double) (((centerX - X) * (centerX - X)) + (centerY - Y)
+//                                        * (centerY - Y))) - 100;
+//                        Log.d("rad circle vs width", "radCircle = " + radCircle + "width is " + ball.getWidthOfBall());
+//                         if (radCircle  < ball.getWidthOfBall()) {
+//
+//                            balID = ball.getID();
+//                            if (balID == 1 || balID == 3) {
+//                                groupId = 2;
+//                            } else {
+//                                groupId = 1;
+//                            }
+//                            invalidate();
+//                            break;
+//                        }
+//                        invalidate();
+//                    }
                     balID = -1;
-                    groupId = -1;
-                    for (int i = colorballs.size()-1; i>=0; i--) {
+                    for (int i = colorballs.size()-1; i>= 0; i --){
                         ColorBall ball = colorballs.get(i);
-                        // check if inside the bounds of the ball (circle)
-                        // get the center for the ball
-                        int centerX = ball.getX() + ball.getWidthOfBall();
-                        int centerY = ball.getY() + ball.getHeightOfBall();
-                        paint.setColor(Color.CYAN);
-                        // calculate the radius from the touch to the center of the
-                        // ball
-                        //- 50 at the end is a certainty for the size of the point, may need to be changed so that points cannot be too close together
-                        Log.d("y value is", Y+ "");
-                        double radCircle = Math
-                                .sqrt((double) (((centerX - X) * (centerX - X)) + (centerY - Y)
-                                        * (centerY - Y))) - 100;
-                        Log.d("rad circle vs width", "radCircle = " + radCircle + "width is " + ball.getWidthOfBall());
-                         if (radCircle  < ball.getWidthOfBall()) {
-
+                        int centerX = ball.getX();
+                        Log.d("Rectangle size", "x is " + centerX);
+                        Log.d("touched point", "touched x is " + X);
+                        if ((X > centerX - 50 && X < centerX) || (X < centerX + 50 && X > centerX)){
+                            balID = ball.getID();
                             balID = ball.getID();
                             if (balID == 1 || balID == 3) {
                                 groupId = 2;
@@ -218,8 +237,8 @@ public class DrawView extends View {
                             invalidate();
                             break;
                         }
-                        invalidate();
                     }
+
                 }
                 break;
 
