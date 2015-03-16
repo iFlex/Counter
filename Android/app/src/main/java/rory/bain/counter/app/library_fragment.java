@@ -40,8 +40,7 @@ public class library_fragment extends Fragment{
         });
 
         MainActivity.libraryDB.open();
-        MainActivity.libraryDB.insertRow("Books", "x", "", 1, 2);
-        MainActivity.libraryDB.insertRow("Cars", "x", "", 1, 2);
+
 
         Cursor cursor = MainActivity.libraryDB.getAllRows();
         List<Map<String, String>> data = new ArrayList<Map<String, String>>();
