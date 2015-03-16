@@ -58,27 +58,31 @@ public class deleteAdapter extends BaseAdapter implements ListAdapter {
             public void onClick(View v) {
                 //do something
                 //Send message
-                list.remove(position);
-                MainActivity.libraryDB.deleteRow(position);
-                notifyDataSetChanged();
+
+                new AlertDialog.Builder(deleteAdapter.this.context)
+                        .setTitle("Delete entry")
+                        .setMessage("Are you sure you want to delete this entry?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                list.remove(position);
+                                MainActivity.libraryDB.deleteRow(position);
+                                notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
         });
 
         return view;
     }
 
-    private void sendUserMessage(String message){
-        AlertDialog aDia = new AlertDialog.Builder(this.context).create();
-        aDia.setTitle("Oops!");
-        aDia.setMessage(message);
-        aDia.setButton("Ok!", new DialogInterface.OnClickListener() {
-            public void onClick (DialogInterface dialog, int which) {
-                //Do we want to do anything here?
-                return;
-            }
-        });
-        aDia.show();
-    }
+
 
 
 

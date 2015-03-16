@@ -37,7 +37,7 @@
             android:layout_weight="1"
             android:layout_height="fill_parent"
             android:text="Delete"
-            android:background="@color/red"/>
+            android:background="@color/redColor"/>
 
 
         </LinearLayout>
