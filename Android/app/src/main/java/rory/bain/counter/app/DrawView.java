@@ -164,31 +164,7 @@ public class DrawView extends View {
             case MotionEvent.ACTION_DOWN: // touch down so check if the finger is on
                 // a ball
                 Log.d("coordinates", "at position " + X + "and y " + Y);
-                if (points[0] == null) {
-                    //initialize rectangle.
-                    points[0] = new Point();
-                    points[0].x = X;
-                    points[0].y = Y;
 
-                    points[1] = new Point();
-                    points[1].x = X;
-                    points[1].y = Y + 30;
-
-                    points[2] = new Point();
-                    points[2].x = X + 30;
-                    points[2].y = Y + 30;
-
-                    points[3] = new Point();
-                    points[3].x = X +30;
-                    points[3].y = Y;
-
-                    balID = 2;
-                    groupId = 1;
-                    // declare each ball with the ColorBall class
-                    for (Point pt : points) {
-                        colorballs.add(new ColorBall(getContext(), R.drawable.ic_drawer, pt));
-                    }
-                } else {
                     //resize rectangle
 //                    balID = -1;
 //                    groupId = -1;
@@ -220,24 +196,24 @@ public class DrawView extends View {
 //                        }
 //                        invalidate();
 //                    }
-                    balID = -1;
-                    for (int i = colorballs.size()-1; i>= 0; i --){
-                        ColorBall ball = colorballs.get(i);
-                        int centerX = ball.getX();
-                        Log.d("Rectangle size", "x is " + centerX);
-                        Log.d("touched point", "touched x is " + X);
-                        if ((X > centerX - 50 && X < centerX) || (X < centerX + 50 && X > centerX)){
-                            balID = ball.getID();
-                            balID = ball.getID();
-                            if (balID == 1 || balID == 3) {
-                                groupId = 2;
-                            } else {
-                                groupId = 1;
-                            }
-                            invalidate();
-                            break;
+                balID = -1;
+                for (int i = colorballs.size()-1; i>= 0; i --){
+                    ColorBall ball = colorballs.get(i);
+                    int centerX = ball.getX();
+//                        Log.d("Rectangle size", "x is " + centerX);
+//                        Log.d("touched point", "touched x is " + X);
+                    if ((X > centerX - 50 && X < centerX) || (X < centerX + 50 && X > centerX)){
+                        balID = ball.getID();
+                        balID = ball.getID();
+                        if (balID == 1 || balID == 3) {
+                            groupId = 2;
+                        } else {
+                            groupId = 1;
                         }
+                        invalidate();
+                        break;
                     }
+
 
                 }
                 break;

@@ -3,5 +3,6 @@
     <color name = "buttonNormalBackground">#8a8d94</color>
     <color name = "white">#ffffff</color>
     <color name="iconColor">#848484</color>
+    <color name="redColor">#e01212</color>
 
 </resources>

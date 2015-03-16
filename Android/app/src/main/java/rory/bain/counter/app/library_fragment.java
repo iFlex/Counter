@@ -40,8 +40,12 @@ public class library_fragment extends Fragment{
         });
 
         MainActivity.libraryDB.open();
+        MainActivity.libraryDB.insertRow("Books", "x", "", 1, 2);
+        MainActivity.libraryDB.insertRow("Cars", "x", "", 1, 2);
+
         Cursor cursor = MainActivity.libraryDB.getAllRows();
         List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+        ArrayList<String> items = new ArrayList<String>();
 
         if(cursor.moveToLast()) {
             do {
@@ -55,21 +59,23 @@ public class library_fragment extends Fragment{
                 int used = cursor.getInt(libraryDBAdapter.COL_USED);
                 int broken = cursor.getInt(libraryDBAdapter.COL_BROKEN);
 
-                datum.put("name", name);
-                datum.put("sample", sample);
-                data.add(datum);
+//                datum.put("name", name);
+//                datum.put("sample", sample);
+//                data.add(datum);
+                items.add(name);
 
             } while (cursor.moveToPrevious());
         }
+        deleteAdapter adapter2 = new deleteAdapter(items, this.getActivity());
 
-        SimpleAdapter adapter = new SimpleAdapter(this.getActivity(), data,
-                android.R.layout.simple_list_item_2,
-                new String[] {"name", "sample"},
-                new int[] {android.R.id.text1,
-                        android.R.id.text2});
+//        SimpleAdapter adapter = new SimpleAdapter(this.getActivity(), data,
+//                android.R.layout.simple_list_item_2,
+//                new String[] {"name", "sample"},
+//                new int[] {android.R.id.text1,
+//                        android.R.id.text2});
 
         ListView list = (ListView) rootView.findViewById(R.id.libraryList);
-        list.setAdapter(adapter);
+        list.setAdapter(adapter2);
 
         return rootView;
     }
