@@ -84,12 +84,12 @@ public class home_Fragment extends Fragment {
                 if(!MainActivity.processor.isRunning()) {
                     MainActivity.processor.start();
                     startButton.setText("Stop");
-                    startButton.setBackgroundColor(Color.parseColor("#d2d2d2"));
+                    startButton.setSelected(true);
                 }
                 else {
                     MainActivity.processor.stop();
                     startButton.setText("Start");
-                    startButton.setBackgroundColor(Color.parseColor("#8a8d94"));
+                    startButton.setSelected(false);
                     String date = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(new Date());
                     MainActivity.myDB.insertRow(MainActivity.counter.getCount(), date, "Books");
                 }

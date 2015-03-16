@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name = "buttonNormalBackground">#8a8d94</color>
+    <color name = "buttonNormalBackground">@android:color/holo_blue_dark</color>
+    <color name = "buttonPressedBackground">@android:color/holo_blue_light</color>
+    <!--<color name = "blue_normal">@android:color/holo_blue_dark</color>-->
+    <!--<color name = "blue_pressed">@android:color/holo_blue_light</color>-->\
+    <color name = "blue_pressed">#aba9a9</color>
+    <color name = "blue_normal">#848484</color>
     <color name = "white">#ffffff</color>
     <color name="iconColor">#848484</color>
     <color name="redColor">#e01212</color>

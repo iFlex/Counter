@@ -57,7 +57,7 @@
                 android:text="Start"
                 android:layout_margin="10dp"
                 android:layout_marginBottom="0dp"
-                android:background="@color/iconColor"
+                android:background="@drawable/flat_selector"
                 />
 
             <Button
@@ -68,7 +68,7 @@
                 android:text="Reset"
                 android:layout_margin="10dp"
                 android:layout_marginBottom="0dp"
-                android:background="@color/iconColor"
+                android:background="@drawable/flat_selector"
                 />
 
         </LinearLayout>

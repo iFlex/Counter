@@ -9,8 +9,6 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="left|right|bottom"
         android:orientation="vertical"
         android:weightSum="4"
         android:id="@+id/linearLayout">
@@ -19,9 +17,10 @@
             android:id="@+id/countText"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="3.37"
             android:gravity="center_horizontal|top"
-            android:textColor="@color/iconColor"
+
+            android:textColor="@color/blue_normal"
             android:textSize="250sp"
             android:textStyle="bold" android:text="0"
             />
@@ -37,6 +36,7 @@
 
 
         <LinearLayout
+            android:layout_alignParentBottom="true"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_gravity="bottom|fill|start"
@@ -51,7 +51,7 @@
                 android:textColor="@color/white"
                 android:layout_margin="10dp"
                 android:layout_marginBottom="0dp"
-                android:background="@color/iconColor"/>
+                android:background="@drawable/flat_selector"/>
 
             <Button
                 android:id="@+id/resetButton"
@@ -62,7 +62,7 @@
                 android:textColor="@color/white"
                 android:layout_margin="10dp"
                 android:layout_marginBottom="0dp"
-                android:background="@color/iconColor"/>
+                android:background="@drawable/flat_selector"/>
 
         </LinearLayout>
 

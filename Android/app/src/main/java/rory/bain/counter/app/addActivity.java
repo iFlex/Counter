@@ -26,6 +26,7 @@ import android.util.Log;
  * Created by rorybain on 29/01/15.
  */
 public class addActivity extends Activity{
+    private boolean dataEntered;
     public static Intent i;
     public static modelMaker mMaker;
     private Processor sampler;
@@ -35,18 +36,7 @@ public class addActivity extends Activity{
     private int correctCount = 0;
     private addActivity thisReff = this;
     private boolean advance = false;
-    //threading issues
-    public void goToFinalise(){
-        if (advance) {
-            View view = findViewById(R.id.add_frame_container);
-            view.setVisibility(View.VISIBLE);
-            Fragment fragment = new naming_fragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.add_frame_container, fragment).commit();
-        } else {
-            sendUserMessage("Sample is poor quality, please retry or go back");
-        }
-    }
+
     public void checkResults(){
         advance = mMaker.checkCorrectness(correctCount);
         Log.d("Count results:","Correct:"+correctCount+" advancing:"+advance);
@@ -54,6 +44,7 @@ public class addActivity extends Activity{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        dataEntered = false;
         super.onCreate(savedInstanceState);
 
         Counter c = new Counter();
@@ -94,6 +85,7 @@ public class addActivity extends Activity{
             public void onClick(View v) {
                 //start recording if not already started, if it is already recording, then stop
                 if(sampler.isRunning()) {
+                    startButton.setText("Start");
                     sampler.drainStop(); //quick - threading
                     mMaker.detectEventBoundaries(); //quick
                     waveVisuals.setLines((int)mMaker.getStartPosition(),(int)mMaker.getEndPosition()); //quick
@@ -101,6 +93,7 @@ public class addActivity extends Activity{
                     //modelVisuals.updateAudioData(mMaker.getModel()); // slow
                     Log.d("Samplign time:",(System.currentTimeMillis() - MainActivity.timedebug)+"ms"+" overall:"+(System.currentTimeMillis() - overall ) );
                 } else {
+                    startButton.setText("Stop");
                     sampler.setCallback(null,"");
                     sampler.ExitOnNoData = false;
 
@@ -135,6 +128,7 @@ public class addActivity extends Activity{
                     sendUserMessage("Please add the correct count of events to continue");
                     return;
                 }
+                dataEntered = true;
                 //process
                 mMaker.extractModel();
                 sampler.setRawInput( mMaker.sample );
@@ -190,6 +184,10 @@ public class addActivity extends Activity{
 
     @Override
     public void onBackPressed() {
-        sendUserMessage("Sorry! You can't go back while a sound is processing!");
+        if (dataEntered) {
+            sendUserMessage("Sorry! You can't go back while a sound is processing!");
+        } else {
+            super.onBackPressed();
+        }
     }
 }

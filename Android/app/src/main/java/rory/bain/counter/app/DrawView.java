@@ -84,7 +84,7 @@ public class DrawView extends View {
                 190, paint);
         //fill the rectangle
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.parseColor("#dadada"));
+        paint.setColor(this.getResources().getColor(R.color.blue_pressed));
         paint.setStrokeWidth(2);
 //        Log.d("Left", left + "");
 //        Log.d("Right", right + "");

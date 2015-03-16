@@ -1,4 +1,6 @@
 package rory.bain.counter.app;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.widget.ListView;
 
@@ -33,11 +35,23 @@ public class history_Fragment extends Fragment {
         resetSQL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Button clicked, refresh view to see changes");
-                MainActivity.myDB.deleteAll();
-                ListView listViews = (ListView) rootView.findViewById(R.id.historyList);
-                listViews.setVisibility(View.INVISIBLE);
-
+                new AlertDialog.Builder(history_Fragment.this.getActivity())
+                        .setTitle("Delete entry")
+                        .setMessage("Are you sure you want to delete this entry?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                MainActivity.myDB.deleteAll();
+                                ListView listViews = (ListView) rootView.findViewById(R.id.historyList);
+                                listViews.setVisibility(View.INVISIBLE);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
         });
 

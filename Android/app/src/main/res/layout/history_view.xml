@@ -9,16 +9,27 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
-
+        android:layout_centerHorizontal="true"
+        android:weightSum="10">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="5dp">
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Reset Data"
+            android:textColor="@android:color/white"
+            android:background="@drawable/flat_selector"
             android:id="@+id/resetSQL" android:layout_gravity="right"/>
+
+        </LinearLayout>
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/historyList" android:layout_gravity="center_horizontal"/>
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:id="@+id/historyList" android:layout_gravity="center_horizontal"
+            android:stackFromBottom="false"/>
     </LinearLayout>
 </RelativeLayout>
