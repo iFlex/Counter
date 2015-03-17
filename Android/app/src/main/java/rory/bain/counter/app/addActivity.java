@@ -3,6 +3,7 @@ package rory.bain.counter.app;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -116,6 +117,7 @@ public class addActivity extends Activity{
         addFinished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Handler h = new Handler();
                 correctCount = 0;
                 try{
                     correctCount = Integer.parseInt(countText.getText().toString());
@@ -135,6 +137,8 @@ public class addActivity extends Activity{
                 sampler.setCallback(thisReff,"checkResults");
                 sampler.ExitOnNoData = true;
                 sampler.start();
+                h.postDelayed(sampler, 5000);
+
                 LinearLayout myLayout = (LinearLayout) findViewById(R.id.addSound_linLayout);
                 for ( int i = 0; i < myLayout.getChildCount();  i++ ){
                     View view = myLayout.getChildAt(i);

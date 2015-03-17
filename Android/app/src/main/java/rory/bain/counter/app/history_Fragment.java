@@ -36,8 +36,8 @@ public class history_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(history_Fragment.this.getActivity())
-                        .setTitle("Delete entry")
-                        .setMessage("Are you sure you want to delete this entry?")
+                        .setTitle("Reset Data")
+                        .setMessage("Are you sure you want to reset history data?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 MainActivity.myDB.deleteAll();

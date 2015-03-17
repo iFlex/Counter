@@ -26,6 +26,11 @@ public class home_Fragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.home_fragment, container, false);
         final TextView resultText = (TextView) rootView.findViewById(R.id.countText);
+
+        //TODO Link this certainty text label so that it displays certainty correctly.
+        final TextView certaintyText = (TextView) rootView.findViewById(R.id.certaintyLabel);
+
+
         resultText.setText("0");
         MainActivity.counter.reset();
         final Button startButton = (Button) rootView.findViewById(R.id.startButton);
@@ -39,14 +44,19 @@ public class home_Fragment extends Fragment {
         HorizontalScrollView scrollView = (HorizontalScrollView) rootView.findViewById(R.id.horizontalScrollView2);
         LinearLayout linLayout = new LinearLayout(this.getActivity());
         linLayout.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(0, 0, 10, 0);
+
 
         if (cursor.moveToLast()) {
             do {
                 int id = cursor.getInt(libraryDBAdapter.COL_ROWID);
                 Button nextButton = new Button(this.getActivity());
-
+                nextButton.setBackgroundResource(R.drawable.sound_button);
+                nextButton.setTextColor(getResources().getColor(R.color.white));
                 nextButton.setText(cursor.getString(libraryDBAdapter.COL_NAME));
-                linLayout.addView(nextButton);
+                linLayout.addView(nextButton, layoutParams);
                 nextButton.setOnClickListener(buttonListListener);
                 //Tag should be something that we can identify library objects using
                 nextButton.setTag(cursor.getInt(libraryDBAdapter.COL_ROWID));
