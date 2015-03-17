@@ -5,6 +5,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -144,6 +145,7 @@ public class addActivity extends Activity{
                 final LinearLayout myLayout = (LinearLayout) findViewById(R.id.addSound_linLayout);
                 for ( int i = 0; i < myLayout.getChildCount();  i++ ){
                     View view = myLayout.getChildAt(i);
+
                     view.setVisibility(View.GONE); // Or whatever you want to do with the view.
                 }
                 myLayout.setWeightSum(1);
@@ -172,17 +174,21 @@ public class addActivity extends Activity{
                 lin.addView(cancelButt);
                 myLayout.addView(lin);
                 Log.d("Checking...","Checking model against sample");
-                Timer timer = new Timer();
 
-                timer.schedule(new TimerTask() {
-                    public void run() {
-                        //Do anything else while waiting
 
+                Runnable runnable = new Runnable() {
+                    public void run () {
+                        Log.d("hello", "HELLOOOOOOOOOOOOOOOOOOOOOO");
+                        View view = findViewById(R.id.add_frame_container);
+                        view.setVisibility(View.VISIBLE);
+                        Fragment fragment = new naming_fragment();
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.add_frame_container, fragment).commit();
                     }
-                }, 5000);
-                Fragment fragment = new naming_fragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
+                };
+                Handler handler = new Handler();
+                handler.postDelayed(runnable, 4000);
+
             }
         });
         playback.setOnClickListener(new View.OnClickListener() {
