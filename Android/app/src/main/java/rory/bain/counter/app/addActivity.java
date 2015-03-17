@@ -1,5 +1,8 @@
 package rory.bain.counter.app;
 
+import android.app.ActionBar;
+import java.util.Timer;
+import java.util.TimerTask;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -117,7 +120,6 @@ public class addActivity extends Activity{
         addFinished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Handler h = new Handler();
                 correctCount = 0;
                 try{
                     correctCount = Integer.parseInt(countText.getText().toString());
@@ -132,25 +134,55 @@ public class addActivity extends Activity{
                 }
                 dataEntered = true;
                 //process
+
                 mMaker.extractModel();
                 sampler.setRawInput( mMaker.sample );
                 sampler.setCallback(thisReff,"checkResults");
                 sampler.ExitOnNoData = true;
                 sampler.start();
-                h.postDelayed(sampler, 5000);
 
-                LinearLayout myLayout = (LinearLayout) findViewById(R.id.addSound_linLayout);
+                final LinearLayout myLayout = (LinearLayout) findViewById(R.id.addSound_linLayout);
                 for ( int i = 0; i < myLayout.getChildCount();  i++ ){
                     View view = myLayout.getChildAt(i);
                     view.setVisibility(View.GONE); // Or whatever you want to do with the view.
                 }
                 myLayout.setWeightSum(1);
+                final LinearLayout lin = new LinearLayout(addActivity.this);
+                lin.setOrientation(LinearLayout.VERTICAL);
                 TextView pleaseWaitText = new TextView(addActivity.this);
                 pleaseWaitText.setTextSize(30);
                 pleaseWaitText.setText("Loading..");
                 pleaseWaitText.setGravity(1);
-                myLayout.addView(pleaseWaitText);
+                Button cancelButt = new Button(addActivity.this);
+                cancelButt.setBackgroundResource(R.drawable.flat_selector);
+                cancelButt.setTextColor(getResources().getColor(R.color.white));
+                cancelButt.setText("Cancel");
+                cancelButt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        for ( int i = 0; i < myLayout.getChildCount();  i++ ){
+                            View view = myLayout.getChildAt(i);
+                            view.setVisibility(View.VISIBLE); // Or whatever you want to do with the view.
+                        }
+                        lin.setVisibility(View.GONE);
+                        dataEntered = false;
+                    }
+                });
+                lin.addView(pleaseWaitText);
+                lin.addView(cancelButt);
+                myLayout.addView(lin);
                 Log.d("Checking...","Checking model against sample");
+                Timer timer = new Timer();
+
+                timer.schedule(new TimerTask() {
+                    public void run() {
+                        //Do anything else while waiting
+
+                    }
+                }, 5000);
+                Fragment fragment = new naming_fragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
             }
         });
         playback.setOnClickListener(new View.OnClickListener() {

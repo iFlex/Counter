@@ -93,6 +93,7 @@ public class home_Fragment extends Fragment {
             public void onClick(View v) {
                 if(!MainActivity.processor.isRunning()) {
                     MainActivity.processor.start();
+                    startButton.setBackgroundResource(R.drawable.rect_pressed);
                     startButton.setText("Stop");
                     startButton.setSelected(true);
                 }
@@ -100,6 +101,7 @@ public class home_Fragment extends Fragment {
                     MainActivity.processor.stop();
                     startButton.setText("Start");
                     startButton.setSelected(false);
+                    startButton.setBackgroundResource(R.drawable.flat_selector);
                     String date = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(new Date());
                     MainActivity.myDB.insertRow(MainActivity.counter.getCount(), date, "Books");
                 }
