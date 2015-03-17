@@ -48,8 +48,6 @@ public class library_fragment extends Fragment{
 
         if(cursor.moveToLast()) {
             do {
-                Map<String, String> datum = new HashMap<String, String>(2);
-
 
                 int id = cursor.getInt(libraryDBAdapter.COL_ROWID);
                 String name = cursor.getString(libraryDBAdapter.COL_NAME);
@@ -58,9 +56,6 @@ public class library_fragment extends Fragment{
                 int used = cursor.getInt(libraryDBAdapter.COL_USED);
                 int broken = cursor.getInt(libraryDBAdapter.COL_BROKEN);
 
-//                datum.put("name", name);
-//                datum.put("sample", sample);
-//                data.add(datum);
                 items.add(name);
 
             } while (cursor.moveToPrevious());

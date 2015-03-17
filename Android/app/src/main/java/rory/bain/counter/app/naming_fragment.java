@@ -44,7 +44,9 @@ public class naming_fragment extends Fragment{
                 //TODO:Insert sample file path for identifying this sound. As this is a fragment
                 //On top of addAcivity, we take the data from it as well.
                 //Insert row takes title of sound, icon file path, sound file path, 1 or 0 for used, 1 or 0 for broken.
+                MainActivity.libraryDB.open();
                 MainActivity.libraryDB.insertRow(soundName.getText().toString(), null, "Insert sample path here", 1, 1);
+                MainActivity.libraryDB.close();
                 i = new Intent(getActivity(), MainActivity.class);
                 startActivity(i);
             }

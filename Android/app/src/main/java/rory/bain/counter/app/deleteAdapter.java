@@ -65,7 +65,9 @@ public class deleteAdapter extends BaseAdapter implements ListAdapter {
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 list.remove(position);
+                                MainActivity.libraryDB.open();
                                 MainActivity.libraryDB.deleteRow(position);
+                                MainActivity.libraryDB.close();
                                 notifyDataSetChanged();
                             }
                         })
