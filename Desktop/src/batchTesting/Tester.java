@@ -83,7 +83,10 @@ public class Tester {
 				
 				//TODO Change to the correct statistical function
 				if(!(fr.getActualCount() == 0 || fr.getCorrectCount() == 0)){
-					fr.setAccuracy(100* ((( (double) fr.getActualCount()) / (double) fr.getCorrectCount())));
+					if( fr.getActualCount() > fr.getCorrectCount() )
+						fr.setAccuracy(100* ((( (double) fr.getCorrectCount()) / (double) fr.getActualCount())));
+					else
+						fr.setAccuracy(100* ((( (double) fr.getActualCount()) / (double) fr.getCorrectCount())));
 				}
 				else if (fr.getActualCount() != 0 && fr.getCorrectCount() == 0){
 					fr.setAccuracy(((double) 1.0/(1.0 + (double) fr.getActualCount())));

@@ -17,7 +17,7 @@ public class Main {
 			Main.testsPath += "/"+parts[i];
 		
 		//MODES 1. CLI mode 2. BATCH testing
-		String mode = "cli";
+		String mode = "batch";
 		if( args.length > 1 )
 			mode = args[0];
 		
