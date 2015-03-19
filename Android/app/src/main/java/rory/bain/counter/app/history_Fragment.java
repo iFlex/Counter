@@ -73,7 +73,11 @@ public class history_Fragment extends Fragment {
                 String sound = cursor.getString(historyDBAdapter.COL_SOUND);
 
                 datum.put("date", convertToNewTime(date));
-                datum.put("count", String.valueOf(count));
+                if (sound.isEmpty()){
+                    datum.put("count", String.valueOf(count));
+                }else {
+                    datum.put("count", String.valueOf(count) + " - " + sound);
+                }
                 data.add(datum);
 
             } while (cursor.moveToPrevious());

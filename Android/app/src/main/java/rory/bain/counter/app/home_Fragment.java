@@ -20,15 +20,22 @@ import java.util.Date;
 
 @SuppressLint("NewApi")
 public class home_Fragment extends Fragment {
-    int count;
+    int count, previousPressed;
+    static int nextID;
+    String selectedSound;
+    View rootView;
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
 
-        View rootView = inflater.inflate(R.layout.home_fragment, container, false);
+        rootView = inflater.inflate(R.layout.home_fragment, container, false);
         final TextView resultText = (TextView) rootView.findViewById(R.id.countText);
+        nextID = 0;
+        previousPressed = -1;
 
         //TODO Link this certainty text label so that it displays certainty correctly.
+        selectedSound = new String();
         final TextView certaintyText = (TextView) rootView.findViewById(R.id.certaintyLabel);
+        certaintyText.setText("+/- " + MainActivity.counter.getUncertainty() + "");
 
 
         resultText.setText("0");
@@ -56,6 +63,7 @@ public class home_Fragment extends Fragment {
                 nextButton.setBackgroundResource(R.drawable.sound_button);
                 nextButton.setTextColor(getResources().getColor(R.color.white));
                 nextButton.setText(cursor.getString(libraryDBAdapter.COL_NAME));
+                nextButton.setId(nextID++);
                 linLayout.addView(nextButton, layoutParams);
                 nextButton.setOnClickListener(buttonListListener);
                 //Tag should be something that we can identify library objects using
@@ -72,6 +80,7 @@ public class home_Fragment extends Fragment {
                     @Override
                     public void run() {
                         resultText.setText(MainActivity.counter.getCount()+"");
+                        certaintyText.setText("+/- " + MainActivity.counter.getUncertainty() + "");
                     }
                 });
             }
@@ -103,7 +112,7 @@ public class home_Fragment extends Fragment {
                     startButton.setSelected(false);
                     startButton.setBackgroundResource(R.drawable.flat_selector);
                     String date = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(new Date());
-                    MainActivity.myDB.insertRow(MainActivity.counter.getCount(), date, "Books");
+                    MainActivity.myDB.insertRow(MainActivity.counter.getCount(), date, selectedSound);
                 }
             }
         });
@@ -120,12 +129,19 @@ public class home_Fragment extends Fragment {
     }
     private OnClickListener buttonListListener = new OnClickListener() {
         public void onClick(View view) {
-            //Once xml button styles have been defined, make the view set to the 'highlighted' style
+            //Once xml button styles have been defined, make the view set to the 'highlighted'
+            if (previousPressed != -1) {
+                Button b = (Button) rootView.findViewById(previousPressed);
+                b.setBackgroundResource(R.drawable.flat_selector);
+            }
             int v = (int) view.getTag();
+            view.setBackgroundResource(R.drawable.rect_pressed);
             MainActivity.libraryDB.open();
-            //Should use a cursor to tidy this up, however for now it just needs to be able to access the data
-            //Also need to implemented selected sound
-            String sample = MainActivity.libraryDB.getRow(v).getString(libraryDBAdapter.COL_SAMPLE);
+            String sample = MainActivity.libraryDB.getRow(v).getString(libraryDBAdapter.COL_NAME);
+            Log.d("Selected ", sample);
+            selectedSound = sample;
+            MainActivity.libraryDB.close();
+            previousPressed = view.getId();
         }
 
     };

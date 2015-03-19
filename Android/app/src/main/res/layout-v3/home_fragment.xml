@@ -33,7 +33,7 @@
                 android:id="@+id/certaintyLabel"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="+/- 3"
+                android:text="+/- 0.0"
                 android:textSize="23sp"
                 android:textStyle="bold"
                 android:textColor="@color/blue_normal"
