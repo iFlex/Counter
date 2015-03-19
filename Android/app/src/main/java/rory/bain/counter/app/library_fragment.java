@@ -25,11 +25,14 @@ import java.util.Map;
 /**
  * Created by rorybain on 28/01/15.
  */
+
 public class library_fragment extends Fragment{
+
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final View rootView = inflater .inflate(R.layout.library_view, container, false);
         final Button addButton = (Button) rootView.findViewById(R.id.addButton);
+        final ArrayList<Integer> rowIDS = new ArrayList<Integer>();
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,10 +60,11 @@ public class library_fragment extends Fragment{
                 int broken = cursor.getInt(libraryDBAdapter.COL_BROKEN);
 
                 items.add(name);
+                rowIDS.add(id);
 
             } while (cursor.moveToPrevious());
         }
-        deleteAdapter adapter2 = new deleteAdapter(items, this.getActivity());
+        deleteAdapter adapter2 = new deleteAdapter(items, this.getActivity(), rowIDS);
 
 //        SimpleAdapter adapter = new SimpleAdapter(this.getActivity(), data,
 //                android.R.layout.simple_list_item_2,

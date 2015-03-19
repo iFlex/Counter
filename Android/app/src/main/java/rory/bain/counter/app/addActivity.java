@@ -52,6 +52,10 @@ public class addActivity extends Activity{
         dataEntered = false;
         super.onCreate(savedInstanceState);
 
+        MainActivity.libraryDB.open();
+        MainActivity.libraryDB.insertRow("lol2", "", "", 1 ,1);
+        MainActivity.libraryDB.close();
+
         Counter c = new Counter();
         mMaker = new modelMaker(c);
         sampler = new Processor(c,mMaker);

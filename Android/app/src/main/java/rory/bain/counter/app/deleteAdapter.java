@@ -2,6 +2,7 @@ package rory.bain.counter.app;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.content.Context;
@@ -17,10 +18,12 @@ import java.util.ArrayList;
 public class deleteAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
     private Context context;
+    private ArrayList<Integer> ids;
 
-    public deleteAdapter (ArrayList<String> list, Context context) {
+    public deleteAdapter (ArrayList<String> list, Context context, ArrayList<Integer> id) {
         this.list = list;
         this.context = context;
+        this.ids = id;
     }
 
     @Override
@@ -64,9 +67,10 @@ public class deleteAdapter extends BaseAdapter implements ListAdapter {
                         .setMessage("Are you sure you want to delete this entry?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                Log.d("Position deletedis", "" + position);
                                 list.remove(position);
                                 MainActivity.libraryDB.open();
-                                MainActivity.libraryDB.deleteRow(position);
+                                MainActivity.libraryDB.deleteRow(ids.get(position));
                                 MainActivity.libraryDB.close();
                                 notifyDataSetChanged();
                             }
