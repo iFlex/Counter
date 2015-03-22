@@ -97,7 +97,6 @@ public class Data
 		for(int j = 0; j < o.length; ++j)
 			dta[i++] = o[j];
 		
-		//I hope this dereferecing of d does not cause Java Runtime to loose all it's references to that memory location and therefore cause a memory leak 
 		d = dta;
 	}
 	

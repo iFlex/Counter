@@ -22,19 +22,34 @@ public class Processor implements Runnable
 	protected boolean canRun;
 	protected String source;
 	protected Counter count;
+	protected Recogniser n;
+	
+	void _init(Counter c){
+        count = c;
+        running = new AtomicBoolean(false);
+        canRun = false;
+        audioIn = null;
+    }
 	
 	public Processor(Counter c)
 	{
 		count = c;
+		consumer = new NaiveRecogniserMk3(count);
 		//consumer = new WaveFilteringNetwork(count);
 		//consumer = new FFTrecogniser(count);
-		consumer = new mgRecogniser(count);
+		//consumer = new mgRecogniser(count);
 		//consumer = new mgRecogniser(count);
 		//debug = new micFFTout();
 		running = new AtomicBoolean(false);
 		canRun = false;
 		audioIn = null;
 	}
+	
+	public Processor(Counter c, Recogniser r)
+    {
+        _init(c);
+        n = r;
+    }
 	
 	public synchronized void setModel(String path){
 		consumer.setModel(path);

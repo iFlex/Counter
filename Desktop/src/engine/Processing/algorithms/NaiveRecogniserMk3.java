@@ -19,9 +19,18 @@ public class NaiveRecogniserMk3 extends Recogniser
 	public void setThreshold(double Threshold)
 	{
 		this.threshold = Threshold;
+	}	
+	public void setModel(String path){
+		super.setModel(path);
+		window = (int) ((int)rawModel.length*1.5);
+		downhillCount = window;
+		double max = rawModel[0];
+		for( int i = 1 ; i < rawModel.length; ++i )
+			if( max < rawModel[i])
+				max = rawModel[i];
+		threshold = max*0.8;
+		System.out.println("Naive Recogniser MK3 -> Window:"+window+" Threshold:"+threshold);
 	}
-
-
 	// How many downhill doubles it has counted
 	private int downhillCount;
 	public int getDownhillCount()
@@ -47,7 +56,6 @@ public class NaiveRecogniserMk3 extends Recogniser
 		this.threshold = 0.8;
 		this.window = 64;
 		this.downhillCount = window;
-		this.counter = null;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,6 +127,7 @@ public class NaiveRecogniserMk3 extends Recogniser
 					try
 					{
 						this.pushFramePos(this.position);
+						System.out.println("Counter:"+counter);
 						counter.increment(1.0);
 						System.out.println("Count:"+counter.getCount());
 					}
