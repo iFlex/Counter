@@ -19,13 +19,14 @@ import felix.views.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import engine.util.Data;
+import engine.util.Counter;
 
 @SuppressLint("NewApi")
 public class home_Fragment extends Fragment {
     int count, previousPressed;
     static int nextID;
-    String selectedSound;
     View rootView;
+    String selectedSound;
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
 
@@ -35,7 +36,6 @@ public class home_Fragment extends Fragment {
         previousPressed = -1;
 
         //TODO Link this certainty text label so that it displays certainty correctly.
-        selectedSound = new String();
         final TextView certaintyText = (TextView) rootView.findViewById(R.id.certaintyLabel);
         certaintyText.setText("+/- " + MainActivity.counter.getUncertainty() + "");
 
@@ -140,23 +140,27 @@ public class home_Fragment extends Fragment {
             view.setBackgroundResource(R.drawable.rect_pressed);
             MainActivity.libraryDB.open();
             String sample = MainActivity.libraryDB.getRow(v).getString(libraryDBAdapter.COL_SAMPLE);
-            Log.d("Selected ", sample);
-            selectedSound = sample;
             MainActivity.libraryDB.close();
             previousPressed = view.getId();
             //playback
-            byte[] rawdata = Base64.decode(sample,Base64.DEFAULT);
-            short[] data = new short[rawdata.length/2];
-
-            for( int i = 0; i < rawdata.length; ++i ){
-                data[i/2] = rawdata[i];
-                data[i/2] <<= 8;
-                data[i/2] |= rawdata[i+1];
+            try {
+                byte[] rawdata = Base64.decode(sample, Base64.DEFAULT);
+                short[] data = new short[rawdata.length / 2];
+                selectedSound = sample;
+                for (int i = 0; i < rawdata.length; i += 2) {
+                    data[i / 2] = rawdata[i];
+                    data[i / 2] <<= 8;
+                    data[i / 2] |= rawdata[i + 1];
+                }
+                //set as model
+                Data d = new Data(data, data.length);
+                modelMaker pbk = new modelMaker(new Counter());
+                pbk.playRaw(data);
+                MainActivity.processor.setRawModel(d);
             }
-            //set as model
-            Data d = new Data(data,data.length);
-            addActivity.mMaker.playRaw(data);
-            MainActivity.processor.setRawModel(d);
+            catch( Exception e){
+                //pass
+            }
         }
 
     };

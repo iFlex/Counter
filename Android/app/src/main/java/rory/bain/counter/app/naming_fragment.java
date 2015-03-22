@@ -53,7 +53,7 @@ public class naming_fragment extends Fragment{
                     zbytes[i*2]     = (byte)(rawdata[i]>>8);
                 }
                 //
-                String data = Base64.encode(zbytes,Base64.DEFAULT).toString();
+                String data = Base64.encodeToString(zbytes,Base64.DEFAULT);
                 Activity a = (Activity) getActivity();
                 if( a instanceof addActivity){
                     ((addActivity) a).returnToMainMenu(soundName.getText().toString(),"",data);
