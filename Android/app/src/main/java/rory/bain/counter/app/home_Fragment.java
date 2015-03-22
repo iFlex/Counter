@@ -147,10 +147,11 @@ public class home_Fragment extends Fragment {
                 byte[] rawdata = Base64.decode(sample, Base64.DEFAULT);
                 short[] data = new short[rawdata.length / 2];
                 selectedSound = sample;
+                int j = 0;
                 for (int i = 0; i < rawdata.length; i += 2) {
-                    data[i / 2] = rawdata[i];
-                    data[i / 2] <<= 8;
-                    data[i / 2] |= rawdata[i + 1];
+                    data[j] = (short)rawdata[i];
+                    data[j] <<= 8;
+                    data[j++] |= rawdata[i + 1];
                 }
                 //set as model
                 Data d = new Data(data, data.length);

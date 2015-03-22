@@ -14,6 +14,11 @@ import android.widget.TextView;
 import android.util.Log;
 import android.app.Activity;
 import android.util.Base64;
+
+import engine.util.Counter;
+import engine.util.Data;
+import felix.views.modelMaker;
+
 /**
  * Created by rorybain on 08/02/15.
  */
@@ -46,11 +51,13 @@ public class naming_fragment extends Fragment{
                 //TODO:Insert sample file path for identifying this sound. As this is a fragment
                 //On top of addAcivity, we take the data from it as well.
                 //Insert row takes title of sound, icon file path, sound file path, 1 or 0 for used, 1 or 0 for broken.
-                short[] rawdata = addActivity.mMaker.getSample();
+                addActivity.mMaker.extractModel();
+                short[] rawdata = addActivity.mMaker.getModel();
                 byte[] zbytes = new byte[rawdata.length*2];
+                int j = 0;
                 for( int i = 0; i < rawdata.length; ++i ){
-                    zbytes[i*2+1]   = (byte)(rawdata[i]&0xff);
-                    zbytes[i*2]     = (byte)(rawdata[i]>>8);
+                    zbytes[j++]     = (byte)((rawdata[i] >> 8) & 0xff);
+                    zbytes[j++]     = (byte)(rawdata[i]&0xff);
                 }
                 //
                 String data = Base64.encodeToString(zbytes,Base64.DEFAULT);
@@ -58,6 +65,18 @@ public class naming_fragment extends Fragment{
                 if( a instanceof addActivity){
                     ((addActivity) a).returnToMainMenu(soundName.getText().toString(),"",data);
                 }
+                //playback - just to check conversion ( there is an issue there )
+                /*byte[] _rawdata = Base64.decode(data, Base64.DEFAULT);
+                short[] _data = new short[_rawdata.length / 2];
+                j = 0;
+                for (int i = 0; i < _rawdata.length; i += 2) {
+                    _data[j] = (short)_rawdata[i];
+                    _data[j] <<= 8;
+                    _data[j++] |= _rawdata[i + 1];
+                }
+                //set as model
+                modelMaker pbk = new modelMaker(new Counter());
+                pbk.playRaw(_data);*/
                 //MainActivity.libraryDB.open();
                 //MainActivity.libraryDB.insertRow(soundName.getText().toString(), null, data, 1, 1);
                 //MainActivity.libraryDB.close();
