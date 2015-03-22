@@ -97,7 +97,8 @@ public class addActivity extends Activity{
                 //start recording if not already started, if it is already recording, then stop
                 if(sampler.isRunning()) {
                     startButton.setText("Start");
-                    sampler.drainStop(); //quick - threading
+                    //sampler.drainStop(); //quick - threading
+                    sampler.stop();
                     mMaker.detectEventBoundaries(); //quick
                     waveVisuals.setLines((int)mMaker.getStartPosition(),(int)mMaker.getEndPosition()); //quick
                     waveVisuals.updateAudioData(mMaker.extractModel()); // slow
@@ -107,11 +108,11 @@ public class addActivity extends Activity{
                     startButton.setText("Stop");
                     sampler.setCallback(null,"");
                     sampler.ExitOnNoData = false;
+                    MainActivity.timedebug = 0;
+                    overall = System.currentTimeMillis();
 
                     mMaker.reset();
                     sampler.start();
-                    MainActivity.timedebug = 0;
-                    overall = System.currentTimeMillis();
                 }
             }
         });

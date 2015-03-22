@@ -35,11 +35,11 @@ public class NaiveRecogniserMk3 extends Recogniser
     }
     public void setModel(String path){
         super.setModel(path);
-        _config();
+        //_config();
     }
     public void setRawModel(Data d){
         super.setRawModel(d);
-        _config();
+        //_config();
     }
     // How many downhill doubles it has counted
     private int downhillCount;
