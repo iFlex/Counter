@@ -53,6 +53,9 @@ public class Processor implements Runnable
     public synchronized void setModel(String path){
         n.setModel(path);
     }
+    public synchronized void setRawModel(Data d){
+        n.setRawModel(d);
+    }
     public synchronized void setInput(String nameOrPath){
         canRun = false;
         if( audioIn != null )

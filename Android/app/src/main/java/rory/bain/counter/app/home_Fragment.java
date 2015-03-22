@@ -1,4 +1,5 @@
 package rory.bain.counter.app;
+import android.util.Base64;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import android.database.Cursor;
 import felix.views.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import engine.util.Data;
 
 @SuppressLint("NewApi")
 public class home_Fragment extends Fragment {
@@ -137,11 +139,24 @@ public class home_Fragment extends Fragment {
             int v = (int) view.getTag();
             view.setBackgroundResource(R.drawable.rect_pressed);
             MainActivity.libraryDB.open();
-            String sample = MainActivity.libraryDB.getRow(v).getString(libraryDBAdapter.COL_NAME);
+            String sample = MainActivity.libraryDB.getRow(v).getString(libraryDBAdapter.COL_SAMPLE);
             Log.d("Selected ", sample);
             selectedSound = sample;
             MainActivity.libraryDB.close();
             previousPressed = view.getId();
+            //playback
+            byte[] rawdata = Base64.decode(sample,Base64.DEFAULT);
+            short[] data = new short[rawdata.length/2];
+
+            for( int i = 0; i < rawdata.length; ++i ){
+                data[i/2] = rawdata[i];
+                data[i/2] <<= 8;
+                data[i/2] |= rawdata[i+1];
+            }
+            //set as model
+            Data d = new Data(data,data.length);
+            addActivity.mMaker.playRaw(data);
+            MainActivity.processor.setRawModel(d);
         }
 
     };

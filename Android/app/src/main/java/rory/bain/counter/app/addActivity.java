@@ -42,19 +42,21 @@ public class addActivity extends Activity{
     private addActivity thisReff = this;
     private boolean advance = false;
 
+    public void saveSample(){
+
+    }
     public void checkResults(){
         advance = mMaker.checkCorrectness(correctCount);
         Log.d("Count results:","Correct:"+correctCount+" advancing:"+advance);
+        View view = findViewById(R.id.add_frame_container);
+        view.setVisibility(View.VISIBLE);
+        //////////////////////////////////////////////////
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         dataEntered = false;
         super.onCreate(savedInstanceState);
-
-        MainActivity.libraryDB.open();
-        MainActivity.libraryDB.insertRow("lol2", "", "", 1 ,1);
-        MainActivity.libraryDB.close();
 
         Counter c = new Counter();
         mMaker = new modelMaker(c);
@@ -125,7 +127,7 @@ public class addActivity extends Activity{
         addFinished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                correctCount = 0;
+                /*correctCount = 0;
                 try{
                     correctCount = Integer.parseInt(countText.getText().toString());
                 }
@@ -136,16 +138,26 @@ public class addActivity extends Activity{
                 if( correctCount == 0 ){
                     sendUserMessage("Please add the correct count of events to continue");
                     return;
-                }
-                dataEntered = true;
+                }*/
+                //dataEntered = true;
                 //process
 
                 mMaker.extractModel();
-                sampler.setRawInput( mMaker.sample );
-                sampler.setCallback(thisReff,"checkResults");
-                sampler.ExitOnNoData = true;
-                sampler.start();
-
+                if( mMaker.getSample().length > 0 ){
+                    Log.d("Add:","Going to ze naming...");
+                    View vie = findViewById(R.id.add_frame_container);
+                    vie.setVisibility(View.VISIBLE);
+                    Fragment fragment = new naming_fragment();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.add_frame_container, fragment).commit();
+                }
+                else
+                    sendUserMessage("Please record a model sound to add to the library!");
+                //sampler.setRawInput( mMaker.sample );
+                //sampler.setCallback(thisReff,"checkResults");
+                //sampler.ExitOnNoData = true;
+                //sampler.start();
+                /*
                 final LinearLayout myLayout = (LinearLayout) findViewById(R.id.addSound_linLayout);
                 for ( int i = 0; i < myLayout.getChildCount();  i++ ){
                     View view = myLayout.getChildAt(i);
@@ -192,7 +204,7 @@ public class addActivity extends Activity{
                 };
                 Handler handler = new Handler();
                 handler.postDelayed(runnable, 4000);
-
+                */
             }
         });
         playback.setOnClickListener(new View.OnClickListener() {
@@ -206,11 +218,11 @@ public class addActivity extends Activity{
         });
     }
 
-    public void returnToMainMenu() {
+    public void returnToMainMenu(String name,String p,String data) {
 //////////////////////////////////////////////////////////////////
 //        Remember to uncomment this and put in real data
 //////////////////////////////////////////////////////////////////
-//        MainActivity.libraryDB.insertRow(text1.getText().toString(), text2.getText().toString(), text2.getText().toString(), 1, 1);
+        MainActivity.libraryDB.insertRow(name, p, data, 1, 1);
         i = new Intent(getBaseContext(), MainActivity.class);
         startActivity(i);
     }
@@ -230,10 +242,10 @@ public class addActivity extends Activity{
 
     @Override
     public void onBackPressed() {
-        if (dataEntered) {
-            sendUserMessage("Sorry! You can't go back while a sound is processing!");
-        } else {
+        //if (dataEntered) {
+        //    sendUserMessage("Sorry! You can't go back while a sound is processing!");
+        //} else {
             super.onBackPressed();
-        }
+        //}
     }
 }

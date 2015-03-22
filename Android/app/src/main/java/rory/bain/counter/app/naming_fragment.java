@@ -11,7 +11,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.util.Log;
+import android.app.Activity;
+import android.util.Base64;
 /**
  * Created by rorybain on 08/02/15.
  */
@@ -44,11 +46,23 @@ public class naming_fragment extends Fragment{
                 //TODO:Insert sample file path for identifying this sound. As this is a fragment
                 //On top of addAcivity, we take the data from it as well.
                 //Insert row takes title of sound, icon file path, sound file path, 1 or 0 for used, 1 or 0 for broken.
-                MainActivity.libraryDB.open();
-                MainActivity.libraryDB.insertRow(soundName.getText().toString(), null, "Insert sample path here", 1, 1);
-                MainActivity.libraryDB.close();
-                i = new Intent(getActivity(), MainActivity.class);
-                startActivity(i);
+                short[] rawdata = addActivity.mMaker.getSample();
+                byte[] zbytes = new byte[rawdata.length*2];
+                for( int i = 0; i < rawdata.length; ++i ){
+                    zbytes[i*2+1]   = (byte)(rawdata[i]&0xff);
+                    zbytes[i*2]     = (byte)(rawdata[i]>>8);
+                }
+                //
+                String data = Base64.encode(zbytes,Base64.DEFAULT).toString();
+                Activity a = (Activity) getActivity();
+                if( a instanceof addActivity){
+                    ((addActivity) a).returnToMainMenu(soundName.getText().toString(),"",data);
+                }
+                //MainActivity.libraryDB.open();
+                //MainActivity.libraryDB.insertRow(soundName.getText().toString(), null, data, 1, 1);
+                //MainActivity.libraryDB.close();
+                //i = new Intent(getActivity(), MainActivity.class);
+                //startActivity(i);
             }
         });
         // Inflate the layout for this fragment

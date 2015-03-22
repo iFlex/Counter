@@ -161,9 +161,9 @@ public class modelMaker extends Recogniser {
         len += ( len%2 == 1 ) ? 1 : 0 ;
         short[] pbkdata = new short[len];
         int j = 0;
-        for( int i = 0 ; i < rdta.length; ++i ) {
+        for( int i = 0 ; i < rdta.length; ++i )
             pbkdata[i] = (short)rdta[i];
-        }
+
         pbkdata[len-1] = 0;
 
         Log.d("PLAYBACK:","len:"+pbkdata.length+" = "+rdta.length+" time:"+((double)pbkdata.length / 44100 ));
