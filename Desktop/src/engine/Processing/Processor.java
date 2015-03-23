@@ -34,7 +34,8 @@ public class Processor implements Runnable
 	public Processor(Counter c)
 	{
 		count = c;
-		consumer = new NaiveRecogniserMk3(count);
+		//consumer = new NaiveRecogniserMk3(count);
+		consumer = new RawRidgeRecogniser(count);
 		//consumer = new WaveFilteringNetwork(count);
 		//consumer = new FFTrecogniser(count);
 		//consumer = new mgRecogniser(count);

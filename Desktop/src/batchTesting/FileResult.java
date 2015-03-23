@@ -46,11 +46,16 @@ public class FileResult {
 	}
 	
 	public String getFileReport(){
+		String countStatus = new String("");
+		if( correctCount > actualCount )
+			countStatus = "UNDERCOUNT";
+		if( correctCount < actualCount )
+			countStatus = "OVERCOUNT";
 		
 		return "== Results for file: " + filename + " ==" + '\n' + 
 				"---------------------------" + '\n' + actualCount + " - " + "Actual Count"+ '\n' +
 				correctCount + " - " + "Correct Count" + '\n' +
-				accuracy + "%" +" Accuracy" +'\n' +
+				accuracy + "%" +" Accuracy - "+ countStatus +'\n' +
 				"---------------------------" + '\n' +
 				duration/1000.000 + "s" + " - " + "Time taken" + '\n'; //Changed duration from ms to s
 		

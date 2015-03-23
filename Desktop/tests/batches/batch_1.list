@@ -1,3 +1,13 @@
 ./tests/batches/claps.list
-./tests/batches/pops.list
 ./tests/batches/tweets.list
+./tests/batches/books.list
+./tests/batches/coins.list
+./tests/batches/fbalert.list
+./tests/batches/guiterOpen.list
+./tests/batches/guitarMuted.list
+./tests/batches/hello.list
+./tests/batches/keyboard.list
+./tests/batches/pageTurn.list
+./tests/batches/pops.list
+./tests/batches/snap.list
+./tests/batches/song.list

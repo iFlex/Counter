@@ -20,8 +20,7 @@ public class NaiveRecogniserMk3 extends Recogniser
 	{
 		this.threshold = Threshold;
 	}	
-	public void setModel(String path){
-		super.setModel(path);
+	private void _config(){
 		window = (int) ((int)rawModel.length*1.5);
 		downhillCount = window;
 		double max = rawModel[0];
@@ -30,6 +29,14 @@ public class NaiveRecogniserMk3 extends Recogniser
 				max = rawModel[i];
 		threshold = max*0.8;
 		System.out.println("Naive Recogniser MK3 -> Window:"+window+" Threshold:"+threshold);
+	}
+	public void setModel(String path){
+		super.setModel(path);
+		_config();
+	}
+	public void setRawModel(Data d){
+		super.setRawModel(d);
+		_config();
 	}
 	// How many downhill doubles it has counted
 	private int downhillCount;

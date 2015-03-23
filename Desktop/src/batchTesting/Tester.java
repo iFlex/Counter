@@ -81,7 +81,6 @@ public class Tester {
 				fr.setDuration(System.currentTimeMillis() - startTime);
 				fr.setActualCount(c.getCount());
 				
-				//TODO Change to the correct statistical function
 				if(!(fr.getActualCount() == 0 || fr.getCorrectCount() == 0)){
 					if( fr.getActualCount() > fr.getCorrectCount() )
 						fr.setAccuracy(100* ((( (double) fr.getCorrectCount()) / (double) fr.getActualCount())));
@@ -90,7 +89,9 @@ public class Tester {
 				}
 				else if (fr.getActualCount() != 0 && fr.getCorrectCount() == 0){
 					fr.setAccuracy(((double) 1.0/(1.0 + (double) fr.getActualCount())));
-				
+				}
+				else if(fr.getActualCount() == 0 && fr.getCorrectCount() == 0){
+					fr.setAccuracy(100);
 				}
 				else{
 					fr.setAccuracy(0.0);
@@ -145,7 +146,7 @@ public class Tester {
 			
 			for(int i = 0; i<testList.size(); i++)
 			{
-				fw.write((testList.get(i).getFileName() + " - " + testList.get(i).getGlobalAccuracy()+"%" + ", ").getBytes());
+				fw.write((testList.get(i).getFileName() + " - " + testList.get(i).getGlobalAccuracy()+"%" + "\n").getBytes());
 				overallSuccessRate += testList.get(i).getGlobalAccuracy();
 			}
 			
