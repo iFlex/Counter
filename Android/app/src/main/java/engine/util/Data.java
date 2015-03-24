@@ -4,44 +4,26 @@
 * Data class is used to convert the data from multiple input representation methods to double array of amplitudes 
 */
 package engine.util;
-
-//FIXME The desktop version does not have this import
-import java.nio.ByteBuffer;
-
 // Gets data from any format and converts it to a common format, AKA double
 public class Data
 {
-	//FIXME Different
-	/*
 	private double[] d;
 	private short[] _d;
-	 */
-	private double[] d;
-	
 	public Data(){
 		d = null;
 	}
-
-	//FIXME Different
-	/*
+	
 	//TODO: turn to generic type for function below
     public Data(short[] b,int usableLength){
     	_d = b;
         d = new double[usableLength];
         _d = new short[usableLength];
-        for( int i = 0 ; i < usableLength; ++ i )
+        for( int i = 0 ; i < usableLength; ++ i ){
             d[i] = b[i];
-    }
-	 */
-    //TODO: turn to generic type for function below
-    public Data(short[] b,int usableLength){
-        d = new double[usableLength];
-        for( int i = 0 ; i < usableLength; ++ i )
-            d[i] = b[i];
+            d[i] /= 32768;
+    	}
     }
 
-    //FIXME Different
-    /*
 	public Data(double[] b,int usableLength){
 		d = new double[usableLength];
 		_d = new short[usableLength];
@@ -51,43 +33,51 @@ public class Data
 			_d[i] = (short)b[i];
 		}
 	}
-     */
-    public Data(double[] b,int usableLength){
-		d = new double[usableLength];
-		for( int i = 0 ; i < usableLength; ++ i )
-			d[i] = (double)b[i];
-	}
 	
-    //FIXME Different
-    /*
 	public Data(byte[] b,int usableLength){
 		d = new double[usableLength];
 		_d = new short[usableLength];
-		for( int i = 0 ; i < usableLength; ++ i )
+		for( int i = 0 ; i < usableLength; ++ i ){
 			d[i] = b[i];
+			d[i] /= 128;
+		}
 	}
-     */
-	public Data(byte[] b,int usableLength){
-		d = new double[usableLength];
-		for( int i = 0 ; i < usableLength; ++ i )
-			d[i] = b[i];
-	}
-	
-	//FIXME Different
-	//Method too big to be copied without causing confusion, see the desktop's version for the newest one
+
 	public Data(byte[] b,int usableLength,int bytesPerSample, boolean signed, boolean bigEndian){
-
-
+		
 		int length = usableLength / bytesPerSample;
 		d = new double[length];
-        ByteBuffer bb = ByteBuffer.wrap(b);
-        for( int i = 0; i < length; ++i )
-        {
-            if( bytesPerSample == 1 )
-                d[i] = bb.getChar();
-            if( bytesPerSample == 2 )
-                d[i] = bb.getShort();
-        }
+		_d = new short[usableLength];
+		long val = 0; 
+		long rangeSize = (1<<(bytesPerSample*8)) - 1;
+		long signLimit = (1<<(bytesPerSample*8-1));
+		long sign = 1;
+		
+		for( int i = 0; i < b.length; i+=bytesPerSample )
+		{
+			val = b[i];
+			for(int j = 1; j < bytesPerSample; ++j )
+			{
+				val <<= 8;
+				val |= b[i+j];
+			}
+			sign = 1;
+			if( signed && val > signLimit )
+				sign = -1;
+			if( bigEndian == false ){
+				//need to flip number
+				long aux = 0;
+				while( val != 0 ){
+					aux <<= 1;
+					aux |= (val&1);
+					val >>= 1;
+				}
+				val = aux;
+			}
+			d[i/bytesPerSample] = sign*val;//sign*(double)val/rangeSize;
+			d[i/bytesPerSample] /= 128;
+		}
+		
 	}
 
 	public void extend (Data od){
@@ -111,8 +101,7 @@ public class Data
 		
 		for(int j = 0; j < o.length; ++j)
 			dta[i++] = o[j];
-		//FIXME lose, not loose.
-		//I hope this dereferecing of d does not cause Java Runtime to loose all it's references to that memory location and therefore cause a memory leak 
+		
 		d = dta;
 	}
 	
@@ -123,9 +112,7 @@ public class Data
 	public double[] get(){
 		return d;
 	}
-
-	//FIXME Method Missing
-	/*
+	
 	public byte[] getRaw(){
 		byte[] ret = new byte[_d.length*2];
 		int idx = 0;
@@ -135,7 +122,6 @@ public class Data
 		}
 		return ret;
 	}
-	 */
 	
 	public int getLength(){
 		if( d == null )
