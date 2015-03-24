@@ -35,12 +35,10 @@ public class Processor implements Runnable
 	{
 		count = c;
 		//consumer = new NaiveRecogniserMk3(count);
-		consumer = new RawRidgeRecogniser(count);
-		//consumer = new WaveFilteringNetwork(count);
-		//consumer = new FFTrecogniser(count);
-		//consumer = new mgRecogniser(count);
-		//consumer = new mgRecogniser(count);
-		//debug = new micFFTout();
+		//consumer = new RawRidgeRecogniser(count);
+		//consumer = new FastRidgeRecogniser(count);
+		consumer = new FFTFastRidgeR(count);
+		
 		running = new AtomicBoolean(false);
 		canRun = false;
 		audioIn = null;

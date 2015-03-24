@@ -18,8 +18,10 @@ public class Data
     	_d = b;
         d = new double[usableLength];
         _d = new short[usableLength];
-        for( int i = 0 ; i < usableLength; ++ i )
+        for( int i = 0 ; i < usableLength; ++ i ){
             d[i] = b[i];
+            d[i] /= 32768;
+    	}
     }
 
 	public Data(double[] b,int usableLength){
@@ -35,8 +37,10 @@ public class Data
 	public Data(byte[] b,int usableLength){
 		d = new double[usableLength];
 		_d = new short[usableLength];
-		for( int i = 0 ; i < usableLength; ++ i )
+		for( int i = 0 ; i < usableLength; ++ i ){
 			d[i] = b[i];
+			d[i] /= 128;
+		}
 	}
 
 	public Data(byte[] b,int usableLength,int bytesPerSample, boolean signed, boolean bigEndian){
@@ -71,6 +75,7 @@ public class Data
 				val = aux;
 			}
 			d[i/bytesPerSample] = sign*val;//sign*(double)val/rangeSize;
+			d[i/bytesPerSample] /= 128;
 		}
 		
 	}

@@ -1,0 +1,6 @@
+./tests/batches/claps.list
+./tests/batches/tweets.list
+./tests/batches/books.list
+./tests/batches/coins.list
+./tests/batches/fbalert.list
+./tests/batches/guiterOpen.list
