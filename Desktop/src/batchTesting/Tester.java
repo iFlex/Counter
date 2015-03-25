@@ -14,14 +14,24 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import engine.Processing.Recogniser;
+import engine.Processing.algorithms.FFTFastRidgeR;
+import engine.Processing.algorithms.FastRidgeRecogniser;
+import engine.Processing.algorithms.NaiveRecogniserMk3;
+import engine.Processing.algorithms.RawRidgeRecogniser;
+
 public class Tester {
 	String listName;
 	long listDuration;
 	ArrayList<TestResult> testList;
-
+	public String algname = "fastridge";
+	
 	public Tester() {
 	}
-
+	
+    public void setAlgorithm(String algo){
+    	algname = algo;
+    }
 	// Test the passed argument filepath as a test list descriptor
 	public void Test(String filepath) throws IOException {
 		// Create a File Reader, argh.
@@ -71,7 +81,16 @@ public class Tester {
 						parseCorrectCount( tr.getModel(), testf ));
 
 				Counter c = new Counter();
-				Processor p = new Processor(c);
+				Recogniser r = null;
+				if(algname.equals("naive"))
+					r = new NaiveRecogniserMk3(c); 
+				if(algname.equals("rawridge"))
+					r = new RawRidgeRecogniser(c);
+				if(algname.equals("fastridge"))
+					r = new FastRidgeRecogniser(c);
+				if(algname.equals("fftridge"))
+					r = new FFTFastRidgeR(c);
+				Processor p = new Processor(c,r);
 				// Setting the model and file
 				p.setModel(tr.getModel());
 				p.setInput(fr.getFileName());
@@ -111,7 +130,7 @@ public class Tester {
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_hhmmss");
 		Date date = new Date();
-		generateReport("./tests/results/"+dateFormat.format(date));
+		generateReport("./tests/results/"+algname+"_"+dateFormat.format(date));
 		listfilein.close();
 	}
 
@@ -141,7 +160,7 @@ public class Tester {
 		
 		double overallSuccessRate = 0;
 		try {
-			fw.write(("========= Test Results for Test List: " + listName + " =========" + '\n'+"Success Rate per Batch: \n").getBytes());
+			fw.write(("========= Test Results for Test List: " + listName +'\n'+"Algorithm:"+algname+" -> Success Rate per Batch: \n").getBytes());
 			
 			
 			for(int i = 0; i<testList.size(); i++)

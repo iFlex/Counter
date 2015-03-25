@@ -27,11 +27,11 @@ public class TProcessor extends Processor{
 	}
 
 	public Recogniser getN() {
-		return n;
+		return consumer;
 	}
 
 	public void setN(Recogniser n) {
-		this.n = n;
+		this.consumer = n;
 	}
 
 	public Recogniser getDebug() {

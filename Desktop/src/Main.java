@@ -17,8 +17,8 @@ public class Main {
 			Main.testsPath += "/"+parts[i];
 		
 		//MODES 1. CLI mode 2. BATCH testing
-		String mode = "cli";
-		if( args.length > 1 )
+		String mode = "batch";
+		if( args.length > 0 )
 			mode = args[0];
 		
 		if( mode.equals("cli"))
@@ -34,8 +34,16 @@ public class Main {
 		{
 			System.out.println("#Counter++ Testing facility: BATCH testing mode");
 			Tester t = new Tester();
+			String filename = "./tests/batches/batch_1.list";
+			
+			if(args.length > 1)
+				filename = args[1];
+			
+			if(args.length > 2)
+				t.setAlgorithm( args[2] );
+			
 			try {
-				t.Test("./tests/batches/batch_1.list");
+				t.Test(filename);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

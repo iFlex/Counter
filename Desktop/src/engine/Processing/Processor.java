@@ -10,7 +10,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import engine.audio.*;
 import engine.util.*;
 import engine.Processing.algorithms.*;
-import engine.Processing.debug.*;
 
 public class Processor implements Runnable
 {
@@ -22,7 +21,6 @@ public class Processor implements Runnable
 	protected boolean canRun;
 	protected String source;
 	protected Counter count;
-	protected Recogniser n;
 	
 	void _init(Counter c){
         count = c;
@@ -33,21 +31,17 @@ public class Processor implements Runnable
 	
 	public Processor(Counter c)
 	{
-		count = c;
+		_init(c);
 		//consumer = new NaiveRecogniserMk3(count);
 		//consumer = new RawRidgeRecogniser(count);
-		//consumer = new FastRidgeRecogniser(count);
-		consumer = new FFTFastRidgeR(count);
-		
-		running = new AtomicBoolean(false);
-		canRun = false;
-		audioIn = null;
+		consumer = new FastRidgeRecogniser(count);
+		//consumer = new FFTFastRidgeR(count);
 	}
 	
 	public Processor(Counter c, Recogniser r)
     {
         _init(c);
-        n = r;
+        consumer = r;
     }
 	
 	public synchronized void setModel(String path){

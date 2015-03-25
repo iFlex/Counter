@@ -58,7 +58,6 @@ public class FastRidgeRecogniser extends Recogniser {
 	public synchronized void setModel(String name){
 		super.setModel(name);
 		buff = new RingBuffer(rawModel.length);
-		//chk = new RingSum(rawModel.length);
 		for( int i = 1 ; i < rawModel.length; ++i )
 		{
 			buff.push(0);
@@ -73,11 +72,7 @@ public class FastRidgeRecogniser extends Recogniser {
 		lastCount = 0;
 		minDiff = 65535;
 	}
-	private void adjustCount(){
-		if( counter.getCount() - lastCount > 1 )
-			counter.setCount( lastCount + 1 );
-		lastCount = counter.getCount();
-	}
+
 	double runnerAvg = 0,theAvg=0,accumulator=0;
 	double maxDrop = 65535,minDiff = 0; int maxDropPos=0, startTrack=0;
 	private void _processNext(double a){
@@ -171,21 +166,21 @@ public class FastRidgeRecogniser extends Recogniser {
 		else{
 			runnerAvg += accumulator;
 			theAvg = (runnerAvg/position);
-			
 		}
-		//correct the count
-		//if( position % buff.getCapacity() == 0 )
-			//adjustCount();
 	}
 	
 	@Override
 	public void process(Data data) {
-		double[] d = data.get();
-		for( int i = 0; i < d.length; ++i)
-			_processNext(d[i]);
-		if( data.getLength() == 0 ){
-			//adjustCount();
-			System.out.println("End of data!");
-		}
+        if( data != null ) {
+            double[] d = data.get();
+            for (int i = 0; i < d.length; ++i)
+                _processNext(d[i]);
+            if (data.getLength() == 0) {
+                //adjustCount();
+                System.out.println("End of data!");
+            }
+        }
+        else
+            System.out.println("Recogniser got null object");
 	}
 }

@@ -123,7 +123,7 @@ public class FastRidgeRecogniser extends Recogniser {
 			{
 				//problematic: detect if the max drop is low enough
 				//System.out.println("FAIL? st:"+startTrack+" md:"+maxDrop+" lim:"+(minDiff + (theAvg-minDiff)*0.2)+" avg:"+theAvg);
-				double lim = (minDiff + (theAvg-minDiff)*0.2);//20% above min diff
+				double lim = (minDiff + (theAvg-minDiff)*0.3);//20% above min diff
 				if( startTrack != 0 && (maxDrop <= lim && (position - startTrack > 50))){ //only consider counting if the drop was low enough
 					//calculate how fast the maximum was reached
 					int len = (int)(position - startTrack);

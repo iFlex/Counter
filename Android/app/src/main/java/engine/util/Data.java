@@ -30,7 +30,7 @@ public class Data
 		for( int i = 0 ; i < usableLength; ++ i )
 		{
 			d[i] = b[i];
-			_d[i] = (short)b[i];
+		   _d[i] = (short)b[i];
 		}
 	}
 	

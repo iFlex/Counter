@@ -29,10 +29,24 @@ public class CLI {
 			
 			if(s.equals("blr"))
 				processor.blockingRun();
-			
+			if(s.equals("changeAlgorithm") || s.equals("ca")){
+				String algname = sc.nextLine();
+				Recogniser r = null;
+				if(algname.equals("naive"))
+					r = new NaiveRecogniserMk3(count); 
+				if(algname.equals("rawridge"))
+					r = new RawRidgeRecogniser(count);
+				if(algname.equals("fastridge"))
+					r = new FastRidgeRecogniser(count);
+				if(algname.equals("fftridge"))
+					r = new FFTFastRidgeR(count);
+				//////////////////////////////////
+				processor = new Processor(count,r);
+				processor.setModel("./tests/models/clap.wav");
+				processor.setInput("./tests/samples/clap_7_0.wav");
+			}
 			if(s.equals("start") || s.equals("S"))
 				processor.start();
-			
 			else if(s.equals("stop") || s.equals("s"))
 			{
 				processor.stop();
@@ -49,6 +63,7 @@ public class CLI {
 			
 			else if(s.equals("setModel") || s.equals("sm"))
 				processor.setModel(sc.nextLine());
+			
 			else if(s.equals("testFromRam")){
 				System.out.println("Initialising audio...");
 				AudioIn a = new FileIn("./tests/samples/clap_7_0.wav");

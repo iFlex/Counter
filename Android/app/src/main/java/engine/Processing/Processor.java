@@ -17,12 +17,12 @@ import rory.bain.counter.app.MainActivity;
 
 public class Processor implements Runnable
 {
-	private AudioIn audioIn;
-	private Recogniser n;
-	private Thread t;
-	private AtomicBoolean running;
-	private boolean canRun;
-	private Counter count;
+    private AudioIn audioIn;
+    private Recogniser n;
+    private Thread t;
+    private AtomicBoolean running;
+    private boolean canRun;
+    private Counter count;
     private Object callback;
     private String callbackMethod;
     //warning only set before starting processor ( unsafe to set otherwise )
@@ -37,9 +37,10 @@ public class Processor implements Runnable
         audioIn = null;
     }
     public Processor(Counter c)
-	{
+    {
         _init(c);
         n = new NaiveRecogniserMk3((double)5000, 512, count);
+        //n = new FastRidgeRecogniser(count);
     }
     public Processor(Counter c, Recogniser r)
     {
@@ -89,38 +90,38 @@ public class Processor implements Runnable
         }
     }
 
-	public void run(){
-		running.set(true);
-		while(canRun)
-		{
+    public void run(){
+        running.set(true);
+        while(canRun)
+        {
 
-			Data d = audioIn.getNext();
-			//System.out.println("Got data from audio:"+d);
-			if( d != null )
-			    n.process(d);
+            Data d = audioIn.getNext();
+            //System.out.println("Got data from audio:"+d);
+            if( d != null )
+                n.process(d);
             else {
 
                 if( callback != null ) {
-                        System.out.println("Calling:"+callbackMethod);
-                        try {
-                            callback.getClass().getMethod(callbackMethod).invoke(callback);
-                        } catch (SecurityException e) {
-                            Log.d("Processor Callback:"," Security exception: "+ e);
-                        } catch (NoSuchMethodException e) {
-                            Log.d("Processor Callback:"," No such method : "+ e);
-                        } catch (Exception e) {
-                            Log.d("Processor Callback:"," Run error: "+ e);
-                            for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-                                System.out.println(ste);
-                            }
+                    System.out.println("Calling:"+callbackMethod);
+                    try {
+                        callback.getClass().getMethod(callbackMethod).invoke(callback);
+                    } catch (SecurityException e) {
+                        Log.d("Processor Callback:"," Security exception: "+ e);
+                    } catch (NoSuchMethodException e) {
+                        Log.d("Processor Callback:"," No such method : "+ e);
+                    } catch (Exception e) {
+                        Log.d("Processor Callback:"," Run error: "+ e);
+                        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+                            System.out.println(ste);
                         }
+                    }
                 }
                 if(ExitOnNoData)
                     break;
             }
-		}
-		running.set(false);
-	}
+        }
+        running.set(false);
+    }
 
     protected void _init(){
         if(running.get() == true)
