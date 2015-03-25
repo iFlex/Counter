@@ -1,4 +1,0 @@
-Counter
-=======
-
-Team Project Ooooo

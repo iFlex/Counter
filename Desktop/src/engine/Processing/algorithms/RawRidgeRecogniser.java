@@ -40,12 +40,12 @@ public class RawRidgeRecogniser extends Recogniser {
 		//debug
 		dbg = null;
 		try {
-			dbg   = new FileOutputStream(new File("lagbehinder.txt"));
-			rto   = new FileOutputStream(new File("accumulator.txt"));
-			sampl = new FileOutputStream(new File("lagbehdelta.txt"));
-			mic   = new FileOutputStream(new File("rawmicinput.txt"));
-			dd    = new FileOutputStream(new File("zerocrosser.txt"));
-			smp   = new FileOutputStream(new File("thesamplesn.txt"));
+			dbg   = new FileOutputStream(new File("tests/graphs/lagbehinder.txt"));
+			rto   = new FileOutputStream(new File("tests/graphs/accumulator.txt"));
+			sampl = new FileOutputStream(new File("tests/graphs/lagbehdelta.txt"));
+			mic   = new FileOutputStream(new File("tests/graphs/rawmicinput.txt"));
+			dd    = new FileOutputStream(new File("tests/graphs/zerocrosser.txt"));
+			smp   = new FileOutputStream(new File("tests/graphs/thesamplesn.txt"));
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
