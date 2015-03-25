@@ -36,7 +36,7 @@ public class FFTFastRidgeR extends Recogniser {
 	private int toSkip = 0;
 	DoubleFFT_1D fft;
 	private double[] modelDump,sampleDump;
-	private boolean ultradebug = true;
+	private boolean ultradebug = false;
 	//private RingSum chk;
 	
 	public FFTFastRidgeR(Counter c){
