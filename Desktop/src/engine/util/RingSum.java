@@ -16,7 +16,6 @@ public class RingSum{
 			try {
 				s = b.pop();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			sum -= s;

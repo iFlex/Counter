@@ -23,14 +23,14 @@ import java.io.IOException;
 //
 public class FFTFastRidgeR extends Recogniser {
 	
-	//debug
+	//Debug file output streams used to store algorithm outputs
 	FileOutputStream dbg;
 	FileOutputStream rto;
 	FileOutputStream sampl;
 	FileOutputStream mic;
 	FileOutputStream dd;
 	FileOutputStream smp;
-	//alternative 
+	////////////////////////////////////////////////////////////
 	private RingBuffer buff;
 	private double skipRate = 0.05;
 	private int toSkip = 0;
@@ -53,14 +53,12 @@ public class FFTFastRidgeR extends Recogniser {
 			smp   = new FileOutputStream(new File("tests/graphs/thesamplesn.txt"));
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	public synchronized void setModel(String name){
 		super.setModel(name);
 		buff = new RingBuffer(rawModel.length);
-		//chk = new RingSum(rawModel.length);
 		modelDump = new double[rawModel.length*2];
 		sampleDump = new double[modelDump.length];
 		for( int i = 0 ; i < rawModel.length; ++i )
@@ -76,7 +74,6 @@ public class FFTFastRidgeR extends Recogniser {
 			try {
 				smp.write((modelDump[i]+"\n").getBytes());
 			} catch (IOException e) {
-			// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -156,11 +153,8 @@ public class FFTFastRidgeR extends Recogniser {
 			}
 			else
 			{
-				//problematic: detect if the max drop is low enough
-				//System.out.println("FAIL? st:"+startTrack+" md:"+maxDrop+" lim:"+(minDiff + (theAvg-minDiff)*0.2)+" avg:"+theAvg);
 				double lim = (minDiff + (theAvg-minDiff)*0.2);//20% above min diff
 				if( startTrack != 0 && (maxDrop <= lim && (position - startTrack > 50))){ //only consider counting if the drop was low enough
-					//calculate how fast the maximum was reached
 					int len = (int)(position - startTrack);
 					//if( len >= buff.getCapacity()*0.25 ){
 						int dist = ( len - ( maxDropPos - startTrack )); 
@@ -170,8 +164,6 @@ public class FFTFastRidgeR extends Recogniser {
 						System.out.println("crt:"+certain+" maxDrop:"+maxDrop+" avg:"+theAvg+" dist:"+( maxDropPos - startTrack )+" max:"+buff.getCapacity()+" time:"+((double)position/44100));
 					//}
 				}
-				//else
-					//System.out.println("FAIL! st:"+startTrack+" md:"+maxDrop+" lim:"+(minDiff + (theAvg-minDiff)*0.2)+" avg:"+theAvg);
 				//evaluate
 				maxDrop = theAvg;
 				maxDropPos = 0;
@@ -185,7 +177,6 @@ public class FFTFastRidgeR extends Recogniser {
 				mic.write((a+"\n").getBytes());
 				dd.write((runnerAvg/position+"\n").getBytes());//(chk.get()+"\n").getBytes());//( Math.abs(ddlt.getFirst() + ddlt.getLast()) + "\n" ).getBytes() );
 			} catch (IOException e) {
-			// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -205,12 +196,8 @@ public class FFTFastRidgeR extends Recogniser {
 		}
 		else{
 			runnerAvg += accumulator;
-			theAvg = (runnerAvg/position);
-			
+			theAvg = (runnerAvg/position);	
 		}
-		//correct the count
-		//if( position % buff.getCapacity() == 0 )
-			//adjustCount();
 	}
 	
 	@Override

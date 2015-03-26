@@ -23,8 +23,6 @@ import android.util.Log;
 @SuppressLint("NewApi")
 public class history_Fragment extends Fragment {
 
-//    public DBAdapter myDB;
-
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         final View rootView = inflater .inflate(R.layout.history_view, container, false);
@@ -56,16 +54,11 @@ public class history_Fragment extends Fragment {
         });
 
         Cursor cursor = MainActivity.myDB.getAllRows();
-
-//        ArrayList<String> arrayListItems = new ArrayList<String>();
         List<Map<String, String>> data = new ArrayList<Map<String, String>>();
-
-
 
         if(cursor.moveToLast()) {
             do {
                 Map<String, String> datum = new HashMap<String, String>(2);
-
 
                 int id = cursor.getInt(historyDBAdapter.COL_ROWID);
                 int count = cursor.getInt(historyDBAdapter.COL_COUNT);
@@ -83,14 +76,6 @@ public class history_Fragment extends Fragment {
             } while (cursor.moveToPrevious());
         }
 
-//        String[] myItems = new String[arrayListItems.size()];
-//        myItems = arrayListItems.toArray(myItems);
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-//                getActivity().getApplicationContext(),
-//                R.layout.history_item_layout,
-//                myItems);
-
         SimpleAdapter adapter = new SimpleAdapter(this.getActivity(), data,
                 android.R.layout.simple_list_item_2,
                 new String[] {"count", "date"},
@@ -102,12 +87,6 @@ public class history_Fragment extends Fragment {
 
         return rootView;
     }
-
-
-
-
-
-
 
     @Override
     public void onDestroy() {
@@ -196,8 +175,6 @@ public class history_Fragment extends Fragment {
         catch (ParseException e){
             e.printStackTrace();
         }
-
-
 
         return resultDate;
     }

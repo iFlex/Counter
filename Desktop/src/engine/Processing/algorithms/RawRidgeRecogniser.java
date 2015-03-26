@@ -23,22 +23,20 @@ import java.io.IOException;
 //
 public class RawRidgeRecogniser extends Recogniser {
 	
-	//debug
+	//debug files
 	FileOutputStream dbg;
 	FileOutputStream rto;
 	FileOutputStream sampl;
 	FileOutputStream mic;
 	FileOutputStream dd;
 	FileOutputStream smp;
-	//alternative 
-	private RingBuffer buff,lagger,ddlt;
-	//private RingSum chk;
+	//ring buffer for sliding window 
+	private RingBuffer buff;
 	
 	public RawRidgeRecogniser(Counter c){
 		super(c);
 		System.out.println("RAW ridge recogniser");
-		//debug
-		dbg = null;
+		//opent he files to write debug information in
 		try {
 			dbg   = new FileOutputStream(new File("tests/graphs/lagbehinder.txt"));
 			rto   = new FileOutputStream(new File("tests/graphs/accumulator.txt"));
@@ -48,23 +46,20 @@ public class RawRidgeRecogniser extends Recogniser {
 			smp   = new FileOutputStream(new File("tests/graphs/thesamplesn.txt"));
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	public synchronized void setModel(String name){
 		super.setModel(name);
+		//create a new ring buffer with the same length as the new model
 		buff = new RingBuffer(rawModel.length);
-		lagger = new RingBuffer(rawModel.length);
-		ddlt = new RingBuffer(rawModel.length);
-		//chk = new RingSum(rawModel.length);
+		//write the sample values to
 		for( int i = 1 ; i < rawModel.length; ++i )
 		{
 			buff.push(0);
 			try {
 				smp.write((rawModel[i-1]+"\n").getBytes());
 			} catch (IOException e) {
-			// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -77,32 +72,35 @@ public class RawRidgeRecogniser extends Recogniser {
 		buff.push(a);
 		position++;
 		double certain = 0;
-		//if buffer has reached proper size for comparison then perform fft
+		//only perform difference if the buffer contains the same amount of data as the model
 		if( buff.length() == buff.getCapacity() )
 		{
 			double accumulator = 0, max = 0,lhs,rhs;
 			int i;
 			for( i = 0; i < rawModel.length ; i++ ){
-				lhs =  Math.abs(buff.get(i));//*buff.b[i];
-				rhs =  Math.abs(rawModel[i]);//*rawModel[iter];
-				lhs =  Math.abs( lhs - rhs ); //accidental mistake yelded interesting result -= in stead of =
+				//sum up the differences between each pair of amplitudes
+				lhs =  Math.abs(buff.get(i));
+				rhs =  Math.abs(rawModel[i]);
+				lhs =  Math.abs( lhs - rhs );
 				accumulator += lhs;
-				
+				//get maximum difference to use for normalisation
 				if( max < lhs )
 					max = lhs;
 			}
+			//get the average difference
 			accumulator /= i;
+			//normalise value to account for volume differences
 			accumulator /= max;
+			//calculate the average level
 			runnerAvg += accumulator;
-			lagger.push(accumulator);
 			theAvg = (runnerAvg/position);
+			//if the difference descends under the average level
 			if( accumulator < theAvg ){
-				if(startTrack == 0)
-				{
+				//record position where the descent started
+				if(startTrack == 0) 
 					startTrack = (int) position;
 					
-				}
-				//track
+				//find local minimum and save its position
 				if(accumulator < maxDrop ){
 					maxDrop = accumulator;
 					maxDropPos = (int) position;
@@ -127,38 +125,30 @@ public class RawRidgeRecogniser extends Recogniser {
 			}
 			try {
 				rto.write((accumulator+"\n").getBytes());
-				dbg.write((lagger.b[lagger.start]+"\n").getBytes());
+				//dbg.write((lagger.b[lagger.start]+"\n").getBytes());
 				//number of zero crossings in this graph should give away the count
-				sampl.write((accumulator - lagger.b[lagger.start]+"\n").getBytes() );
+				//sampl.write((accumulator - lagger.b[lagger.start]+"\n").getBytes() );
 				mic.write((a+"\n").getBytes());
 				dd.write((runnerAvg/position+"\n").getBytes());//(chk.get()+"\n").getBytes());//( Math.abs(ddlt.getFirst() + ddlt.getLast()) + "\n" ).getBytes() );
 			} catch (IOException e) {
-			// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			if(certain > 0.5)
-			{
+			if(certain > 0.5) {
 				counter.increment(certain);
 				System.out.println(certain+" Count:"+counter.getCount()+" time:"+((double)position/44100));
-				/*int jump = (int)(buff.getCapacity());
-				while(jump-- > 0)
-					try {
-						buff.pop();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						//e.printStackTrace();
-						break;
-					}*/
 			}
 		}	
 	}
 	
 	@Override
 	public void process(Data data) {
+		//get the raw array of amplitude values
 		double[] d = data.get();
-		for( int i = 0; i < d.length; ++i)
+		for( int i = 0; i < d.length; ++i) //process each amplitude in the order it arrived
 			_processNext(d[i]);
+		
+		//if there is not data in buffer, end of input file must have been reached
 		if( data.getLength() == 0 )
 			System.out.println("End of data!");
 	}

@@ -13,22 +13,23 @@ import engine.Processing.algorithms.*;
 
 public class Processor implements Runnable
 {
-	protected AudioIn audioIn;
+	protected Counter count;
 	protected Recogniser consumer;
-	protected Recogniser debug;
+	protected AudioIn audioIn;
+	////////////////////////////////
 	protected Thread t;
 	protected AtomicBoolean running;
 	protected boolean canRun;
 	protected String source;
-	protected Counter count;
-	
-	void _init(Counter c){
+	////////////////////////////////
+	void _init(Counter c) {
+		//Common initialisation 
         count = c;
         running = new AtomicBoolean(false);
         canRun = false;
         audioIn = null;
     }
-	
+	//constructor with default recogniser instantiated
 	public Processor(Counter c)
 	{
 		_init(c);
@@ -37,31 +38,32 @@ public class Processor implements Runnable
 		consumer = new FastRidgeRecogniser(count);
 		//consumer = new FFTFastRidgeR(count);
 	}
-	
+	//constructor with custom recogniser
 	public Processor(Counter c, Recogniser r)
     {
         _init(c);
-        consumer = r;
+        consumer = r; 
     }
-	
+	//set the model to be recognised
 	public synchronized void setModel(String path){
 		consumer.setModel(path);
 	}
-	
+	//set input source
 	public synchronized void setInput(String nameOrPath){ 
+		//cause the main thread to stop in case it is already running
 		canRun = false;
 		if( audioIn != null )
 		{
 			audioIn.stop();
 			audioIn = null;
 		}
+		
 		System.out.println("Processor: Setting input "+nameOrPath);
 		source = nameOrPath;
 		if( nameOrPath.equals(".../microphone"))
 			audioIn = new PcMicrophoneIn();
 		else
 			audioIn = new FileIn(nameOrPath);
-		//TODO: if audioIn is no initilised properly canRun = false;
 	}
 	
 	public void run(){
@@ -69,7 +71,6 @@ public class Processor implements Runnable
 		while(canRun && audioIn != null)
 		{
 			Data d = audioIn.getNext();
-			//System.out.println("Got data from audio:"+d);
 			if( d != null )
 			    consumer.process(d);
 			else if( !source.equalsIgnoreCase(".../microphone") && audioIn.ready == true )
@@ -79,6 +80,7 @@ public class Processor implements Runnable
 	}
 
 	protected void _init(){
+		//this function needs to be called before the processor is started
 		if(running.get() == true)
 			stop();
 		

@@ -2,60 +2,60 @@
 <items version="2" >
 
     <item
-        jar="/Users/rorybain/development/adt-bundle-mac-x86_64-20140702/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
-        jumboMode="false"
-        revision="21.0.0"
-        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="/Users/rorybain/Counter/Android/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-1f5b03f635c7ad9b500c0a3878cdd11127a187c5.jar" />
-    </item>
-    <item
-        jar="/Users/rorybain/Counter/Android/app/build/intermediates/exploded-aar/com.android.support/support-v13/21.0.3/classes.jar"
-        jumboMode="false"
-        revision="21.0.0"
-        sha1="2c2071dcaf7a008c3b01a6381a33be55396bab09">
-        <dex dex="/Users/rorybain/Counter/Android/app/build/intermediates/pre-dexed/debug/classes-2c4c4408018628fd656189acabb1cd43f58b0cd6.jar" />
-    </item>
-    <item
-        jar="/Users/rorybain/Counter/Android/app/build/intermediates/exploded-aar/com.android.support/support-v13/21.0.3/libs/internal_impl-21.0.3.jar"
-        jumboMode="false"
-        revision="21.0.0"
-        sha1="0dcc55e70f7ebf7238fe2ec53f662eb378ab2668">
-        <dex dex="/Users/rorybain/Counter/Android/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-b430619a1a2a0cde9d1b94a7b26f10646a40e763.jar" />
-    </item>
-    <item
-        jar="/Users/rorybain/Counter/Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
+        jar="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.0.0"
         sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="/Users/rorybain/Counter/Android/app/build/intermediates/pre-dexed/debug/classes-45c95556696d03046b29f7681d87e71060c4df15.jar" />
+        <dex dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/release/classes-60361e7d166375d32dfc035890db8aff0ecaebfb.jar" />
     </item>
     <item
-        jar="/Users/rorybain/Counter/Android/app/lib/JLargeArrays-1.2.jar"
+        jar="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/exploded-aar/com.android.support/support-v13/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.0.0"
-        sha1="85c8cd79cc2865ef37cd70f96cd82246ee642d58">
-        <dex dex="/Users/rorybain/Counter/Android/app/build/intermediates/pre-dexed/debug/JLargeArrays-1.2-4dd17ed3960be93e101dcd188563aadd736c59c4.jar" />
+        sha1="2c2071dcaf7a008c3b01a6381a33be55396bab09">
+        <dex dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/release/classes-f89f6b4f1c3a1a8416a44de1dd311a46dae2b899.jar" />
     </item>
     <item
-        jar="/Users/rorybain/Counter/Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jar="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/exploded-aar/com.android.support/support-v13/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="0dcc55e70f7ebf7238fe2ec53f662eb378ab2668">
+        <dex dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/release/internal_impl-21.0.3-e8014d35fad1474fab317900c5198baedb4b331f.jar" />
+    </item>
+    <item
+        jar="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.0.0"
         sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="/Users/rorybain/Counter/Android/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-3ebd658101cb39931fcef12146315f4bade81261.jar" />
+        <dex dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/release/internal_impl-21.0.3-34f4da1b9cb270209ce0dfb6b2488b9bb2a67123.jar" />
     </item>
     <item
-        jar="/Users/rorybain/Counter/Android/app/lib/JTransforms-3.0.jar"
-        jumboMode="false"
-        revision="21.0.0"
-        sha1="79477aec6929cd64cd863d6ac59c2445d00239a3">
-        <dex dex="/Users/rorybain/Counter/Android/app/build/intermediates/pre-dexed/debug/JTransforms-3.0-bac324fb278d29d563e8851b1330dc3c7fb25f1e.jar" />
-    </item>
-    <item
-        jar="/Users/rorybain/Counter/Android/app/lib/musicg-1.4.2.0.jar"
+        jar="/Users/MLF/Desktop/Counter/Android/app/lib/musicg-1.4.2.0.jar"
         jumboMode="false"
         revision="21.0.0"
         sha1="e4cc5194d9313717e173c63eb38dd220a63b5532">
-        <dex dex="/Users/rorybain/Counter/Android/app/build/intermediates/pre-dexed/debug/musicg-1.4.2.0-8c5897baaea1e25e5b7fcca2379e3b3a4e8f951c.jar" />
+        <dex dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/release/musicg-1.4.2.0-c815d98d97970fe5001239d19ed5dc7eb4f28ed4.jar" />
+    </item>
+    <item
+        jar="/Users/MLF/Desktop/Counter/Android/app/lib/JTransforms-3.0.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="79477aec6929cd64cd863d6ac59c2445d00239a3">
+        <dex dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/release/JTransforms-3.0-04e4e2c09b297c6578df2ce436a93b05b6a48b71.jar" />
+    </item>
+    <item
+        jar="/Users/MLF/Desktop/Counter/Android/app/lib/JLargeArrays-1.2.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="85c8cd79cc2865ef37cd70f96cd82246ee642d58">
+        <dex dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/release/JLargeArrays-1.2-eb2176a9287a1ea44dff8103867f70bbf7434a11.jar" />
+    </item>
+    <item
+        jar="/Users/MLF/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="/Users/MLF/Desktop/Counter/Android/app/build/intermediates/pre-dexed/release/support-annotations-21.0.3-2c1605ad223b42323d43d3f478ee9890a835cf28.jar" />
     </item>
 
 </items>

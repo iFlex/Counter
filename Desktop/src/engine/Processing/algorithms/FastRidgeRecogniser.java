@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
-//
+
 public class FastRidgeRecogniser extends Recogniser {
 	
 	//debug
@@ -39,7 +39,7 @@ public class FastRidgeRecogniser extends Recogniser {
 	
 	public FastRidgeRecogniser(Counter c){
 		super(c);
-		System.out.println("RAW ridge recogniser");
+		System.out.println("Fast Ridge Recogniser");
 		//debug
 		dbg = null;
 		try {
@@ -51,21 +51,19 @@ public class FastRidgeRecogniser extends Recogniser {
 			smp   = new FileOutputStream(new File("tests/graphs/thesamplesn.txt"));
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	public synchronized void setModel(String name){
 		super.setModel(name);
 		buff = new RingBuffer(rawModel.length);
-		//chk = new RingSum(rawModel.length);
+		
 		for( int i = 1 ; i < rawModel.length; ++i )
 		{
 			buff.push(0);
 			try {
 				smp.write((rawModel[i-1]+"\n").getBytes());
 			} catch (IOException e) {
-			// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -73,11 +71,7 @@ public class FastRidgeRecogniser extends Recogniser {
 		lastCount = 0;
 		minDiff = 65535;
 	}
-	private void adjustCount(){
-		if( counter.getCount() - lastCount > 1 )
-			counter.setCount( lastCount + 1 );
-		lastCount = counter.getCount();
-	}
+	
 	double runnerAvg = 0,theAvg=0,accumulator=0;
 	double maxDrop = 65535,minDiff = 0; int maxDropPos=0, startTrack=0;
 	private void _processNext(double a){
@@ -85,16 +79,15 @@ public class FastRidgeRecogniser extends Recogniser {
 		position++;
 		
 		double certain = 0;
-		//if buffer has reached proper size for comparison then perform fft
 		if( buff.length() == buff.getCapacity() )
 		{
 			double max = 0,lhs,rhs;
 			accumulator = 0;
 			int i;
 			for( i = 0; i < rawModel.length ; i++ ){
-				lhs =  Math.abs(buff.get(i));//*buff.b[i];
-				rhs =  Math.abs(rawModel[i]);//*rawModel[iter];
-				lhs =  Math.abs( lhs - rhs ); //accidental mistake yelded interesting result -= in stead of =
+				lhs =  Math.abs(buff.get(i));
+				rhs =  Math.abs(rawModel[i]);
+				lhs =  Math.abs( lhs - rhs );
 				accumulator += lhs;
 				
 				if( max < lhs )
@@ -108,21 +101,17 @@ public class FastRidgeRecogniser extends Recogniser {
 			runnerAvg += accumulator;
 			theAvg = (runnerAvg/position);
 			if( accumulator < theAvg ){
-				if(startTrack == 0){
+				if(startTrack == 0)
 					startTrack = (int) position;
-					//System.out.println("Plunge:"+((double)position/44100));
-				}
-				//track
+				
+					//track
 				if(accumulator < maxDrop ){
 					maxDrop = accumulator;
-					//System.out.println("MDDROP:"+maxDrop+" avg:"+theAvg+" @"+((double)position/44100));
 					maxDropPos = (int) position;
 				}
 			}
 			else
 			{
-				//problematic: detect if the max drop is low enough
-				//System.out.println("FAIL? st:"+startTrack+" md:"+maxDrop+" lim:"+(minDiff + (theAvg-minDiff)*0.2)+" avg:"+theAvg);
 				double lim = (minDiff + (theAvg-minDiff)*0.3);//20% above min diff
 				if( startTrack != 0 && (maxDrop <= lim && (position - startTrack > 50))){ //only consider counting if the drop was low enough
 					//calculate how fast the maximum was reached
@@ -135,8 +124,6 @@ public class FastRidgeRecogniser extends Recogniser {
 						System.out.println("crt:"+certain+" maxDrop:"+maxDrop+" avg:"+theAvg+" dist:"+( maxDropPos - startTrack )+" max:"+buff.getCapacity()+" time:"+((double)position/44100));
 					//}
 				}
-				//else
-					//System.out.println("FAIL! st:"+startTrack+" md:"+maxDrop+" lim:"+(minDiff + (theAvg-minDiff)*0.2)+" avg:"+theAvg);
 				//evaluate
 				maxDrop = theAvg;
 				maxDropPos = 0;
@@ -150,7 +137,6 @@ public class FastRidgeRecogniser extends Recogniser {
 				mic.write((a+"\n").getBytes());
 				dd.write((runnerAvg/position+"\n").getBytes());//(chk.get()+"\n").getBytes());//( Math.abs(ddlt.getFirst() + ddlt.getLast()) + "\n" ).getBytes() );
 			} catch (IOException e) {
-			// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -173,9 +159,6 @@ public class FastRidgeRecogniser extends Recogniser {
 			theAvg = (runnerAvg/position);
 			
 		}
-		//correct the count
-		//if( position % buff.getCapacity() == 0 )
-			//adjustCount();
 	}
 	
 	@Override
@@ -183,9 +166,7 @@ public class FastRidgeRecogniser extends Recogniser {
 		double[] d = data.get();
 		for( int i = 0; i < d.length; ++i)
 			_processNext(d[i]);
-		if( data.getLength() == 0 ){
-			//adjustCount();
+		if( data.getLength() == 0 )
 			System.out.println("End of data!");
-		}
 	}
 }

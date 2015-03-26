@@ -11,7 +11,6 @@ import engine.util.RingBuffer;
 
 public abstract class Recogniser
 {
-	//the counter
 	protected Counter counter;
 	protected long position;
 	protected double[] rawModel;
@@ -42,7 +41,6 @@ public abstract class Recogniser
 		AudioIn SampleIn;
 		sample = new Data();
 		
-		//for now load the sample here
 		SampleIn = new FileIn(name);
 		SampleIn.blockingStart();
 		
@@ -58,7 +56,7 @@ public abstract class Recogniser
 			System.out.println("Error: could not initialise correctly! Sample is empty");
 			return;
 		}
-	};//reset position
+	};
 	
 	public synchronized void setRawModel(Data m){
 		rawModel = m.get();
@@ -72,6 +70,6 @@ public abstract class Recogniser
 		return positions;
 	}
 	
-	public abstract void process(Data data);//reset 
+	public abstract void process(Data data);
 }
 

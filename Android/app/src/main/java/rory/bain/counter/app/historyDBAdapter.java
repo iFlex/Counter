@@ -26,7 +26,7 @@ public class historyDBAdapter {
     //Setting up keys
     public static final String KEY_COUNT = "count";
     public static final String KEY_DATE = "date";
-    public static final String KEY_SOUND = "sound";
+    public static final String KEY_SOUND = "name";
 
     //Setting up columns
     public static final int COL_COUNT = 1;
