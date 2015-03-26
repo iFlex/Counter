@@ -35,8 +35,8 @@ public class Processor implements Runnable
 		_init(c);
 		//consumer = new NaiveRecogniserMk3(count);
 		//consumer = new RawRidgeRecogniser(count);
-		consumer = new FastRidgeRecogniser(count);
-		//consumer = new FFTFastRidgeR(count);
+		//consumer = new FastRidgeRecogniser(count);
+		consumer = new FFTFastRidgeR(count);
 	}
 	//constructor with custom recogniser
 	public Processor(Counter c, Recogniser r)

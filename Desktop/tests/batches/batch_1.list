@@ -3,7 +3,7 @@
 ./tests/batches/books.list
 ./tests/batches/coins.list
 ./tests/batches/fbalert.list
-./tests/batches/guiterOpen.list
+./tests/batches/guitarOpen.list
 ./tests/batches/guitarMuted.list
 ./tests/batches/hello.list
 ./tests/batches/keyboard.list
