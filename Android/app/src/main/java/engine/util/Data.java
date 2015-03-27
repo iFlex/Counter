@@ -19,7 +19,7 @@ public class Data
         _d = new short[usableLength];
         for( int i = 0 ; i < usableLength && i < b.length; ++ i ){
             d[i] = b[i];
-            d[i] /= 32768;
+            //d[i] /= 32768;
         }
     }
     //form data object from double array of length specified by second parameter
@@ -38,7 +38,7 @@ public class Data
         _d = new short[usableLength];
         for( int i = 0 ; i < usableLength && i < b.length ; ++ i ){
             d[i] = b[i];
-            d[i] /= 128;
+            //d[i] /= 128;
         }
     }
 

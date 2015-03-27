@@ -26,20 +26,6 @@
                   android:inputType="textAutoCorrect"
                   android:capitalize="words"
                   android:id="@+id/soundName"/>
-          <EditText
-              android:layout_width="match_parent"
-              android:layout_height="0dp"
-              android:layout_weight="3"
-              android:textAppearance="?android:attr/textAppearanceLarge"
-              android:hint="Insert icon path..."
-              android:layout_gravity="right|bottom"
-              android:maxLines="1"
-              android:singleLine="true"
-              android:scrollHorizontally="true"
-              android:inputType="textAutoCorrect"
-              android:capitalize="words"
-              android:id="@+id/soundIcon"
-          />
 
         <Button
             android:layout_width="match_parent"

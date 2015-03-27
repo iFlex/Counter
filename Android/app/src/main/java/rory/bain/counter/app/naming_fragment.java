@@ -28,10 +28,10 @@ public class naming_fragment extends Fragment{
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         final View rootView = inflater.inflate(R.layout.naming_fragment, container, false);
         final EditText soundName = (EditText) rootView.findViewById(R.id.soundName);
-        final EditText soundIcon = (EditText) rootView.findViewById(R.id.soundIcon);
+        //final EditText soundIcon = (EditText) rootView.findViewById(R.id.soundIcon);
         final Button finishedButton = (Button) rootView.findViewById(R.id.namingFinished);
 
-        soundIcon.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        /*soundIcon.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || actionId == EditorInfo.IME_ACTION_DONE) {
@@ -44,7 +44,7 @@ public class naming_fragment extends Fragment{
 
 
         });
-
+        */
         finishedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

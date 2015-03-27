@@ -95,21 +95,6 @@
             android:background="@android:color/transparent"
             />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:hint="Number of events..."
-            android:layout_gravity="right|bottom"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:scrollHorizontally="true"
-            android:inputType="numberDecimal"
-            android:capitalize="words"
-            android:id="@+id/textView2"
-            />
-
         <Button
             android:layout_width="fill_parent"
             android:layout_height="match_parent"

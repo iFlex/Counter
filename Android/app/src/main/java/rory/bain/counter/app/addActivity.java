@@ -71,7 +71,7 @@ public class addActivity extends Activity{
 //        final Button resetButton = (Button) findViewById(R.id.addReset);
         final Button addFinished = (Button) findViewById(R.id.addFinished);
         final Button playback    = (Button) findViewById(R.id.playback);
-        final EditText countText = (EditText) findViewById(R.id.textView2);
+        //final EditText countText = (EditText) findViewById(R.id.textView2);
         final DrawView dView = (DrawView) findViewById(R.id.dview);
         dView.initiateTrimmer();
 
@@ -81,7 +81,7 @@ public class addActivity extends Activity{
 
 
         //Setting up the keyboard next button to finish editing
-        countText.setOnEditorActionListener(new OnEditorActionListener() {
+        /*countText.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 //if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || actionId == EditorInfo.IME_ACTION_DONE) {
@@ -91,7 +91,7 @@ public class addActivity extends Activity{
 
 
         });
-
+        */
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //start recording if not already started, if it is already recording, then stop
@@ -116,14 +116,6 @@ public class addActivity extends Activity{
                 }
             }
         });
-
-//        resetButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                //Delete the current recording, clear the screen. We may need some visual representation that a recording was made too.
-//                sampler.stop();
-//            }
-//        });
-
         //Adding the button in case the user doesn't know how to use the keyboard
         addFinished.setOnClickListener(new View.OnClickListener() {
             @Override

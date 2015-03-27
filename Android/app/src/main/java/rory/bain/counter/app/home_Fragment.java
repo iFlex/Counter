@@ -26,7 +26,7 @@ public class home_Fragment extends Fragment {
     int count, previousPressed;
     static int nextID;
     View rootView;
-    String selectedSound;
+    String selectedSound,soundName;
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
 
@@ -114,7 +114,7 @@ public class home_Fragment extends Fragment {
                     startButton.setSelected(false);
                     startButton.setBackgroundResource(R.drawable.flat_selector);
                     String date = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(new Date());
-                    MainActivity.myDB.insertRow(MainActivity.counter.getCount(), date, selectedSound);
+                    MainActivity.myDB.insertRow(MainActivity.counter.getCount(), date, soundName);
                 }
             }
         });
@@ -140,6 +140,7 @@ public class home_Fragment extends Fragment {
             view.setBackgroundResource(R.drawable.rect_pressed);
             MainActivity.libraryDB.open();
             String sample = MainActivity.libraryDB.getRow(v).getString(libraryDBAdapter.COL_SAMPLE);
+            soundName = MainActivity.libraryDB.getRow(v).getString(libraryDBAdapter.COL_NAME);
             MainActivity.libraryDB.close();
             previousPressed = view.getId();
             //playback
