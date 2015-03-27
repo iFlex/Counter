@@ -137,7 +137,7 @@ public class Tester {
 
 	/*
 	 * ========= Test Results for Test List : FILENAME.lst ========== Success
-	 * Rate Per Batch: [ PERCENTAGE_BATCH1, PERCENTAGE_BATCH2, etc ] Tests Run:
+	 * Rate Per Bundle: [ PERCENTAGE_BATCH1, PERCENTAGE_BATCH2, etc ] Tests Run:
 	 * NUMBER Overall Success Rate: NUMBER Time Taken: TIME [UNIT]
 	 * 
 	 * ===== Results for Test : FILENAME.tst ===== Model: FILENAME.wav Files
@@ -160,7 +160,7 @@ public class Tester {
 		
 		double overallSuccessRate = 0;
 		try {
-			fw.write(("========= Test Results for Test List: " + listName +'\n'+"Algorithm:"+algname+" -> Success Rate per Batch: \n").getBytes());
+			fw.write(("========= Test Results for Test List: " + listName +'\n'+"Algorithm:"+algname+" -> Success rate per bundle: \n").getBytes());
 			
 			
 			for(int i = 0; i<testList.size(); i++)

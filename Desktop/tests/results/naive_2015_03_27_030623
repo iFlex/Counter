@@ -1,0 +1,1019 @@
+========= Test Results for Test List: ./tests/batches/batch_1.list
+Algorithm:naive -> Success rate per bundle: 
+./tests/batches/claps.list - 88.9074074074074%
+./tests/batches/tweets.list - 100.0%
+./tests/batches/books.list - 91.0%
+./tests/batches/coins.list - 69.49908424908423%
+./tests/batches/fbalert.list - 64.80396825396825%
+./tests/batches/guitarOpen.list - 31.86815894132967%
+./tests/batches/guitarMuted.list - 99.27272727272727%
+./tests/batches/hello.list - 43.41904761904761%
+./tests/batches/keyboard.list - 100.0%
+./tests/batches/pageTurn.list - 100.0%
+./tests/batches/pops.list - 75.76031746031747%
+./tests/batches/snap.list - 23.97321428571428%
+./tests/batches/song.list - 60.08170163170163%
+
+Tests Run: 13
+Overall Success Rate: 72.96812516317677%
+Time Taken: 2.755s
+
+
+===== Results for Test: ./tests/batches/claps.list =====
+Model :./tests/models/clap.wav
+Number of Files Tested: 9
+Total Time Taken: 0.186s
+Overall Test Accuracy: 88.9074074074074%
+
+== Results for file: ./tests/samples/clap_7_0.wav ==
+---------------------------
+7 - Actual Count
+7 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.033s - Time taken
+
+== Results for file: ./tests/samples/clap_1_1.wav ==
+---------------------------
+1 - Actual Count
+1 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.005s - Time taken
+
+== Results for file: ./tests/samples/clap_1_2.wav ==
+---------------------------
+1 - Actual Count
+1 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.004s - Time taken
+
+== Results for file: ./tests/samples/clap_1_3.wav ==
+---------------------------
+1 - Actual Count
+1 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.005s - Time taken
+
+== Results for file: ./tests/samples/clap_1_4.wav ==
+---------------------------
+1 - Actual Count
+1 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.003s - Time taken
+
+== Results for file: ./tests/samples/clap_1_5.wav ==
+---------------------------
+1 - Actual Count
+1 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.004s - Time taken
+
+== Results for file: ./tests/samples/clap_1_6.wav ==
+---------------------------
+1 - Actual Count
+1 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.004s - Time taken
+
+== Results for file: ./tests/samples/clap_1_7.wav ==
+---------------------------
+1 - Actual Count
+1 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.002s - Time taken
+
+== Results for file: ./tests/samples/noclap.wav ==
+---------------------------
+5 - Actual Count
+0 - Correct Count
+0.16666666666666666% Accuracy - OVERCOUNT
+---------------------------
+0.031s - Time taken
+
+===== Results for Test: ./tests/batches/tweets.list =====
+Model :./tests/models/tweet.wav
+Number of Files Tested: 1
+Total Time Taken: 0.018s
+Overall Test Accuracy: 100.0%
+
+== Results for file: ./tests/samples/tweet_2_0.wav ==
+---------------------------
+2 - Actual Count
+2 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.012s - Time taken
+
+===== Results for Test: ./tests/batches/books.list =====
+Model :./tests/models/book.wav
+Number of Files Tested: 5
+Total Time Taken: 0.069s
+Overall Test Accuracy: 91.0%
+
+== Results for file: ./tests/samples/book_0_1.wav ==
+---------------------------
+0 - Actual Count
+0 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.003s - Time taken
+
+== Results for file: ./tests/samples/book_5_2.wav ==
+---------------------------
+5 - Actual Count
+5 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.03s - Time taken
+
+== Results for file: ./tests/samples/book_10_3.wav ==
+---------------------------
+9 - Actual Count
+10 - Correct Count
+90.0% Accuracy - UNDERCOUNT
+---------------------------
+0.005s - Time taken
+
+== Results for file: ./tests/samples/book_15_4.wav ==
+---------------------------
+12 - Actual Count
+15 - Correct Count
+80.0% Accuracy - UNDERCOUNT
+---------------------------
+0.007s - Time taken
+
+== Results for file: ./tests/samples/book_20_5.wav ==
+---------------------------
+17 - Actual Count
+20 - Correct Count
+85.0% Accuracy - UNDERCOUNT
+---------------------------
+0.009s - Time taken
+
+===== Results for Test: ./tests/batches/coins.list =====
+Model :./tests/models/coins.wav
+Number of Files Tested: 10
+Total Time Taken: 0.535s
+Overall Test Accuracy: 69.49908424908423%
+
+== Results for file: ./tests/samples/coins_0_1.wav ==
+---------------------------
+0 - Actual Count
+0 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.009s - Time taken
+
+== Results for file: ./tests/samples/coins_2_2.wav ==
+---------------------------
+3 - Actual Count
+2 - Correct Count
+66.66666666666666% Accuracy - OVERCOUNT
+---------------------------
+0.01s - Time taken
+
+== Results for file: ./tests/samples/coins_3_3.wav ==
+---------------------------
+4 - Actual Count
+3 - Correct Count
+75.0% Accuracy - OVERCOUNT
+---------------------------
+0.019s - Time taken
+
+== Results for file: ./tests/samples/coins_4_4.wav ==
+---------------------------
+5 - Actual Count
+4 - Correct Count
+80.0% Accuracy - OVERCOUNT
+---------------------------
+0.017s - Time taken
+
+== Results for file: ./tests/samples/coins_5_5.wav ==
+---------------------------
+8 - Actual Count
+5 - Correct Count
+62.5% Accuracy - OVERCOUNT
+---------------------------
+0.041s - Time taken
+
+== Results for file: ./tests/samples/coins_6_6.wav ==
+---------------------------
+10 - Actual Count
+6 - Correct Count
+60.0% Accuracy - OVERCOUNT
+---------------------------
+0.021s - Time taken
+
+== Results for file: ./tests/samples/coins_7_7.wav ==
+---------------------------
+12 - Actual Count
+7 - Correct Count
+58.333333333333336% Accuracy - OVERCOUNT
+---------------------------
+0.033s - Time taken
+
+== Results for file: ./tests/samples/coins_8_8.wav ==
+---------------------------
+13 - Actual Count
+8 - Correct Count
+61.53846153846154% Accuracy - OVERCOUNT
+---------------------------
+0.075s - Time taken
+
+== Results for file: ./tests/samples/coins_9_9.wav ==
+---------------------------
+14 - Actual Count
+9 - Correct Count
+64.28571428571429% Accuracy - OVERCOUNT
+---------------------------
+0.027s - Time taken
+
+== Results for file: ./tests/samples/coins_10_10.wav ==
+---------------------------
+15 - Actual Count
+10 - Correct Count
+66.66666666666666% Accuracy - OVERCOUNT
+---------------------------
+0.255s - Time taken
+
+===== Results for Test: ./tests/batches/fbalert.list =====
+Model :./tests/models/fbalert.wav
+Number of Files Tested: 10
+Total Time Taken: 0.153s
+Overall Test Accuracy: 64.80396825396825%
+
+== Results for file: ./tests/samples/fbalert_0_1.wav ==
+---------------------------
+1 - Actual Count
+0 - Correct Count
+0.5% Accuracy - OVERCOUNT
+---------------------------
+0.003s - Time taken
+
+== Results for file: ./tests/samples/fbalert_2_2.wav ==
+---------------------------
+2 - Actual Count
+2 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.005s - Time taken
+
+== Results for file: ./tests/samples/fbalert_3_3.wav ==
+---------------------------
+2 - Actual Count
+3 - Correct Count
+66.66666666666666% Accuracy - UNDERCOUNT
+---------------------------
+0.008s - Time taken
+
+== Results for file: ./tests/samples/fbalert_4_4.wav ==
+---------------------------
+2 - Actual Count
+4 - Correct Count
+50.0% Accuracy - UNDERCOUNT
+---------------------------
+0.01s - Time taken
+
+== Results for file: ./tests/samples/fbalert_5_5.wav ==
+---------------------------
+3 - Actual Count
+5 - Correct Count
+60.0% Accuracy - UNDERCOUNT
+---------------------------
+0.01s - Time taken
+
+== Results for file: ./tests/samples/fbalert_6_6.wav ==
+---------------------------
+4 - Actual Count
+6 - Correct Count
+66.66666666666666% Accuracy - UNDERCOUNT
+---------------------------
+0.01s - Time taken
+
+== Results for file: ./tests/samples/fbalert_7_7.wav ==
+---------------------------
+5 - Actual Count
+7 - Correct Count
+71.42857142857143% Accuracy - UNDERCOUNT
+---------------------------
+0.012s - Time taken
+
+== Results for file: ./tests/samples/fbalert_8_8.wav ==
+---------------------------
+6 - Actual Count
+8 - Correct Count
+75.0% Accuracy - UNDERCOUNT
+---------------------------
+0.016s - Time taken
+
+== Results for file: ./tests/samples/fbalert_9_9.wav ==
+---------------------------
+7 - Actual Count
+9 - Correct Count
+77.77777777777779% Accuracy - UNDERCOUNT
+---------------------------
+0.024s - Time taken
+
+== Results for file: ./tests/samples/fbalert_10_10.wav ==
+---------------------------
+8 - Actual Count
+10 - Correct Count
+80.0% Accuracy - UNDERCOUNT
+---------------------------
+0.022s - Time taken
+
+===== Results for Test: ./tests/batches/guitarOpen.list =====
+Model :./tests/models/guitarOpen.wav
+Number of Files Tested: 11
+Total Time Taken: 0.462s
+Overall Test Accuracy: 31.86815894132967%
+
+== Results for file: ./tests/samples/guitarOpen_0_1.wav ==
+---------------------------
+0 - Actual Count
+0 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.02s - Time taken
+
+== Results for file: ./tests/samples/guitarOpen_2_2.wav ==
+---------------------------
+1 - Actual Count
+2 - Correct Count
+50.0% Accuracy - UNDERCOUNT
+---------------------------
+0.157s - Time taken
+
+== Results for file: ./tests/samples/guitarOpen_3_3.wav ==
+---------------------------
+1 - Actual Count
+3 - Correct Count
+33.33333333333333% Accuracy - UNDERCOUNT
+---------------------------
+0.013s - Time taken
+
+== Results for file: ./tests/samples/guitarOpen_4_4.wav ==
+---------------------------
+1 - Actual Count
+4 - Correct Count
+25.0% Accuracy - UNDERCOUNT
+---------------------------
+0.01s - Time taken
+
+== Results for file: ./tests/samples/guitarOpen_5_5.wav ==
+---------------------------
+1 - Actual Count
+5 - Correct Count
+20.0% Accuracy - UNDERCOUNT
+---------------------------
+0.024s - Time taken
+
+== Results for file: ./tests/samples/guitarOpen_6_6.wav ==
+---------------------------
+1 - Actual Count
+6 - Correct Count
+16.666666666666664% Accuracy - UNDERCOUNT
+---------------------------
+0.013s - Time taken
+
+== Results for file: ./tests/samples/guitarOpen_7_7.wav ==
+---------------------------
+2 - Actual Count
+7 - Correct Count
+28.57142857142857% Accuracy - UNDERCOUNT
+---------------------------
+0.013s - Time taken
+
+== Results for file: ./tests/samples/guitarOpen_8_8.wav ==
+---------------------------
+2 - Actual Count
+8 - Correct Count
+25.0% Accuracy - UNDERCOUNT
+---------------------------
+0.021s - Time taken
+
+== Results for file: ./tests/samples/guitarOpen_9_9.wav ==
+---------------------------
+2 - Actual Count
+9 - Correct Count
+22.22222222222222% Accuracy - UNDERCOUNT
+---------------------------
+0.013s - Time taken
+
+== Results for file: ./tests/samples/guitarOpen_10_10.wav ==
+---------------------------
+2 - Actual Count
+10 - Correct Count
+20.0% Accuracy - UNDERCOUNT
+---------------------------
+0.114s - Time taken
+
+== Results for file: ./tests/samples/guitarOpen_41_11.wav ==
+---------------------------
+4 - Actual Count
+41 - Correct Count
+9.75609756097561% Accuracy - UNDERCOUNT
+---------------------------
+0.024s - Time taken
+
+===== Results for Test: ./tests/batches/guitarMuted.list =====
+Model :./tests/models/guitarMuted.wav
+Number of Files Tested: 11
+Total Time Taken: 0.147s
+Overall Test Accuracy: 99.27272727272727%
+
+== Results for file: ./tests/samples/guitarMuted_0_1.wav ==
+---------------------------
+0 - Actual Count
+0 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.007s - Time taken
+
+== Results for file: ./tests/samples/guitarMuted_2_2.wav ==
+---------------------------
+2 - Actual Count
+2 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.007s - Time taken
+
+== Results for file: ./tests/samples/guitarMuted_3_3.wav ==
+---------------------------
+3 - Actual Count
+3 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.007s - Time taken
+
+== Results for file: ./tests/samples/guitarMuted_4_4.wav ==
+---------------------------
+4 - Actual Count
+4 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.012s - Time taken
+
+== Results for file: ./tests/samples/guitarMuted_5_5.wav ==
+---------------------------
+5 - Actual Count
+5 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.007s - Time taken
+
+== Results for file: ./tests/samples/guitarMuted_6_6.wav ==
+---------------------------
+6 - Actual Count
+6 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.009s - Time taken
+
+== Results for file: ./tests/samples/guitarMuted_7_7.wav ==
+---------------------------
+7 - Actual Count
+7 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.011s - Time taken
+
+== Results for file: ./tests/samples/guitarMuted_8_8.wav ==
+---------------------------
+8 - Actual Count
+8 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.011s - Time taken
+
+== Results for file: ./tests/samples/guitarMuted_9_9.wav ==
+---------------------------
+9 - Actual Count
+9 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.008s - Time taken
+
+== Results for file: ./tests/samples/guitarMuted_10_10.wav ==
+---------------------------
+10 - Actual Count
+10 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.011s - Time taken
+
+== Results for file: ./tests/samples/guitarMuted_50_11.wav ==
+---------------------------
+46 - Actual Count
+50 - Correct Count
+92.0% Accuracy - UNDERCOUNT
+---------------------------
+0.03s - Time taken
+
+===== Results for Test: ./tests/batches/hello.list =====
+Model :./tests/models/hello.wav
+Number of Files Tested: 10
+Total Time Taken: 0.199s
+Overall Test Accuracy: 43.41904761904761%
+
+== Results for file: ./tests/samples/hello_0_1.wav ==
+---------------------------
+1 - Actual Count
+0 - Correct Count
+0.5% Accuracy - OVERCOUNT
+---------------------------
+0.003s - Time taken
+
+== Results for file: ./tests/samples/hello_2_2.wav ==
+---------------------------
+2 - Actual Count
+2 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.007s - Time taken
+
+== Results for file: ./tests/samples/hello_3_3.wav ==
+---------------------------
+2 - Actual Count
+3 - Correct Count
+66.66666666666666% Accuracy - UNDERCOUNT
+---------------------------
+0.016s - Time taken
+
+== Results for file: ./tests/samples/hello_4_4.wav ==
+---------------------------
+2 - Actual Count
+4 - Correct Count
+50.0% Accuracy - UNDERCOUNT
+---------------------------
+0.007s - Time taken
+
+== Results for file: ./tests/samples/hello_5_5.wav ==
+---------------------------
+2 - Actual Count
+5 - Correct Count
+40.0% Accuracy - UNDERCOUNT
+---------------------------
+0.008s - Time taken
+
+== Results for file: ./tests/samples/hello_6_6.wav ==
+---------------------------
+2 - Actual Count
+6 - Correct Count
+33.33333333333333% Accuracy - UNDERCOUNT
+---------------------------
+0.023s - Time taken
+
+== Results for file: ./tests/samples/hello_7_7.wav ==
+---------------------------
+3 - Actual Count
+7 - Correct Count
+42.857142857142854% Accuracy - UNDERCOUNT
+---------------------------
+0.019s - Time taken
+
+== Results for file: ./tests/samples/hello_8_8.wav ==
+---------------------------
+3 - Actual Count
+8 - Correct Count
+37.5% Accuracy - UNDERCOUNT
+---------------------------
+0.021s - Time taken
+
+== Results for file: ./tests/samples/hello_9_9.wav ==
+---------------------------
+3 - Actual Count
+9 - Correct Count
+33.33333333333333% Accuracy - UNDERCOUNT
+---------------------------
+0.022s - Time taken
+
+== Results for file: ./tests/samples/hello_10_10.wav ==
+---------------------------
+3 - Actual Count
+10 - Correct Count
+30.0% Accuracy - UNDERCOUNT
+---------------------------
+0.024s - Time taken
+
+===== Results for Test: ./tests/batches/keyboard.list =====
+Model :./tests/models/keyboard.wav
+Number of Files Tested: 10
+Total Time Taken: 0.239s
+Overall Test Accuracy: 100.0%
+
+== Results for file: ./tests/samples/keyboard_0_1.wav ==
+---------------------------
+0 - Actual Count
+0 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.074s - Time taken
+
+== Results for file: ./tests/samples/keyboard_2_2.wav ==
+---------------------------
+2 - Actual Count
+2 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.006s - Time taken
+
+== Results for file: ./tests/samples/keyboard_3_3.wav ==
+---------------------------
+3 - Actual Count
+3 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.009s - Time taken
+
+== Results for file: ./tests/samples/keyboard_4_4.wav ==
+---------------------------
+4 - Actual Count
+4 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.011s - Time taken
+
+== Results for file: ./tests/samples/keyboard_5_5.wav ==
+---------------------------
+5 - Actual Count
+5 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.016s - Time taken
+
+== Results for file: ./tests/samples/keyboard_6_6.wav ==
+---------------------------
+6 - Actual Count
+6 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.016s - Time taken
+
+== Results for file: ./tests/samples/keyboard_7_7.wav ==
+---------------------------
+7 - Actual Count
+7 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.023s - Time taken
+
+== Results for file: ./tests/samples/keyboard_8_8.wav ==
+---------------------------
+8 - Actual Count
+8 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.013s - Time taken
+
+== Results for file: ./tests/samples/keyboard_9_9.wav ==
+---------------------------
+9 - Actual Count
+9 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.015s - Time taken
+
+== Results for file: ./tests/samples/keyboard_10_10.wav ==
+---------------------------
+10 - Actual Count
+10 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.021s - Time taken
+
+===== Results for Test: ./tests/batches/pageTurn.list =====
+Model :./tests/models/pageTurn.wav
+Number of Files Tested: 10
+Total Time Taken: 0.237s
+Overall Test Accuracy: 100.0%
+
+== Results for file: ./tests/samples/pageTurn_0_1.wav ==
+---------------------------
+0 - Actual Count
+0 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.002s - Time taken
+
+== Results for file: ./tests/samples/pageTurn_2_2.wav ==
+---------------------------
+2 - Actual Count
+2 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.007s - Time taken
+
+== Results for file: ./tests/samples/pageTurn_3_3.wav ==
+---------------------------
+3 - Actual Count
+3 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.016s - Time taken
+
+== Results for file: ./tests/samples/pageTurn_4_4.wav ==
+---------------------------
+4 - Actual Count
+4 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.013s - Time taken
+
+== Results for file: ./tests/samples/pageTurn_5_5.wav ==
+---------------------------
+5 - Actual Count
+5 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.015s - Time taken
+
+== Results for file: ./tests/samples/pageTurn_6_6.wav ==
+---------------------------
+6 - Actual Count
+6 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.019s - Time taken
+
+== Results for file: ./tests/samples/pageTurn_7_7.wav ==
+---------------------------
+7 - Actual Count
+7 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.081s - Time taken
+
+== Results for file: ./tests/samples/pageTurn_8_8.wav ==
+---------------------------
+8 - Actual Count
+8 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.015s - Time taken
+
+== Results for file: ./tests/samples/pageTurn_9_9.wav ==
+---------------------------
+9 - Actual Count
+9 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.018s - Time taken
+
+== Results for file: ./tests/samples/pageTurn_10_10.wav ==
+---------------------------
+10 - Actual Count
+10 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.017s - Time taken
+
+===== Results for Test: ./tests/batches/pops.list =====
+Model :./tests/models/pop.wav
+Number of Files Tested: 10
+Total Time Taken: 0.15s
+Overall Test Accuracy: 75.76031746031747%
+
+== Results for file: ./tests/samples/pop_0_1.wav ==
+---------------------------
+1 - Actual Count
+0 - Correct Count
+0.5% Accuracy - OVERCOUNT
+---------------------------
+0.007s - Time taken
+
+== Results for file: ./tests/samples/pop_2_2.wav ==
+---------------------------
+3 - Actual Count
+2 - Correct Count
+66.66666666666666% Accuracy - OVERCOUNT
+---------------------------
+0.013s - Time taken
+
+== Results for file: ./tests/samples/pop_3_3.wav ==
+---------------------------
+4 - Actual Count
+3 - Correct Count
+75.0% Accuracy - OVERCOUNT
+---------------------------
+0.009s - Time taken
+
+== Results for file: ./tests/samples/pop_4_4.wav ==
+---------------------------
+5 - Actual Count
+4 - Correct Count
+80.0% Accuracy - OVERCOUNT
+---------------------------
+0.009s - Time taken
+
+== Results for file: ./tests/samples/pop_5_5.wav ==
+---------------------------
+6 - Actual Count
+5 - Correct Count
+83.33333333333334% Accuracy - OVERCOUNT
+---------------------------
+0.012s - Time taken
+
+== Results for file: ./tests/samples/pop_6_6.wav ==
+---------------------------
+7 - Actual Count
+6 - Correct Count
+85.71428571428571% Accuracy - OVERCOUNT
+---------------------------
+0.012s - Time taken
+
+== Results for file: ./tests/samples/pop_7_7.wav ==
+---------------------------
+7 - Actual Count
+7 - Correct Count
+100.0% Accuracy - 
+---------------------------
+0.011s - Time taken
+
+== Results for file: ./tests/samples/pop_8_8.wav ==
+---------------------------
+7 - Actual Count
+8 - Correct Count
+87.5% Accuracy - UNDERCOUNT
+---------------------------
+0.013s - Time taken
+
+== Results for file: ./tests/samples/pop_9_9.wav ==
+---------------------------
+8 - Actual Count
+9 - Correct Count
+88.88888888888889% Accuracy - UNDERCOUNT
+---------------------------
+0.02s - Time taken
+
+== Results for file: ./tests/samples/pop_10_10.wav ==
+---------------------------
+9 - Actual Count
+10 - Correct Count
+90.0% Accuracy - UNDERCOUNT
+---------------------------
+0.015s - Time taken
+
+===== Results for Test: ./tests/batches/snap.list =====
+Model :./tests/models/snap.wav
+Number of Files Tested: 8
+Total Time Taken: 0.145s
+Overall Test Accuracy: 23.97321428571428%
+
+== Results for file: ./tests/samples/snap_2_1.wav ==
+---------------------------
+1 - Actual Count
+2 - Correct Count
+50.0% Accuracy - UNDERCOUNT
+---------------------------
+0.006s - Time taken
+
+== Results for file: ./tests/samples/snap_3_2.wav ==
+---------------------------
+1 - Actual Count
+3 - Correct Count
+33.33333333333333% Accuracy - UNDERCOUNT
+---------------------------
+0.007s - Time taken
+
+== Results for file: ./tests/samples/snap_4_3.wav ==
+---------------------------
+1 - Actual Count
+4 - Correct Count
+25.0% Accuracy - UNDERCOUNT
+---------------------------
+0.005s - Time taken
+
+== Results for file: ./tests/samples/snap_5_4.wav ==
+---------------------------
+1 - Actual Count
+5 - Correct Count
+20.0% Accuracy - UNDERCOUNT
+---------------------------
+0.009s - Time taken
+
+== Results for file: ./tests/samples/snap_6_5.wav ==
+---------------------------
+1 - Actual Count
+6 - Correct Count
+16.666666666666664% Accuracy - UNDERCOUNT
+---------------------------
+0.012s - Time taken
+
+== Results for file: ./tests/samples/snap_7_6.wav ==
+---------------------------
+1 - Actual Count
+7 - Correct Count
+14.285714285714285% Accuracy - UNDERCOUNT
+---------------------------
+0.011s - Time taken
+
+== Results for file: ./tests/samples/snap_8_7.wav ==
+---------------------------
+1 - Actual Count
+8 - Correct Count
+12.5% Accuracy - UNDERCOUNT
+---------------------------
+0.01s - Time taken
+
+== Results for file: ./tests/samples/snap_10_9.wav ==
+---------------------------
+2 - Actual Count
+10 - Correct Count
+20.0% Accuracy - UNDERCOUNT
+---------------------------
+0.048s - Time taken
+
+===== Results for Test: ./tests/batches/song.list =====
+Model :./tests/models/song.wav
+Number of Files Tested: 10
+Total Time Taken: 0.205s
+Overall Test Accuracy: 60.08170163170163%
+
+== Results for file: ./tests/samples/song_0_1.wav ==
+---------------------------
+2 - Actual Count
+0 - Correct Count
+0.3333333333333333% Accuracy - OVERCOUNT
+---------------------------
+0.011s - Time taken
+
+== Results for file: ./tests/samples/song_2_2.wav ==
+---------------------------
+4 - Actual Count
+2 - Correct Count
+50.0% Accuracy - OVERCOUNT
+---------------------------
+0.017s - Time taken
+
+== Results for file: ./tests/samples/song_3_3.wav ==
+---------------------------
+5 - Actual Count
+3 - Correct Count
+60.0% Accuracy - OVERCOUNT
+---------------------------
+0.013s - Time taken
+
+== Results for file: ./tests/samples/song_4_4.wav ==
+---------------------------
+6 - Actual Count
+4 - Correct Count
+66.66666666666666% Accuracy - OVERCOUNT
+---------------------------
+0.013s - Time taken
+
+== Results for file: ./tests/samples/song_5_5.wav ==
+---------------------------
+8 - Actual Count
+5 - Correct Count
+62.5% Accuracy - OVERCOUNT
+---------------------------
+0.022s - Time taken
+
+== Results for file: ./tests/samples/song_6_6.wav ==
+---------------------------
+9 - Actual Count
+6 - Correct Count
+66.66666666666666% Accuracy - OVERCOUNT
+---------------------------
+0.017s - Time taken
+
+== Results for file: ./tests/samples/song_7_7.wav ==
+---------------------------
+10 - Actual Count
+7 - Correct Count
+70.0% Accuracy - OVERCOUNT
+---------------------------
+0.02s - Time taken
+
+== Results for file: ./tests/samples/song_8_8.wav ==
+---------------------------
+11 - Actual Count
+8 - Correct Count
+72.72727272727273% Accuracy - OVERCOUNT
+---------------------------
+0.018s - Time taken
+
+== Results for file: ./tests/samples/song_9_9.wav ==
+---------------------------
+12 - Actual Count
+9 - Correct Count
+75.0% Accuracy - OVERCOUNT
+---------------------------
+0.024s - Time taken
+
+== Results for file: ./tests/samples/song_10_10.wav ==
+---------------------------
+13 - Actual Count
+10 - Correct Count
+76.92307692307693% Accuracy - OVERCOUNT
+---------------------------
+0.023s - Time taken
+

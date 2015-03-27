@@ -1,8 +1,4 @@
 .metadata
-Desktop/debug
 Desktop/bin
-Desktop/tests/results
-Desktop/tests/models
-Desktop/tests/samples
 Android/build
 Android/app/build

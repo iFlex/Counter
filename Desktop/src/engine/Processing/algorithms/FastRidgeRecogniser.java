@@ -156,8 +156,7 @@ public class FastRidgeRecogniser extends Recogniser {
 		}
 		else{
 			runnerAvg += accumulator;
-			theAvg = (runnerAvg/position);
-			
+			theAvg = (runnerAvg/position);		
 		}
 	}
 	
