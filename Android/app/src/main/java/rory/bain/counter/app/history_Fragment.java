@@ -178,6 +178,4 @@ public class history_Fragment extends Fragment {
 
         return resultDate;
     }
-
-
 }

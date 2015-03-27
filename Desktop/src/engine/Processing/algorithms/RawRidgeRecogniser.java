@@ -23,7 +23,7 @@ import java.io.IOException;
 //
 public class RawRidgeRecogniser extends Recogniser {
 	
-	//debug files
+	//debug files handlers
 	FileOutputStream dbg;
 	FileOutputStream rto;
 	FileOutputStream sampl;
@@ -32,11 +32,14 @@ public class RawRidgeRecogniser extends Recogniser {
 	FileOutputStream smp;
 	//ring buffer for sliding window 
 	private RingBuffer buff;
+	//state retaining values for algorithm
+	private double runnerAvg = 0,theAvg=0;
+	private double maxDrop = 65535; int maxDropPos=0, startTrack=0;
 	
 	public RawRidgeRecogniser(Counter c){
 		super(c);
 		System.out.println("RAW ridge recogniser");
-		//opent he files to write debug information in
+		//open the files to write debug information in
 		try {
 			dbg   = new FileOutputStream(new File("tests/graphs/lagbehinder.txt"));
 			rto   = new FileOutputStream(new File("tests/graphs/accumulator.txt"));
@@ -53,7 +56,7 @@ public class RawRidgeRecogniser extends Recogniser {
 		super.setModel(name);
 		//create a new ring buffer with the same length as the new model
 		buff = new RingBuffer(rawModel.length);
-		//write the sample values to
+		//fill the buffer with 0 so that as soon as the first sample comes in it triggers a distance calculation
 		for( int i = 1 ; i < rawModel.length; ++i )
 		{
 			buff.push(0);
@@ -65,14 +68,14 @@ public class RawRidgeRecogniser extends Recogniser {
 		}
 		
 	}
-	
-	double runnerAvg = 0,theAvg=0;
-	double maxDrop = 65535; int maxDropPos=0, startTrack=0;
+	//process a sample by:
+	//pushing it to the ring buffer and incrementing the overall position in the sound stream
+	//if the buffer has reached full capacity, perform distance calculation
+	//evaluate distance result
 	private void _processNext(double a){
 		buff.push(a);
 		position++;
 		double certain = 0;
-		//only perform difference if the buffer contains the same amount of data as the model
 		if( buff.length() == buff.getCapacity() )
 		{
 			double accumulator = 0, max = 0,lhs,rhs;
@@ -91,7 +94,7 @@ public class RawRidgeRecogniser extends Recogniser {
 			accumulator /= i;
 			//normalise value to account for volume differences
 			accumulator /= max;
-			//calculate the average level
+			//calculate the average level ( mean level )
 			runnerAvg += accumulator;
 			theAvg = (runnerAvg/position);
 			//if the difference descends under the average level
@@ -115,25 +118,22 @@ public class RawRidgeRecogniser extends Recogniser {
 					if(dist < 0)
 						dist = 1;
 					certain = ((double)dist / buff.getCapacity())*1.5;
-					//if(certain > 0.5)
-						System.out.println("crt:"+certain+" maxDrop:"+maxDrop+" avg:"+theAvg+" dist:"+( maxDropPos - startTrack )+" max:"+buff.getCapacity()+" time:"+((double)position/44100));
+					System.out.println("crt:"+certain+" maxDrop:"+maxDrop+" avg:"+theAvg+" dist:"+( maxDropPos - startTrack )+" max:"+buff.getCapacity()+" time:"+((double)position/44100));
 				}
-				//evaluate
+				//reset
 				maxDrop = theAvg;
 				maxDropPos = (int) position;
 				startTrack = 0;
 			}
+			//write debug information to files for plotting
 			try {
 				rto.write((accumulator+"\n").getBytes());
-				//dbg.write((lagger.b[lagger.start]+"\n").getBytes());
-				//number of zero crossings in this graph should give away the count
-				//sampl.write((accumulator - lagger.b[lagger.start]+"\n").getBytes() );
 				mic.write((a+"\n").getBytes());
-				dd.write((runnerAvg/position+"\n").getBytes());//(chk.get()+"\n").getBytes());//( Math.abs(ddlt.getFirst() + ddlt.getLast()) + "\n" ).getBytes() );
+				dd.write((runnerAvg/position+"\n").getBytes());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+			//if certainty is higher than 50% attempt count
 			if(certain > 0.5) {
 				counter.increment(certain);
 				System.out.println(certain+" Count:"+counter.getCount()+" time:"+((double)position/44100));

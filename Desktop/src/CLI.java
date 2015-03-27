@@ -20,12 +20,15 @@ public class CLI {
 	public void run()
 	{
 		System.out.println("Toggle the recorder");
+		//make a default configuration
 		count = new Counter();
 		processor = new Processor(count);
+		//set default model and sample
 		processor.setModel("./tests/models/clap.wav");
 		processor.setInput("./tests/samples/clap_7_0.wav");
 		Scanner sc = new Scanner(System.in);
 		while(true){
+			//show prompt and wait for next command
 			System.out.print("> ");
 			String s = sc.nextLine();	
 			try {

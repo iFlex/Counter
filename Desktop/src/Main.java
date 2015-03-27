@@ -35,17 +35,16 @@ public class Main {
 			System.out.println("#Counter++ Testing facility: BATCH testing mode");
 			Tester t = new Tester();
 			String filename = "./tests/batches/batch_1.list";
-			
+			//the first argument is tha batch descriptor path
 			if(args.length > 1)
 				filename = args[1];
-			
+			//second argument is the short name for the algorithm to use
 			if(args.length > 2)
 				t.setAlgorithm( args[2] );
-			
+			//perform the tests
 			try {
 				t.Test(filename);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -22,14 +22,14 @@ public class Processor implements Runnable
 	protected boolean canRun;
 	protected String source;
 	////////////////////////////////
+	//Initialisation common to all Processor configurations
 	void _init(Counter c) {
-		//Common initialisation 
-        count = c;
+		count = c;
         running = new AtomicBoolean(false);
         canRun = false;
         audioIn = null;
     }
-	//constructor with default recogniser instantiated
+	//Default Processor configuration: common + FastRidgeRecogniser
 	public Processor(Counter c)
 	{
 		_init(c);
@@ -38,7 +38,7 @@ public class Processor implements Runnable
 		consumer = new FastRidgeRecogniser(count);
 		//consumer = new FFTFastRidgeR(count);
 	}
-	//constructor with custom recogniser
+	//Processor configuration with custom recogniser
 	public Processor(Counter c, Recogniser r)
     {
         _init(c);
@@ -50,7 +50,7 @@ public class Processor implements Runnable
 	}
 	//set input source
 	public synchronized void setInput(String nameOrPath){ 
-		//cause the main thread to stop in case it is already running
+		//cause the audio thread to stop in case it is already running
 		canRun = false;
 		if( audioIn != null )
 		{
@@ -78,9 +78,9 @@ public class Processor implements Runnable
 		}
 		running.set(false);
 	}
-
+	//threading setup function
+	//needs to be callsed before by the start function
 	protected void _init(){
-		//this function needs to be called before the processor is started
 		if(running.get() == true)
 			stop();
 		
@@ -88,7 +88,7 @@ public class Processor implements Runnable
 		if( audioIn == null )
 			audioIn= new PcMicrophoneIn();
      }
-
+	//start a thread for the Processor and start Audio sampler
 	public void start(){
 		_init();
 			
@@ -96,16 +96,15 @@ public class Processor implements Runnable
         t.start();
 		audioIn.start();
 	}
-
-     public void blockingRun(){
-         _init();
-         audioIn.start();
-         run();
-         audioIn.stop();
-         stop();
-     }
-
-
+	//run Processor synchronously and start Audio sampler
+    public void blockingRun(){
+    	_init();
+        audioIn.start();
+        run();
+        audioIn.stop();
+        stop();
+    }
+    //stop the Processor and the Audio sampler
 	public void stop(){
 		canRun = false;
 		if(audioIn != null)
@@ -122,8 +121,8 @@ public class Processor implements Runnable
 	        }
 		}
 	}
-
+	
 	public boolean isRunning(){
-		return running.get() == true;
+		return running.get();
 	}
 }

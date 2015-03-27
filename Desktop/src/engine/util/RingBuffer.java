@@ -1,5 +1,6 @@
+//Author: Milorad Liviu Felix
 package engine.util;
-
+//own implementation of Ring Buffer
 public class RingBuffer{
 	
 	public double[] b;

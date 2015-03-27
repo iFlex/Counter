@@ -20,59 +20,22 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
-//
+/// Code with explanatory comments in ./Desktop/src/engine
 public class RawRidgeRecogniser extends Recogniser {
-	
-	//debug
-	FileOutputStream dbg;
-	FileOutputStream rto;
-	FileOutputStream sampl;
-	FileOutputStream mic;
-	FileOutputStream dd;
-	FileOutputStream smp;
-	//alternative 
 	private RingBuffer buff,lagger,ddlt;
-	//private RingSum chk;
-	
-	public RawRidgeRecogniser(Counter c){
+    double runnerAvg = 0,theAvg=0;
+    double maxDrop = 65535; int maxDropPos=0, startTrack=0;
+
+    public RawRidgeRecogniser(Counter c){
 		super(c);
-		System.out.println("RAW ridge recogniser");
-		//debug
-		dbg = null;
-		try {
-			dbg   = new FileOutputStream(new File("lagbehinder.txt"));
-			rto   = new FileOutputStream(new File("accumulator.txt"));
-			sampl = new FileOutputStream(new File("lagbehdelta.txt"));
-			mic   = new FileOutputStream(new File("rawmicinput.txt"));
-			dd    = new FileOutputStream(new File("zerocrosser.txt"));
-			smp   = new FileOutputStream(new File("thesamplesn.txt"));
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	public synchronized void setModel(String name){
 		super.setModel(name);
 		buff = new RingBuffer(rawModel.length);
-		lagger = new RingBuffer(rawModel.length);
-		ddlt = new RingBuffer(rawModel.length);
-		//chk = new RingSum(rawModel.length);
 		for( int i = 1 ; i < rawModel.length; ++i )
-		{
 			buff.push(0);
-			try {
-				smp.write((rawModel[i-1]+"\n").getBytes());
-			} catch (IOException e) {
-			// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
 	}
 	
-	double runnerAvg = 0,theAvg=0;
-	double maxDrop = 65535; int maxDropPos=0, startTrack=0;
 	private void _processNext(double a){
 		buff.push(a);
 		position++;
@@ -94,15 +57,11 @@ public class RawRidgeRecogniser extends Recogniser {
 			accumulator /= i;
 			accumulator /= max;
 			runnerAvg += accumulator;
-			lagger.push(accumulator);
 			theAvg = (runnerAvg/position);
 			if( accumulator < theAvg ){
 				if(startTrack == 0)
-				{
 					startTrack = (int) position;
-					
-				}
-				//track
+
 				if(accumulator < maxDrop ){
 					maxDrop = accumulator;
 					maxDropPos = (int) position;
@@ -110,7 +69,6 @@ public class RawRidgeRecogniser extends Recogniser {
 			}
 			else
 			{
-				//problematic: detect if the max drop is low enough
 				if( startTrack != 0 && maxDrop <= theAvg * 0.75){ //only consider counting if the drop was low enough
 					//calculate how fast the maximum was reached
 					int dist =( buff.getCapacity() - ( maxDropPos - startTrack )); 
@@ -125,31 +83,11 @@ public class RawRidgeRecogniser extends Recogniser {
 				maxDropPos = (int) position;
 				startTrack = 0;
 			}
-			try {
-				rto.write((accumulator+"\n").getBytes());
-				dbg.write((lagger.b[lagger.start]+"\n").getBytes());
-				//number of zero crossings in this graph should give away the count
-				sampl.write((accumulator - lagger.b[lagger.start]+"\n").getBytes() );
-				mic.write((a+"\n").getBytes());
-				dd.write((runnerAvg/position+"\n").getBytes());//(chk.get()+"\n").getBytes());//( Math.abs(ddlt.getFirst() + ddlt.getLast()) + "\n" ).getBytes() );
-			} catch (IOException e) {
-			// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+
 			if(certain > 0.5)
 			{
 				counter.increment(certain);
 				System.out.println(certain+" Count:"+counter.getCount()+" time:"+((double)position/44100));
-				/*int jump = (int)(buff.getCapacity());
-				while(jump-- > 0)
-					try {
-						buff.pop();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						//e.printStackTrace();
-						break;
-					}*/
 			}
 		}	
 	}

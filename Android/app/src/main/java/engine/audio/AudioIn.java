@@ -9,7 +9,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.lang.Thread;
 import android.util.Log;
-// Gets data from any audio input possible, the Microphone, for example
+// Code with explanatory comments in ./Desktop/src/engine
 public class AudioIn implements Runnable
 {
 	private ConcurrentLinkedQueue<Data> inQueue;
@@ -36,7 +36,7 @@ public class AudioIn implements Runnable
         thread = new Thread(this);
         thread.start();
 	}
-
+    //not used anymore
     public void drainStop(){
         long now  = System.currentTimeMillis();
         int spins =  0;

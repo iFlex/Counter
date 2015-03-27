@@ -12,7 +12,7 @@ public class Counter {
 		count = 0;
 		uncertainty = 0;
 	}
-	
+	//increase count if certainty is above 50%, and add the inverse certainty to total error
 	public void increment(double certainty){
 		if(certainty > 0.5)
 			count++;
@@ -24,8 +24,9 @@ public class Counter {
 		count = c;
 	}
 	
+	//multiply certainty by 100 to get percentage
 	public double getUncertainty(){
-		return Math.round(uncertainty*100); //multiply uncertainty by 100 to get whole number value
+		return Math.round(uncertainty*100);
 	}
 	
 	public int getCount(){

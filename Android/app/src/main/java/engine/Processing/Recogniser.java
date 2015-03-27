@@ -8,7 +8,7 @@ import engine.audio.FileIn;
 import engine.util.Counter;
 import engine.util.Data;
 import engine.util.RingBuffer;
-
+// Code with explanatory comments in ./Desktop/src/engine
 public abstract class Recogniser
 {
 	//the counter
@@ -36,17 +36,13 @@ public abstract class Recogniser
 		positions.clear();
 		position = 0;
 		
-		//Sample data
 		Data sample;
-		//it reads its own data
 		AudioIn SampleIn;
 		sample = new Data();
 		
-		//for now load the sample here
 		SampleIn = new FileIn(name);
 		SampleIn.blockingStart();
 		
-		//1. get the data
 		Data d = SampleIn.getNext();
 		while( d != null ){
 			sample.extend(d);
@@ -58,8 +54,8 @@ public abstract class Recogniser
 			System.out.println("Error: could not initialise correctly! Sample is empty");
 			return;
 		}
-	};//reset position
-	
+	};
+
 	public synchronized void setRawModel(Data m){
 		rawModel = m.get();
 	}

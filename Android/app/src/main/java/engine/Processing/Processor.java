@@ -4,7 +4,7 @@
 * Interface for the sound recognition algorithm
 */
 package engine.Processing;
-
+// Code with explanatory comments in ./Desktop/src/engine
 import java.util.concurrent.atomic.AtomicBoolean;
 import engine.audio.*;
 import engine.util.*;
@@ -14,7 +14,7 @@ import android.util.Log;
 import java.io.*;
 import android.content.Context;
 import rory.bain.counter.app.MainActivity;
-
+// Code with explanatory comments in ./Desktop/src/engine
 public class Processor implements Runnable
 {
     private AudioIn audioIn;
@@ -69,7 +69,6 @@ public class Processor implements Runnable
             audioIn = new MicrophoneIn();
         else
             audioIn = new FileIn(nameOrPath);
-        //TODO: if audioIn is no initilised properly canRun = false;
     }
 
     public synchronized void setRawInput( Data i ){
@@ -81,7 +80,6 @@ public class Processor implements Runnable
         while( true )
         {
             Data d = audioIn.getNext();
-            //System.out.println("Got data from audio:"+d);
             if( d != null )
                 n.process(d);
             else {
@@ -96,7 +94,6 @@ public class Processor implements Runnable
         {
 
             Data d = audioIn.getNext();
-            //System.out.println("Got data from audio:"+d);
             if( d != null )
                 n.process(d);
             else {
@@ -147,8 +144,6 @@ public class Processor implements Runnable
         audioIn.stop();
         stop();
     }
-
-
     public void stop(){
         canRun = false;
         if(audioIn != null)

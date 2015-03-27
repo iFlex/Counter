@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
-//
+//this algorithm is derived from FastRidgeRecogniser, more detailed explanations for common functions can be found thare
 public class FFTFastRidgeR extends Recogniser {
 	
 	//Debug file output streams used to store algorithm outputs
@@ -37,12 +37,13 @@ public class FFTFastRidgeR extends Recogniser {
 	DoubleFFT_1D fft;
 	private double[] modelDump,sampleDump;
 	private boolean ultradebug = false;
-	//private RingSum chk;
+	private double runnerAvg = 0,theAvg=0,accumulator=0;
+	private double maxDrop = 65535,minDiff = 0; int maxDropPos=0, startTrack=0;
 	
 	public FFTFastRidgeR(Counter c){
 		super(c);
 		System.out.println("RAW ridge recogniser");
-		//debug
+		//debug file handlers
 		dbg = null;
 		try {
 			dbg   = new FileOutputStream(new File("tests/graphs/average.txt"));
@@ -55,20 +56,24 @@ public class FFTFastRidgeR extends Recogniser {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		//create a new uni dimensional FFT calculator
+		fft = new DoubleFFT_1D(rawModel.length);
 	}
+
 	public synchronized void setModel(String name){
 		super.setModel(name);
 		buff = new RingBuffer(rawModel.length);
 		modelDump = new double[rawModel.length*2];
 		sampleDump = new double[modelDump.length];
+		//copy model to buffer in order to perform FFT on it
 		for( int i = 0 ; i < rawModel.length; ++i )
 		{
 			buff.push(0);
 			modelDump[i] = rawModel[i];
 		}
-		
-		fft = new DoubleFFT_1D(rawModel.length);
+		//perform FFT on model data
 		fft.realForwardFull(modelDump);
+		//calculate absolute value of the complex numbers resulted form FFT
 		for(int i=0;i < modelDump.length; i+=2 ){
 			modelDump[i] = Math.sqrt(modelDump[i]*modelDump[i]+modelDump[i+1]*modelDump[i+1]);
 			try {
@@ -77,44 +82,44 @@ public class FFTFastRidgeR extends Recogniser {
 				e.printStackTrace();
 			}
 		}
+		//calculate how many samples to skip for each full buffer
 		toSkip = (int)(rawModel.length*skipRate);
 		minDiff = 65535;
 	}
-	
-	double runnerAvg = 0,theAvg=0,accumulator=0;
-	double maxDrop = 65535,minDiff = 0; int maxDropPos=0, startTrack=0;
+	//process one sample
 	private void _processNext(double a){
 		buff.push(a);
 		position++;
 		
 		double certain = 0;
-		//if buffer has reached proper size for comparison then perform fft
+		//if buffer has reached proper size for comparison then perform evaluation
 		if( buff.length() == buff.getCapacity() )
 		{
 			double max = 0,lhs,rhs;
 			accumulator = 0;
-			//copy sample
+			//copy sample to perform FFT on its data
 			for( int i = 0; i < rawModel.length; ++i )
 				sampleDump[i] = buff.get(i);
-			//do fft
+			//perform FFT
 			fft.realForwardFull(sampleDump);
-			//convert to abs val
+			//obtain absolute value from the complex numbers returned by the FFT
 			for( int i = 0 ; i < sampleDump.length; i += 2 )
 				sampleDump[i] = Math.sqrt(sampleDump[i]*sampleDump[i]+sampleDump[i+1]*sampleDump[i+1]);
+			
 			FileOutputStream udbg = null;
 			if(ultradebug == true)
 			try {
 				  udbg = new FileOutputStream(new File("tests/graphs/udbg/"+((double)position/44100)+".txt"));
 			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			//perform distance calculation
+			//perform distance calculation between the two FFT results
 			for(int i = 0; i < sampleDump.length ; i+=2 ){
 				lhs =  Math.abs(sampleDump[i]);//*buff.b[i];
 				rhs =  Math.abs(modelDump[i]);//*rawModel[iter];
 				lhs =  Math.abs( lhs - rhs ); //accidental mistake yelded interesting result -= in stead of =
 				accumulator += lhs;
+				
 				if(ultradebug == true)
 					try {
 						udbg.write((sampleDump[i]+"\n").getBytes());
@@ -125,35 +130,36 @@ public class FFTFastRidgeR extends Recogniser {
 				if( max < lhs )
 					max = lhs;
 			}
+			
 			if(ultradebug == true)
 			try {
 				udbg.close();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			//get the average
 			accumulator /= rawModel.length;
-			accumulator /= max;//normalise
+			//normalise
+			accumulator /= max;
 			if( minDiff > accumulator )
 				minDiff = accumulator;
 			
 			runnerAvg += accumulator;
 			theAvg = (runnerAvg/position);
 			if( accumulator < theAvg ){
-				if(startTrack == 0){
+				if(startTrack == 0)
 					startTrack = (int) position;
-					//System.out.println("Plunge:"+((double)position/44100));
-				}
-				//track
+				
+				//track minimum value and where it occured
 				if(accumulator < maxDrop ){
 					maxDrop = accumulator;
-					//System.out.println("MDDROP:"+maxDrop+" avg:"+theAvg+" @"+((double)position/44100));
 					maxDropPos = (int) position;
 				}
 			}
 			else
 			{
-				double lim = (minDiff + (theAvg-minDiff)*0.2);//20% above min diff
+				//calculations explained in RawRidgeRecogniser
+				double lim = (minDiff + (theAvg-minDiff)*0.2);//20% above all time minimum
 				if( startTrack != 0 && (maxDrop <= lim && (position - startTrack > 50))){ //only consider counting if the drop was low enough
 					int len = (int)(position - startTrack);
 					//if( len >= buff.getCapacity()*0.25 ){
@@ -164,15 +170,15 @@ public class FFTFastRidgeR extends Recogniser {
 						System.out.println("crt:"+certain+" maxDrop:"+maxDrop+" avg:"+theAvg+" dist:"+( maxDropPos - startTrack )+" max:"+buff.getCapacity()+" time:"+((double)position/44100));
 					//}
 				}
-				//evaluate
+				//reset
 				maxDrop = theAvg;
 				maxDropPos = 0;
 				startTrack = 0;
 			}
+			//print debug values for plotting
 			try {
 				rto.write((accumulator+"\n").getBytes());
 				dbg.write((theAvg+"\n").getBytes());
-				//number of zero crossings in this graph should give away the count
 				sampl.write((minDiff+"\n").getBytes() );
 				mic.write((a+"\n").getBytes());
 				dd.write((runnerAvg/position+"\n").getBytes());//(chk.get()+"\n").getBytes());//( Math.abs(ddlt.getFirst() + ddlt.getLast()) + "\n" ).getBytes() );
@@ -185,7 +191,7 @@ public class FFTFastRidgeR extends Recogniser {
 				counter.increment(certain);
 				System.out.println(certain+" Count:"+counter.getCount()+" time:"+((double)position/44100));
 			}
-			//skipper
+			//skip calculated number of frames for speedup
 			for(int idx = 0; idx < toSkip; ++idx){
 				try {
 					buff.pop();
@@ -199,15 +205,13 @@ public class FFTFastRidgeR extends Recogniser {
 			theAvg = (runnerAvg/position);	
 		}
 	}
-	
+	//process each sample in turn from the Data object the Processor passed
 	@Override
 	public void process(Data data) {
 		double[] d = data.get();
 		for( int i = 0; i < d.length; ++i)
 			_processNext(d[i]);
-		if( data.getLength() == 0 ){
-			//adjustCount();
+		if( data.getLength() == 0 )
 			System.out.println("End of data!");
-		}
 	}
 }

@@ -1,5 +1,5 @@
 package engine.audio;
-
+// Code with explanatory comments in ./Desktop/src/engine
 import android.media.*;
 import android.media.MediaRecorder.AudioSource;
 import android.util.Log;

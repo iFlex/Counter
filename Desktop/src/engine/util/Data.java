@@ -12,74 +12,37 @@ public class Data
 	public Data(){
 		d = null;
 	}
-	
-	//TODO: turn to generic type for function below
-    public Data(short[] b,int usableLength){
+	//form data object from short array of length specified by second parameter
+	public Data(short[] b,int usableLength){
     	_d = b;
         d = new double[usableLength];
         _d = new short[usableLength];
-        for( int i = 0 ; i < usableLength; ++ i ){
+        for( int i = 0 ; i < usableLength && i < b.length; ++ i ){
             d[i] = b[i];
             d[i] /= 32768;
     	}
     }
-
+	//form data object from double array of length specified by second parameter
 	public Data(double[] b,int usableLength){
 		d = new double[usableLength];
 		_d = new short[usableLength];
-		for( int i = 0 ; i < usableLength; ++ i )
+		for( int i = 0 ; i < usableLength && i < b.length ; ++ i )
 		{
 			d[i] = b[i];
 			_d[i] = (short)b[i];
 		}
 	}
-	
+	//form data object from byte array of length specified by second parameter
 	public Data(byte[] b,int usableLength){
 		d = new double[usableLength];
 		_d = new short[usableLength];
-		for( int i = 0 ; i < usableLength; ++ i ){
+		for( int i = 0 ; i < usableLength && i < b.length ; ++ i ){
 			d[i] = b[i];
 			d[i] /= 128;
 		}
 	}
-
-	public Data(byte[] b,int usableLength,int bytesPerSample, boolean signed, boolean bigEndian){
-		
-		int length = usableLength / bytesPerSample;
-		d = new double[length];
-		_d = new short[usableLength];
-		long val = 0; 
-		long rangeSize = (1<<(bytesPerSample*8)) - 1;
-		long signLimit = (1<<(bytesPerSample*8-1));
-		long sign = 1;
-		
-		for( int i = 0; i < b.length; i+=bytesPerSample )
-		{
-			val = b[i];
-			for(int j = 1; j < bytesPerSample; ++j )
-			{
-				val <<= 8;
-				val |= b[i+j];
-			}
-			sign = 1;
-			if( signed && val > signLimit )
-				sign = -1;
-			if( bigEndian == false ){
-				//need to flip number
-				long aux = 0;
-				while( val != 0 ){
-					aux <<= 1;
-					aux |= (val&1);
-					val >>= 1;
-				}
-				val = aux;
-			}
-			d[i/bytesPerSample] = sign*val;//sign*(double)val/rangeSize;
-			d[i/bytesPerSample] /= 128;
-		}
-		
-	}
-
+	
+	//concatenate the current data object with another one
 	public void extend (Data od){
 		if( od == null )
 		{
@@ -108,11 +71,11 @@ public class Data
 	public void set(double[] d){
 		this.d = d;
 	}
-	
+	//get raw data in doule format
 	public double[] get(){
 		return d;
 	}
-	
+	//get raw data in byte format
 	public byte[] getRaw(){
 		byte[] ret = new byte[_d.length*2];
 		int idx = 0;

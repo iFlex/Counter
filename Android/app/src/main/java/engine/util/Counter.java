@@ -7,9 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import rory.bain.counter.app.MainActivity;
-
-//FIXME This one seems to be the same, but there is the Handler as extra. Shouldn't be of too much worry
-
+// Code with explanatory comments in ./Desktop/src/engine
 public class Counter {
 	private int count;
 	private double uncertainty;
@@ -39,9 +37,7 @@ public class Counter {
         if (certainty > 0.5)
             count++;
         Log.d("Count:","increment:"+count);
-	//FIXME this is the wrong statistical operation
-	//Will try to remember what was the correct one and fix it
-        this.uncertainty += (1 - certainty) / 2; //Updates uncertainty value
+	    this.uncertainty += (1 - certainty) / 2;
         if (comm != null) {
             Message msg = new Message();
             msg.arg1 = count;
@@ -50,7 +46,7 @@ public class Counter {
     }
 	
 	public double getUncertainty(){
-		return Math.round(uncertainty*100); //multiply uncertainty by 100 to get whole number value
+		return Math.round(uncertainty*100);
 	}
 	
 	public int getCount(){
